@@ -68,10 +68,6 @@
     
     <category term="UnrealEngine" scheme="https://baemincheon.github.io/tags/UnrealEngine/"/>
     
-    <category term="Build.cs" scheme="https://baemincheon.github.io/tags/Build-cs/"/>
-    
-    <category term="Target.cs" scheme="https://baemincheon.github.io/tags/Target-cs/"/>
-    
   </entry>
   
   <entry>
@@ -148,8 +144,6 @@
     
     <category term="UnrealEngine" scheme="https://baemincheon.github.io/tags/UnrealEngine/"/>
     
-    <category term="Input" scheme="https://baemincheon.github.io/tags/Input/"/>
-    
   </entry>
   
   <entry>
@@ -175,10 +169,6 @@
     
     
     <category term="UnrealEngine" scheme="https://baemincheon.github.io/tags/UnrealEngine/"/>
-    
-    <category term="SmartPointer" scheme="https://baemincheon.github.io/tags/SmartPointer/"/>
-    
-    <category term="UniquePointer" scheme="https://baemincheon.github.io/tags/UniquePointer/"/>
     
   </entry>
   
@@ -232,8 +222,6 @@
     
     <category term="UnrealEngine" scheme="https://baemincheon.github.io/tags/UnrealEngine/"/>
     
-    <category term="Widget" scheme="https://baemincheon.github.io/tags/Widget/"/>
-    
   </entry>
   
   <entry>
@@ -243,7 +231,7 @@
     <published>2020-02-02T15:27:08.000Z</published>
     <updated>2020-02-02T15:27:08.000Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="Career"><a href="#Career" class="headerlink" title="Career"></a><em>Career</em></h3><table><thead><tr><th>Period</th><th>Thing</th></tr></thead><tbody><tr><td>2020.03 ~ now</td><td>PUBG live tech team (sub role)</td></tr><tr><td>2019.07 ~ now</td><td>PUBG console platform contents engineering team (main role)</td></tr><tr><td>2014.03 ~ 2020.02</td><td>Major CSE in <a href="https://www.koreatech.ac.kr/kor/Main.do">Koreatech university</a></td></tr><tr><td>2018.11 ~ 2019.04</td><td>N2 unity client programmer</td></tr><tr><td>2015.05 ~ 2017.02</td><td>Service as <em>Signal Corps</em> in Republic of Korean Army</td></tr></tbody></table><h3 id="Contacts"><a href="#Contacts" class="headerlink" title="Contacts"></a><em>Contacts</em></h3><table><thead><tr><th>Media</th><th>URL</th></tr></thead><tbody><tr><td>Github</td><td><a href="https://github.com/BaeMinCheon">https://github.com/BaeMinCheon</a></td></tr><tr><td>Facebook</td><td><a href="https://www.facebook.com/Thanyang/">https://www.facebook.com/Thanyang/</a></td></tr><tr><td>Email</td><td><a href="mailto:&#x62;&#97;&#x65;&#x6d;&#x69;&#110;&#99;&#x68;&#101;&#x6f;&#x6e;&#x40;&#103;&#x6d;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#x62;&#97;&#x65;&#x6d;&#x69;&#110;&#99;&#x68;&#101;&#x6f;&#x6e;&#x40;&#103;&#x6d;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></td></tr></tbody></table>]]></content>
+    <content type="html"><![CDATA[<h3 id="Career"><a href="#Career" class="headerlink" title="Career"></a><em>Career</em></h3><table><thead><tr><th>Period</th><th>Thing</th></tr></thead><tbody><tr><td>2020.03 ~ now</td><td>PUBG live tech team (sub role)</td></tr><tr><td>2019.07 ~ now</td><td>PUBG console platform contents engineering team (main role)</td></tr><tr><td>2014.03 ~ 2020.02</td><td>Major CSE in <a href="https://www.koreatech.ac.kr/kor/Main.do">Koreatech university</a></td></tr><tr><td>2018.11 ~ 2019.04</td><td>N2 unity client programmer</td></tr><tr><td>2015.05 ~ 2017.02</td><td>Service as <em>Signal Corps</em> in Republic of Korean Army</td></tr></tbody></table><h3 id="Contacts"><a href="#Contacts" class="headerlink" title="Contacts"></a><em>Contacts</em></h3><table><thead><tr><th>Media</th><th>URL</th></tr></thead><tbody><tr><td>Github</td><td><a href="https://github.com/BaeMinCheon">https://github.com/BaeMinCheon</a></td></tr><tr><td>Facebook</td><td><a href="https://www.facebook.com/Thanyang/">https://www.facebook.com/Thanyang/</a></td></tr><tr><td>Email</td><td><a href="mailto:&#98;&#97;&#x65;&#x6d;&#x69;&#110;&#x63;&#104;&#101;&#111;&#x6e;&#64;&#103;&#109;&#x61;&#x69;&#108;&#x2e;&#x63;&#111;&#109;">&#98;&#97;&#x65;&#x6d;&#x69;&#110;&#x63;&#104;&#101;&#111;&#x6e;&#64;&#103;&#109;&#x61;&#x69;&#108;&#x2e;&#x63;&#111;&#109;</a></td></tr></tbody></table>]]></content>
     
     
       
@@ -290,10 +278,6 @@
     
     <category term="Blueprint" scheme="https://baemincheon.github.io/tags/Blueprint/"/>
     
-    <category term="HotReload" scheme="https://baemincheon.github.io/tags/HotReload/"/>
-    
-    <category term="BlueprintImplementableEvent" scheme="https://baemincheon.github.io/tags/BlueprintImplementableEvent/"/>
-    
   </entry>
   
   <entry>
@@ -321,8 +305,6 @@
     
     
     <category term="UnrealEngine" scheme="https://baemincheon.github.io/tags/UnrealEngine/"/>
-    
-    <category term="FName" scheme="https://baemincheon.github.io/tags/FName/"/>
     
   </entry>
   
@@ -399,9 +381,9 @@
     
     <category term="UnrealEngine" scheme="https://baemincheon.github.io/tags/UnrealEngine/"/>
     
-    <category term="Linux" scheme="https://baemincheon.github.io/tags/Linux/"/>
-    
     <category term="WSL" scheme="https://baemincheon.github.io/tags/WSL/"/>
+    
+    <category term="Linux" scheme="https://baemincheon.github.io/tags/Linux/"/>
     
   </entry>
   
