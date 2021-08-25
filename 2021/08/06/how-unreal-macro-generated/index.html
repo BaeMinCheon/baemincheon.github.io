@@ -215,7 +215,7 @@ ga('send', 'pageview');
 <p>A screenshot on debugging UHT.</p>
 <h1 id="Wrap-Up"><a href="#Wrap-Up" class="headerlink" title="Wrap-Up"></a><em>Wrap-Up</em></h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">C/CPP (pure) macro</span><br><span class="line">C/CPP code with macro ---(preprocessor)---&gt;</span><br><span class="line">C/CPP code with evaluated code from macro ---(rest of job)---&gt; ...</span><br><span class="line"></span><br><span class="line">unreal macro</span><br><span class="line">C/CPP code with unreal macro ---(UHT and UBT)---&gt;</span><br><span class="line">C/CPP code with generated code(+macro) from UHT and UBT ---(preprocessor)---&gt;</span><br><span class="line">C/CPP code with evaluated code from macro ---(rest of job)---&gt; ...</span><br></pre></td></tr></table></figure>
 
-<p>There are so mnay hidden code for implementing unreal macros, and the macros have complicated relationship with other engine code. Even most part of final code from the macros cannot be evaluated before some preprocessing and compilation. In this perspective, unreal macro such as <code>UCLASS</code> is not a pure C/CPP macro, because unreal macro functions fully only when UHT and UBT must preprocess the macro.</p>
+<p>There are so many hidden code for implementing unreal macros, and the macros have complicated relationship with other engine code. Even most part of final code from the macros cannot be evaluated before some preprocessing and compilation. In this perspective, unreal macro such as <code>UCLASS</code> is not a pure C/CPP macro, because unreal macro functions fully only when UHT and UBT must preprocess the macro.</p>
 <img src="/2021/08/06/how-unreal-macro-generated/07.png" class="">
 
 <p>There is no doubt. Any of C/CPP compiler cannot recognize the unreal macro such as <code>UCLASS</code>. Even the Epic Games did not modify the compilers, and did not have to do. They have simply setup some build pipeline satisfying their needs. The program managing their custom build pipeline is the <code>Unreal Build Tool</code>, UBT. Most of jobs for build are done by UBT and UHT. In <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/4.26/en-US/ProductionPipelines/BuildTools/UnrealHeaderTool/">official document for UHT</a>, these background knowledge is introduced.</p>
@@ -236,7 +236,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2021/08/06/how-unreal-macro-generated/" data-id="cks7ndg02001kj8sh6wg93jz5" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2021/08/06/how-unreal-macro-generated/" data-id="cksrl8tf0001b2csh72becjyj" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2021/08/06/how-unreal-macro-generated/#disqus_thread" class="article-comment-link">Comments</a>
       
