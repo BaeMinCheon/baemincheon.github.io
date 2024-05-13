@@ -81,6 +81,170 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-conversion-from-bp-only-project-into-bp-cpp-project" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/" class="article-date">
+  <time datetime="2021-11-22T14:18:38.000Z" itemprop="datePublished">2021-11-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/">Conversion from BP-only project into BP+CPP project</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <table>
+<thead>
+<tr>
+<th>Environment</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UnrealEngine</td>
+<td><code>branch: 5.0</code></td>
+</tr>
+<tr>
+<td>Visual Studio 2022</td>
+<td><code>version: 17.0.1</code></td>
+</tr>
+<tr>
+<td>Windows 11 Pro</td>
+<td><code>build: 22000.318</code></td>
+</tr>
+</tbody></table>
+<h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a><em><code>Overview</code></em></h1><img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/01.png" class="">
+
+<p>UnrealEngine provides you two options to build your project and you can choose one of them. The options are <code>BLUEPRINT</code> and <code>C++</code> as you can see at the screenshot above. Selecting left one means that, “I gonna develop my project using only blueprint”. Otherwise, selecting right one means, “I want to use both blueprint and cpp on my project”.</p>
+<p>By the way, what is different between them ? How can we convert BP only project into BP+CPP project ? Let us go over.</p>
+<h1 id="Comparison"><a href="#Comparison" class="headerlink" title="Comparison"></a><em><code>Comparison</code></em></h1><img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/02.png" class="">
+
+<p>After creation, you can see the directory if selected the BP-Only. In this project <code>BPOnly</code>, you only can execute UnrealEngine editor and write blueprints. Even if you make source code files and place them into appropriate position, your project does not compile the source code. Let us find out “why not working” by the difference between BP only project and BP+CPP project.</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/03.png" class="">
+
+<p>After creation with <code>C++</code> selection. The <code>BPCPP</code> project supports both blueprint and cpp like its name. You can see the difference on number of files, <code>BPOnly</code> is 6 while <code>BPCPP</code> is 10. Files that exist only in <code>BPCPP</code> are here.</p>
+<table>
+<thead>
+<tr>
+<th>Name of file&#x2F;folder</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.vs</code></td>
+<td>Containing VisualStudio related files. Mostly, cached data for optimization.</td>
+</tr>
+<tr>
+<td><code>Binaries</code></td>
+<td>Containing output files of this project. Currently, this project’s UnrealEditor library exists.</td>
+</tr>
+<tr>
+<td><code>Source</code></td>
+<td>Containing some simple source code files. Plus, BuildRule and TargetRule exist in this folder.</td>
+</tr>
+<tr>
+<td><code>&lt;ProjectName&gt;.sln</code></td>
+<td>Just like uproject file, it defines required version of VisualStudio, dependency of the project, and so on.</td>
+</tr>
+</tbody></table>
+<p>The only <code>Source</code> folder is not generated one. The <code>Binaries</code> folder is generated when you build the project with a certain target such as <code>WindowsClient</code>, <code>WindowsServer</code>, and <code>Editor</code>. The files related to VisualStudio are generated when you attempt to make project files. Also, UnrealEngine refers the <code>Source</code> folder while generating project files.</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/04.png" class="">
+
+<p>So, is that all ? No, actually there is one more thing different. Check the uproject file and you can find some difference. The contents of uproject file looks like similar, but <code>BPCPP</code>‘s one has a <code>Modules</code> property. The name of module is the same with project name, <code>BPCPP</code>.</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/05.png" class="">
+
+<p>In summary, there are some differences between BP only project and BP+CPP project. (Except for generated files)</p>
+<ul>
+<li>Existence of <code>Source</code> folder</li>
+<li>Property <code>Modules</code> in uproject file</li>
+</ul>
+<p>Where these differences come from ?</p>
+<h1 id="Template"><a href="#Template" class="headerlink" title="Template"></a><em><code>Template</code></em></h1><p>We have learned about templates used in UnrealEngine at <a href="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/">the post</a>. What found was that making new project from a template is equal to copying the template project and replacing placeholders. Right, then it would be similar to that. Find the template project for BP only project and BP+CPP project.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">TMap&lt;FName, TArray&lt;TSharedPtr&lt;FTemplateItem&gt;&gt; &gt; SProjectDialog::<span class="built_in">FindTemplateProjects</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Clear the list out first - or we could end up with duplicates</span></span><br><span class="line">    TMap&lt;FName, TArray&lt;TSharedPtr&lt;FTemplateItem&gt;&gt;&gt; Templates;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Now discover and all data driven templates</span></span><br><span class="line">    TArray&lt;FString&gt; TemplateRootFolders;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// @todo rocket make template folder locations extensible.</span></span><br><span class="line">    TemplateRootFolders.<span class="built_in">Add</span>(FPaths::<span class="built_in">RootDir</span>() + <span class="built_in">TEXT</span>(<span class="string">&quot;Templates&quot;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Add the Enterprise templates</span></span><br><span class="line">    TemplateRootFolders.<span class="built_in">Add</span>(FPaths::<span class="built_in">EnterpriseDir</span>() + <span class="built_in">TEXT</span>(<span class="string">&quot;Templates&quot;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Allow plugins to define templates</span></span><br><span class="line">    TArray&lt;TSharedRef&lt;IPlugin&gt;&gt; Plugins = IPluginManager::<span class="built_in">Get</span>().<span class="built_in">GetEnabledPlugins</span>();</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">const</span> TSharedRef&lt;IPlugin&gt;&amp; Plugin : Plugins)</span><br><span class="line">    &#123;</span><br><span class="line">        FString PluginDirectory = Plugin-&gt;<span class="built_in">GetBaseDir</span>();</span><br><span class="line">        <span class="keyword">if</span> (!PluginDirectory.<span class="built_in">IsEmpty</span>())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">const</span> FString PluginTemplatesDirectory = FPaths::<span class="built_in">Combine</span>(*PluginDirectory, <span class="built_in">TEXT</span>(<span class="string">&quot;Templates&quot;</span>));</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (IFileManager::<span class="built_in">Get</span>().<span class="built_in">DirectoryExists</span>(*PluginTemplatesDirectory))</span><br><span class="line">            &#123;</span><br><span class="line">                TemplateRootFolders.<span class="built_in">Add</span>(PluginTemplatesDirectory);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>As you see, UnrealEngine finds template files from the path; <code>Root/Templates/</code>.</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/06.png" class="">
+
+<p>There are many folders for each template, and now we found. The <code>TP_Blank</code> and <code>TP_BlankBP</code>. The templates contain a uproject file, which is used for making new uproject file while creating new project using template.</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/07.png" class="">
+
+<p>The <code>BPOnly.uproject</code> was created based on <code>TP_BlankBP.uproject</code>. You can check that at the <code>FProjectDescriptor::Write()</code> function.</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/09.png" class="">
+</br>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/10.png" class="">
+</br>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">FModuleDescriptor::WriteArray</span><span class="params">(TJsonWriter&lt;&gt;&amp; Writer, <span class="type">const</span> TCHAR* ArrayName, <span class="type">const</span> TArray&lt;FModuleDescriptor&gt;&amp; Modules)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (Modules.<span class="built_in">Num</span>() &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Writer.<span class="built_in">WriteArrayStart</span>(ArrayName);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">const</span> FModuleDescriptor&amp; Module : Modules)</span><br><span class="line">        &#123;</span><br><span class="line">            Module.<span class="built_in">Write</span>(Writer);</span><br><span class="line">        &#125;</span><br><span class="line">        Writer.<span class="built_in">WriteArrayEnd</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Why the <code>Modules</code> property not copied ? Look at the <code>FModuleDescriptor::WriteArray()</code>. UnrealEngine does not write that property when it is empty.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">GameProjectUtils::SetEngineAssociationForForeignProject</span><span class="params">(<span class="type">const</span> FString&amp; ProjectFileName, FText&amp; OutFailReason)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">FUProjectDictionary</span>(FPaths::<span class="built_in">RootDir</span>()).<span class="built_in">IsForeignProject</span>(ProjectFileName))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(!FDesktopPlatformModule::<span class="built_in">Get</span>()-&gt;<span class="built_in">SetEngineIdentifierForProject</span>(ProjectFileName, FDesktopPlatformModule::<span class="built_in">Get</span>()-&gt;<span class="built_in">GetCurrentEngineIdentifier</span>()))</span><br><span class="line">        &#123;</span><br><span class="line">            OutFailReason = <span class="built_in">LOCTEXT</span>(<span class="string">&quot;FailedToSetEngineIdentifier&quot;</span>, <span class="string">&quot;Couldn&#x27;t set engine identifier for project&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</br>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/11.png" class="">
+
+<p>Why the <code>EngineAssociation</code> property not filled ? That property is filled later at the <code>FDesktopPlatformBase::SetEngineIdentifierForProject()</code> function.</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/08.png" class="">
+
+<p>Of course, the <code>BPCPP.uproject</code> was created based on <code>TP_Blank.uproject</code>. In this case, whole contents of file copied. And, the <code>EngineAssociation</code> would be overwritten.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Retarget any files that were chosen to have parts of their names replaced here</span></span><br><span class="line">FString DestBaseFilename = FPaths::<span class="built_in">GetBaseFilename</span>(SrcFileSubpath);</span><br><span class="line"><span class="type">const</span> FString FileExtension = FPaths::<span class="built_in">GetExtension</span>(SrcFileSubpath);</span><br><span class="line"><span class="keyword">for</span> ( <span class="type">const</span> FTemplateReplacement&amp; Replacement : TemplateDefs-&gt;FilenameReplacements )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> ( Replacement.Extensions.<span class="built_in">Contains</span>( FileExtension ) )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// This file matched a filename replacement extension, apply it now</span></span><br><span class="line">        FString LastDestBaseFilename = DestBaseFilename;</span><br><span class="line">        DestBaseFilename = DestBaseFilename.<span class="built_in">Replace</span>(*Replacement.From, *Replacement.To, Replacement.bCaseSensitive ? ESearchCase::CaseSensitive : ESearchCase::IgnoreCase);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (LastDestBaseFilename != DestBaseFilename)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">UE_LOG</span>(LogGameProjectGeneration, Verbose, <span class="built_in">TEXT</span>(<span class="string">&quot;&#x27;%s&#x27;: Renaming to &#x27;%s/%s&#x27; as it matched file rename (&#x27;%s&#x27;-&gt;&#x27;%s&#x27;)&quot;</span>), *SrcFilename, *DestFileSubpathWithoutFilename, *DestBaseFilename, *Replacement.From, *Replacement.To);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"><span class="comment">// Open all files with the specified extensions and replace text</span></span><br><span class="line"><span class="keyword">for</span> ( <span class="type">const</span> FString&amp; FileToFix : FilesThatNeedContentsReplaced )</span><br><span class="line">&#123;</span><br><span class="line">    InnerSlowTask.<span class="built_in">EnterProgressFrame</span>();</span><br><span class="line"></span><br><span class="line">    <span class="type">bool</span> bSuccessfullyProcessed = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    FString FileContents;</span><br><span class="line">    <span class="keyword">if</span> ( FFileHelper::<span class="built_in">LoadFileToString</span>(FileContents, *FileToFix) )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> ( <span class="type">const</span> FTemplateReplacement&amp; Replacement : TemplateDefs-&gt;ReplacementsInFiles )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> ( Replacement.Extensions.<span class="built_in">Contains</span>( FPaths::<span class="built_in">GetExtension</span>(FileToFix) ) )</span><br><span class="line">            &#123;</span><br><span class="line">                FileContents = FileContents.<span class="built_in">Replace</span>(*Replacement.From, *Replacement.To, Replacement.bCaseSensitive ? ESearchCase::CaseSensitive : ESearchCase::IgnoreCase);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ( FFileHelper::<span class="built_in">SaveStringToFile</span>(FileContents, *FileToFix) )</span><br><span class="line">        &#123;</span><br><span class="line">            bSuccessfullyProcessed = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ( !bSuccessfullyProcessed )</span><br><span class="line">    &#123;</span><br><span class="line">        FFormatNamedArguments Args;</span><br><span class="line">        Args.<span class="built_in">Add</span>( <span class="built_in">TEXT</span>(<span class="string">&quot;FileToFix&quot;</span>), FText::<span class="built_in">FromString</span>( FileToFix ) );</span><br><span class="line">        OutFailReason = FText::<span class="built_in">Format</span>( <span class="built_in">LOCTEXT</span>(<span class="string">&quot;FailedToFixUpFile&quot;</span>, <span class="string">&quot;Failed to process file \&quot;&#123;FileToFix&#125;\&quot;.&quot;</span>), Args );</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">TOptional</span>&lt;FGuid&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The name of folders and content of files are replaced by the codes above. In this post, from <code>TP_Blank</code> into <code>BPCPP</code>. (Or, from <code>TP_BlankBP</code> into <code>BPOnly</code>)</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/12.png" class="">
+
+<h1 id="Module"><a href="#Module" class="headerlink" title="Module"></a><em><code>Module</code></em></h1><p>We have confirmed that the difference between <code>BPOnly</code> and <code>BPCPP</code> is about a module system, which are <code>Modules</code> property in uproject and <code>Source</code> folder containing code files. Thus, it would be possible converting blueprint only project into blueprint with cpp project by making some changes. In other words, we should make a new module.</p>
+<p>Though <a target="_blank" rel="noopener" href="https://unrealcommunity.wiki/creating-cpp-module-oshdsg2t">a good wiki page for this</a> exists, I will show you an example based on <code>TP_BlankBP</code> template.</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/02.png" class="">
+
+<p>#1. Prepare a project created with <code>TP_BlankBP</code>. In this post, I use the <code>BPOnly</code> project.</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/13.png" class="">
+
+<p>#2. Make a folder <code>Source</code> at project directory, and make a folder <code>&lt;ModuleName&gt;</code> in the <code>Source</code> directory.</p>
+<p>Name the module as you want, but it is recommended to set by project name. (Because this module is the first module of project) Just to show that any name is okay, I set the module name as <code>Robb</code>, which is different with project name.</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/14.png" class="">
+</br>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/15.png" class="">
+
+<p>#3. Copy some files from the template <code>TP_Blank</code>. Replace their names and contents.</p>
+<p>I had copied all of files in <code>Source</code> folder of <code>TP_Blank</code> template. For using the template files in this project, I replaced filenames and contents. (In this case, I need to replace the text <code>TP_Blank</code> into <code>Robb</code>)</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/16.png" class="">
+
+<p>#4. Generate VisualStudio project files and open VisualStudio project file.</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/17.png" class="">
+</br>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/18.png" class="">
+
+<p>#5. Build the project and open UnrealEngine editor. Profit !</p>
+<h1 id="Wrap-Up"><a href="#Wrap-Up" class="headerlink" title="Wrap-Up"></a><em><code>Wrap-Up</code></em></h1><p>It is not common case that creating a project with blueprint only option, but we are able to convert blueprint only project into blueprint with cpp project. We have checked what happens while creating our project using template, what is different between <code>TP_Blank</code> and <code>TP_BlankBP</code>, and how to add cpp module at blueprint only project. As we seen earlier in this post, the conversion we did is the same work of what UnrealEngine does.</p>
+<p>When we make an initial module, the name of module does not have to be the same with project name. But, it is recommended to set by project name with convention and several reasons. For example, I had made a module <code>Robb</code> at the project <code>BPOnly</code>. I tried to package the project and got the result like below. Some of files have the name as <code>Robb</code>, but others have the name as <code>BPOnly</code>. Kind of disharmony on naming could be problem when accessing files with name.</p>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/19.png" class="">
+</br>
+<img src="/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/20.png" class="">
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/" data-id="clw53237t0015dkqm0i8c90h5" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2021/11/22/conversion-from-bp-only-project-into-bp-cpp-project/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-my-home-network-setup-experience-2021" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/10/11/my-home-network-setup-experience-2021/" class="article-date">
@@ -171,7 +335,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2021/10/11/my-home-network-setup-experience-2021/" data-id="clw50m6p00013akqmbqu398hh" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2021/10/11/my-home-network-setup-experience-2021/" data-id="clw53237y002mdkqm9nfyh70o" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2021/10/11/my-home-network-setup-experience-2021/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -386,7 +550,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/" data-id="clw50m6p10015akqm0w48161z" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/" data-id="clw53237y002qdkqm1xn1c5r7" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -543,7 +707,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2021/08/06/how-unreal-macro-generated/" data-id="clw50m6p00010akqm7iymdfcu" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2021/08/06/how-unreal-macro-generated/" data-id="clw53237u001ddkqmfvrd8hln" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2021/08/06/how-unreal-macro-generated/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -710,7 +874,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2021/05/16/cpp-std-vector-growth/" data-id="clw50m6oz000vakqmcr4093dt" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2021/05/16/cpp-std-vector-growth/" data-id="clw53237x002ldkqm59vwfj8t" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2021/05/16/cpp-std-vector-growth/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -880,7 +1044,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/" data-id="clw50m6p0000yakqm65vhahu8" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/" data-id="clw53237t0019dkqmdm7316b0" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -994,7 +1158,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/" data-id="clw50m6p1001aakqm0bmbf2q3" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/" data-id="clw53237y002odkqmdoflew3e" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -1088,7 +1252,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2020/12/24/retrospection-2020/" data-id="clw50m6ox000cakqm4gh33cp9" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2020/12/24/retrospection-2020/" data-id="clw53237l0001dkqmd7ws9m4f" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2020/12/24/retrospection-2020/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -1417,7 +1581,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/" data-id="clw50m6oy000makqm0c70hzs1" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/" data-id="clw53237n0008dkqmfkvn9jgl" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -1572,143 +1736,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/" data-id="clw50m6oz000rakqm0om9etex" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/" data-id="clw53237n0007dkqmewqd3q55" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-unreal-cpp-ctor-and-dtor" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/03/01/unreal-cpp-ctor-and-dtor/" class="article-date">
-  <time datetime="2020-03-01T12:15:46.000Z" itemprop="datePublished">2020-03-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/01/unreal-cpp-ctor-and-dtor/">CPP ctor and dtor in UnrealEngine</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>this post covers<ul>
-<li>what do cpp ctor and dtor do in unreal engine</li>
-<li>what is the <code>CDO</code> in unreal engine</li>
-<li>what are the ctor and dtor of <code>UCLASS</code></li>
-<li>difference between cpp ctor&#x2F;dtor and <code>UCLASS</code> ctor&#x2F;dtor</li>
-</ul>
-</li>
-<li>environment<ul>
-<li>Unreal Engine (4.24)</li>
-<li>Visual Studio 2017</li>
-<li>Windows 10</li>
-</ul>
-</li>
-<li>reference<ol>
-<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Objects/index.html">https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Objects/index.html</a></li>
-<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Classes/index.html">https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Classes/index.html</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.unrealengine.com/en-US/blog/unreal-property-system-reflection">https://www.unrealengine.com/en-US/blog/unreal-property-system-reflection</a></li>
-</ol>
-</li>
-</ul>
-<hr>
-<h1 id="overview"><a href="#overview" class="headerlink" title="overview"></a><em>overview</em></h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UCLASS</span>(config=Game)</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AProjectSandboxCharacter</span> : <span class="keyword">public</span> ACharacter</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">AProjectSandboxCharacter</span>();</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">AProjectSandboxCharacter</span>();</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</br>
-
-<img src="/2020/03/01/unreal-cpp-ctor-and-dtor/01.jpg" class="">
-
-<p>somebody may have the experience your breakpoint stops in cpp constructor even the object is not placed in the world. you might say,<br><code>&quot;Why this happens ? I do not get it why the constructor is called even while opening editor !&quot;</code></p>
-<img src="/2020/03/01/unreal-cpp-ctor-and-dtor/02.jpg" class="">
-
-<p>vice versa, destructor is called when editor is closed. in your intuition, the cpp constructor or destructor seems to be called when the actor is created or deleted. but it does not as you saw. then, let us find what do cpp ctor and dtor do in unreal engine. we would get a clue to truth through it.</p>
-<hr>
-<h1 id="class-default-object"><a href="#class-default-object" class="headerlink" title="class default object"></a><em>class default object</em></h1><p>unreal engine provides their own macro system, which has several features below:</p>
-<ul>
-<li>garbage collection</li>
-<li>reference update</li>
-<li>reflection</li>
-<li>serialization</li>
-<li>etc.</li>
-</ul>
-<p>to support these features, unreal engine constructed massive macro magics and hacks. so, cpp in unreal engine acts unlike cpp as we know. this ctor&#x2F;dtor issue is one of them(different behaviors). from <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Classes/index.html">reference #2</a>, we can find the reference of <code>Class Default Object, CDO</code>.</p>
-<img src="/2020/03/01/unreal-cpp-ctor-and-dtor/03.jpg" class="">
-
-<p>cpp constructor makes the <code>Class Default Object</code> and it is copied whenever you create instance of the <code>UObject</code>. what <code>UObject</code> means in this post, is the object created by <code>NewObject</code> API. from <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Objects/index.html">reference #1</a>, we can find the reference of <code>NewObject</code> API.</p>
-<img src="/2020/03/01/unreal-cpp-ctor-and-dtor/04.jpg" class="">
-
-<p>in summary…</p>
-<ul>
-<li>if your class(or somewhat) should be utilized with APIs of unreal engine, this must inherit <code>UObject</code> and follow some conventions</li>
-<li>if you do that, your class gonna have <code>CDO</code>, which is used for cloning object instance</li>
-<li>in this condition, cpp ctor&#x2F;dtor only works for <code>CDO</code></li>
-</ul>
-<p>※ for more information of <code>CDO</code>, visit <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Objects/index.html">reference #1</a> and <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Classes/index.html">reference #2</a><br>※ for more information of <code>Unreal Reflection</code>, visit <a target="_blank" rel="noopener" href="https://www.unrealengine.com/en-US/blog/unreal-property-system-reflection">reference #3</a></p>
-<hr>
-<h1 id="real-ctor-x2F-dtor-for-unreal"><a href="#real-ctor-x2F-dtor-for-unreal" class="headerlink" title="real ctor&#x2F;dtor for unreal"></a><em>real ctor&#x2F;dtor for unreal</em></h1><p>that is why we could see that the breakpoint stops at cpp ctor&#x2F;dtor before unreal editor opens. <code>CDO</code> is needed to display the asset editor of the class. try some tests for yourself.</p>
-<img src="/2020/03/01/unreal-cpp-ctor-and-dtor/05.jpg" class="">
-</br>
-<img src="/2020/03/01/unreal-cpp-ctor-and-dtor/06.jpg" class="">
-
-<p>the pictures above says, changes in cpp ctor will be shown in asset editor (if the asset inherits the class). not only the simple <code>float</code> variables, but it affects the various component or material things.</p>
-<p>so, let us suppose real ctor&#x2F;dtor for unreal should do its work when the instance of class is created in “game”, such as spawning bullets when player shoots the gun. there are several APIs for this purpose, but every child of <code>UObject</code> does not have common API.</p>
-<p>here is a table for major classes. almost of gameplay framework classes inherit them.</p>
-<table>
-<thead>
-<tr>
-<th>child</th>
-<th>function</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>UUserWidget</code></td>
-<td><code>UUserWidget::NativeConstruct</code></td>
-</tr>
-<tr>
-<td><code>AActor</code></td>
-<td><code>AActor::OnConstruction</code></td>
-</tr>
-<tr>
-<td><code>UActorComponent</code></td>
-<td><code>UActorComponent::InitializeComponent</code></td>
-</tr>
-</tbody></table>
-<hr>
-<h1 id="summary"><a href="#summary" class="headerlink" title="summary"></a><em>summary</em></h1><ul>
-<li>due to supporting several features, cpp in unreal engine acts unlike cpp as we know.</li>
-<li>cpp ctor&#x2F;dtor is for <code>CDO</code>, not for the cloned instances in “game”. there are seperate APIs for them.<ul>
-<li>and it differs upon a class. there is no common unreal ctor&#x2F;dtor.</li>
-</ul>
-</li>
-<li>if you plan to make custom class inherits <code>UObject</code>, you should consider how to make unreal ctor&#x2F;dtor for it.<ul>
-<li>or just let the class inherits a class already implemented unreal ctor&#x2F;dtor, such as <code>UUserWidget</code></li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/" data-id="clw50m6ox000hakqme4jz71pv" class="article-share-link">Share</a>
-      
-        <a href="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
@@ -1724,7 +1754,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -1738,7 +1768,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/" rel="tag">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoogleAnalytics/" rel="tag">GoogleAnalytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Home/" rel="tag">Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iptime/" rel="tag">Iptime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lecture/" rel="tag">Lecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSVC/" rel="tag">MSVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Migration/" rel="tag">Migration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network/" rel="tag">Network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retargeting/" rel="tag">Retargeting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextWrap/" rel="tag">TextWrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cat/" rel="tag">Cat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Copy/" rel="tag">Copy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/" rel="tag">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoogleAnalytics/" rel="tag">GoogleAnalytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Home/" rel="tag">Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iptime/" rel="tag">Iptime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lecture/" rel="tag">Lecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSVC/" rel="tag">MSVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Migration/" rel="tag">Migration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network/" rel="tag">Network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retargeting/" rel="tag">Retargeting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextWrap/" rel="tag">TextWrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a></li></ul>
     </div>
   </div>
 
@@ -1748,7 +1778,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/About/" style="font-size: 10px;">About</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/Blueprint/" style="font-size: 13.33px;">Blueprint</a> <a href="/tags/CPP/" style="font-size: 13.33px;">CPP</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GoogleAnalytics/" style="font-size: 10px;">GoogleAnalytics</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Home/" style="font-size: 10px;">Home</a> <a href="/tags/Iptime/" style="font-size: 10px;">Iptime</a> <a href="/tags/Lecture/" style="font-size: 10px;">Lecture</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MSVC/" style="font-size: 10px;">MSVC</a> <a href="/tags/Migration/" style="font-size: 10px;">Migration</a> <a href="/tags/Natvis/" style="font-size: 10px;">Natvis</a> <a href="/tags/Network/" style="font-size: 10px;">Network</a> <a href="/tags/Perforce/" style="font-size: 13.33px;">Perforce</a> <a href="/tags/Retargeting/" style="font-size: 10px;">Retargeting</a> <a href="/tags/Retrospection/" style="font-size: 16.67px;">Retrospection</a> <a href="/tags/RichTextBlock/" style="font-size: 10px;">RichTextBlock</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/TextBlock/" style="font-size: 13.33px;">TextBlock</a> <a href="/tags/TextWrap/" style="font-size: 10px;">TextWrap</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/UnrealEngine/" style="font-size: 20px;">UnrealEngine</a> <a href="/tags/WSL/" style="font-size: 13.33px;">WSL</a>
+      <a href="/tags/About/" style="font-size: 10px;">About</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/Blueprint/" style="font-size: 13.33px;">Blueprint</a> <a href="/tags/CPP/" style="font-size: 13.33px;">CPP</a> <a href="/tags/Cat/" style="font-size: 10px;">Cat</a> <a href="/tags/Copy/" style="font-size: 10px;">Copy</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GoogleAnalytics/" style="font-size: 10px;">GoogleAnalytics</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Home/" style="font-size: 10px;">Home</a> <a href="/tags/Iptime/" style="font-size: 10px;">Iptime</a> <a href="/tags/Lecture/" style="font-size: 10px;">Lecture</a> <a href="/tags/Linux/" style="font-size: 13.33px;">Linux</a> <a href="/tags/MSVC/" style="font-size: 10px;">MSVC</a> <a href="/tags/Migration/" style="font-size: 10px;">Migration</a> <a href="/tags/Natvis/" style="font-size: 10px;">Natvis</a> <a href="/tags/Network/" style="font-size: 10px;">Network</a> <a href="/tags/Perforce/" style="font-size: 13.33px;">Perforce</a> <a href="/tags/Retargeting/" style="font-size: 10px;">Retargeting</a> <a href="/tags/Retrospection/" style="font-size: 16.67px;">Retrospection</a> <a href="/tags/RichTextBlock/" style="font-size: 10px;">RichTextBlock</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/TextBlock/" style="font-size: 13.33px;">TextBlock</a> <a href="/tags/TextWrap/" style="font-size: 10px;">TextWrap</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/UnrealEngine/" style="font-size: 20px;">UnrealEngine</a> <a href="/tags/WSL/" style="font-size: 13.33px;">WSL</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a>
     </div>
   </div>
 
@@ -1757,7 +1787,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li></ul>
     </div>
   </div>
 
@@ -1768,6 +1798,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2024/05/13/difference-between-copy-and-cat-in-combining-files/">Difference between copy and cat in combining files</a>
+          </li>
         
           <li>
             <a href="/2023/12/04/migration-from-perforce-into-git-in-windows/">Migration from Perforce into Git in Windows</a>
@@ -1783,10 +1817,6 @@
         
           <li>
             <a href="/2022/10/04/retargeting-animations-in-unreal-engine-5/">Retargeting animations in UnrealEngine 5</a>
-          </li>
-        
-          <li>
-            <a href="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/">How the RichTextBlock works in UnrealEngine (part.1)</a>
           </li>
         
       </ul>
