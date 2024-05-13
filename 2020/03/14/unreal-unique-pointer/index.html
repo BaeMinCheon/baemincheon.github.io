@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2P265ZP7M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R2P265ZP7M');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>UnrealEngine unique pointer | LET US GO ABROAD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="this post covers what is unique pointer in unreal engine how it is used restriction and caution on usage   environment Unreal Engine (4.24) Visual Studio 2017 Windows 10   reference https:&#x2F;&#x2F;docs.unre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UnrealEngine unique pointer">
+<meta property="og:url" content="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/index.html">
+<meta property="og:site_name" content="LET US GO ABROAD">
+<meta property="og:description" content="this post covers what is unique pointer in unreal engine how it is used restriction and caution on usage   environment Unreal Engine (4.24) Visual Studio 2017 Windows 10   reference https:&#x2F;&#x2F;docs.unre">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/02.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/03.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/01.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/04.jpg">
+<meta property="article:published_time" content="2020-03-14T12:47:31.000Z">
+<meta property="article:modified_time" content="2020-03-14T12:47:31.000Z">
+<meta property="article:author" content="MinCheon Bae">
+<meta property="article:tag" content="UnrealEngine">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/02.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="LET US GO ABROAD" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LET US GO ABROAD</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/2020/02/03/home-page/index.html">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://baemincheon.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-unreal-unique-pointer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/14/unreal-unique-pointer/" class="article-date">
+  <time datetime="2020-03-14T12:47:31.000Z" itemprop="datePublished">2020-03-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UnrealEngine unique pointer
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>this post covers<ul>
+<li>what is unique pointer in unreal engine</li>
+<li>how it is used</li>
+<li>restriction and caution on usage</li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Unreal Engine (4.24)</li>
+<li>Visual Studio 2017</li>
+<li>Windows 10</li>
+</ul>
+</li>
+<li>reference<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/SmartPointerLibrary/index.html">https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/SmartPointerLibrary/index.html</a></li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="overview"><a href="#overview" class="headerlink" title="overview"></a><em>overview</em></h1><p>as unreal engine handles objects inherits <code>UObject</code>, we can use unreal engine easily. there are several benefits when the object inherits <code>UObject</code>.</p>
+<ul>
+<li>garbage collection</li>
+<li>reference update</li>
+<li>reflection</li>
+<li>serialization</li>
+<li>etc.</li>
+</ul>
+<p>then you might have one question,<br>“how we can handle the objects does not inherit <code>UObject</code> ? should we use raw pointer for the objects ?”<br>well…there are 2 ways for this.</p>
+<ol>
+<li>using <code>std::unique_ptr</code> of cpp std library in <code>memory.h</code></li>
+<li>using <code>TUniquePtr</code> of unreal API in <code>UniquePtr.h</code></li>
+</ol>
+<p>you can use <code>std::unique_ptr</code> in unreal project, but unreal engine implements their own smart pointer library. and it is common that using <code>TUniquePtr</code> in unreal project unless you do not need cpp std library.</p>
+<p>as purpose and functionality are the same, <code>TUniquePtr</code> is similar to <code>std::unique_ptr</code>. <code>TUniquePtr</code> also provides the unique ownership and other features. let us check out what it is and how it is used.</p>
+<hr>
+<h1 id="built-in-example"><a href="#built-in-example" class="headerlink" title="built-in example"></a><em>built-in example</em></h1><p>you can find some example in unreal engine code.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/SandboxFile/Public/IPlatformFileSandboxWrapper.h</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SANDBOXFILE_API</span> FSandboxPlatformFile : <span class="keyword">public</span> IPlatformFile</span><br><span class="line">&#123;</span><br><span class="line">    ....</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>class <code>FSandboxPlatformFile</code> is not a class inherits <code>UObject</code> and it is possible to be indicated with <code>TUniquePtr</code>.<br>( conventionally, prefix <code>U</code> is attached when the class inherits <code>UObject</code> )</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Editor/UnrealEd/Classes/CookOnTheSide/CookOnTheFlyServer.<span class="function">h</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">UCLASS</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="keyword">class</span> UNREALED_API UCookOnTheFlyServer : public UObject, public FTickableEditorObject, public FExec</span></span><br><span class="line"><span class="function">&#123;</span></span><br><span class="line">    ....</span><br><span class="line"></span><br><span class="line">    TUniquePtr&lt;<span class="keyword">class</span> <span class="title class_">FSandboxPlatformFile</span>&gt; SandboxFile;</span><br><span class="line"></span><br><span class="line">    ....</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>class <code>UCookOnTheFlyServer</code> is a class inhertis <code>UObject</code> and it contains <code>TUniquePtr</code> with <code>FSandboxPlatformFile</code> as member variable.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Editor/UnrealEd/Private/CookOnTheFlyServer.<span class="function">cpp</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UCookOnTheFlyServer::PopulateCookedPackagesFromDisk</span><span class="params">(<span class="type">const</span> TArray&lt;ITargetPlatform*&gt;&amp; Platforms)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ....</span><br><span class="line">    </span><br><span class="line">    FString EngineSandboxPath = SandboxFile-&gt;<span class="built_in">ConvertToSandboxPath</span>(*FPaths::<span class="built_in">EngineDir</span>()) + <span class="built_in">TEXT</span>(<span class="string">&quot;/&quot;</span>);</span><br><span class="line"></span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>accessing the object through <code>TUniquePtr</code> is the same on <code>std::unique_ptr</code>. using <code>-&gt;</code> operator, you can access the object as the normal pointer.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Editor/UnrealEd/Private/CookOnTheFlyServer.<span class="function">cpp</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">FString <span class="title">UCookOnTheFlyServer::ConvertToFullSandboxPath</span><span class="params">( <span class="type">const</span> FString &amp;FileName, <span class="type">bool</span> bForWrite )</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">check</span>(SandboxFile);</span><br><span class="line"></span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>validation on <code>TUniquePtr</code> is the same on raw pointer. if the value is zero, the <code>TUniquePtr</code> is pointing <code>nullptr</code>. you can use <code>check</code> for ensuring whether the <code>TUniquePtr</code> is valid.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Editor/UnrealEd/Private/Commandlets/AssetRegistryGenerator.<span class="function">cpp</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">FAssetRegistryGenerator::SaveManifests</span><span class="params">(FSandboxPlatformFile* InSandboxFile, int64 InExtraFlavorChunkSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>FAssetRegistryGenerator::SaveManifests</code> gets <code>FSandboxPlatformFile*</code> as one of parameters. the type of parameter is not the <code>TUniquePtr</code>, so we should convert <code>TUniquePtr&lt;T&gt;</code> into <code>T*</code>.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Editor/UnrealEd/Private/CookOnTheFlyServer.<span class="function">cpp</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UCookOnTheFlyServer::CookByTheBookFinished</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ....</span><br><span class="line"></span><br><span class="line">    Generator.<span class="built_in">SaveManifests</span>(SandboxFile.<span class="built_in">Get</span>());</span><br><span class="line"></span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>use the <code>TUniquePtr::Get()</code> if you need the raw pointer of <code>TUniquePtr&lt;T&gt;</code>.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Editor/UnrealEd/Private/CookOnTheFlyServer.<span class="function">cpp</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UCookOnTheFlyServer::CancelCookByTheBook</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ....</span><br><span class="line"></span><br><span class="line">    SandboxFile = <span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>assigning <code>nullptr</code> into <code>TUniquePtr</code>, you can let <code>TUniquePtr</code> release the object and have its value as <code>nullptr</code>.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/SandboxFile/Public/IPlatformFileSandboxWrapper.h</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SANDBOXFILE_API</span> FSandboxPlatformFile : <span class="keyword">public</span> IPlatformFile</span><br><span class="line">&#123;</span><br><span class="line">    ....</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">FSandboxPlatformFile</span>(<span class="type">bool</span> bInEntireEngineWillUseThisSandbox = <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>constructor of <code>FSandboxPlatformFile</code> takes one parameter as boolean.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Editor/UnrealEd/Private/CookOnTheFlyServer.<span class="function">cpp</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UCookOnTheFlyServer::CreateSandboxFile</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ....</span><br><span class="line"></span><br><span class="line">    SandboxFile = <span class="built_in">MakeUnique</span>&lt;FSandboxPlatformFile&gt;(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>MakeUnique</code> returns <code>TUniquePtr</code> object and calls the constructor of the template class. in this case, <code>MakeUnique&lt;FSandboxPlatformFile&gt;</code> takes one boolean value.</p>
+<hr>
+<h1 id="restriction-and-caution"><a href="#restriction-and-caution" class="headerlink" title="restriction and caution"></a><em>restriction and caution</em></h1><p>suppose you have a class like below</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UserInfo</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">UserInfo</span>(int32 NewUserID, <span class="type">char</span>* NewUserName)</span><br><span class="line">        : <span class="built_in">UserID</span>(NewUserID), <span class="built_in">UserName</span>(NewUserName), <span class="built_in">bInitialized</span>(<span class="literal">false</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        bInitialized = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">UserInfo</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (UserName != <span class="literal">nullptr</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">delete</span>[] UserName;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        bInitialized = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    int32 UserID;</span><br><span class="line">    <span class="type">char</span>* UserName;</span><br><span class="line">    <span class="type">bool</span> bInitialized;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>you should only use <code>TUniquePtr</code> at the object, which exists only one thing. unless, you would get an exception for delete on <code>nullptr</code>.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">SomeUActor::BeginPlay</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ....</span><br><span class="line"></span><br><span class="line">    <span class="built_in">CreateUserInformation</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SomeUActor::EndPlay</span><span class="params">(<span class="type">const</span> EEndPlayReason::Type EndPlayReason)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ....</span><br><span class="line"></span><br><span class="line">    <span class="built_in">ReleaseUserInformation</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SomeUActor::CreateUserInformation</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">char</span>* String = <span class="keyword">new</span> <span class="type">char</span>[<span class="number">100</span>];</span><br><span class="line">    <span class="built_in">strcpy</span>(String, <span class="string">&quot;baemincheon&quot;</span>);</span><br><span class="line">    UserInformation = <span class="built_in">MakeUnique</span>&lt;UserInfo&gt;(<span class="number">0</span>, String);</span><br><span class="line"></span><br><span class="line">    <span class="function">TUniquePtr&lt;UserInfo&gt; <span class="title">AnotherPtr</span><span class="params">(UserInformation.Get())</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SomeUActor::ReleaseUserInformation</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    UserInformation = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>in this code, <code>CreateUserInformation</code> will be called in <code>BeginPlay</code> and <code>ReleaseUserInformation</code> will be called in <code>EndPlay</code>. <code>UserInformation</code> is a memeber variable with <code>TUniquePtr&lt;UserInfo&gt;</code> type. another <code>TUniquePtr&lt;UserInfo&gt;</code> exists in <code>CreateUserInformation</code>, which gets <code>UserInfo*</code>.</p>
+<img src="/2020/03/14/unreal-unique-pointer/02.jpg" class="">
+
+<p>what happens when <code>CreateUserInformation</code> is ended ? <code>AnotherPtr</code> would disappear and its destructor would be called. when the destructor of <code>TUniquePtr</code> is called, it releases memory that <code>TUniquePtr</code> has pointed. as a result, variable <code>UserInformation</code> would be a dangling pointer.</p>
+<img src="/2020/03/14/unreal-unique-pointer/03.jpg" class="">
+
+<p><code>UserInformation</code> has abnormal values.</p>
+<img src="/2020/03/14/unreal-unique-pointer/01.jpg" class="">
+
+<p>because already the memory is released, an exception would be thrown when we execute <code>ReleaseUserInformation</code>. it is why you have to use <code>TUniquePtr</code> at the object only existing one thing and care about moving the ownership. moving the ownership with raw pointer is dangerous as we have seen.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">SomeUActor::CreateUserInformation</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">char</span>* String = <span class="keyword">new</span> <span class="type">char</span>[<span class="number">100</span>];</span><br><span class="line">    <span class="built_in">strcpy</span>(String, <span class="string">&quot;baemincheon&quot;</span>);</span><br><span class="line">    UserInformation = <span class="built_in">MakeUnique</span>&lt;UserInfo&gt;(<span class="number">0</span>, String);</span><br><span class="line"></span><br><span class="line">    <span class="function">TUniquePtr&lt;UserInfo&gt; <span class="title">AnotherPtr</span><span class="params">(MoveTemp(UserInformation))</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>let us move the ownership with <code>MoveTemp</code> API. this code makes <code>AnotherPtr</code> point the memory and <code>UserInformation</code> set the <code>nullptr</code>.</p>
+<img src="/2020/03/14/unreal-unique-pointer/04.jpg" class="">
+
+<p><code>UserInformation</code> has <code>nullptr</code>. so we can avoid the exception.</p>
+<hr>
+<h1 id="summary"><a href="#summary" class="headerlink" title="summary"></a><em>summary</em></h1><p><code>TUniquePtr</code> is similar to <code>std::unique_ptr</code> and its usage and restriction, too.</p>
+<ul>
+<li>initialization: you can initialize <code>TUniquePtr</code> with 2 ways</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>method</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>using raw pointer</td>
+<td><code>TUniquePtr&lt;T&gt; PointerA(T*);</code></td>
+</tr>
+<tr>
+<td>using other <code>TUniquePtr</code></td>
+<td><code>TUniquePtr&lt;T&gt; PointerA(MoveTemp(PointerB));</code></td>
+</tr>
+</tbody></table>
+<ul>
+<li>transfering ownership: for preventing side effect, you should use <code>MoveTemp</code></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TUniquePtr&lt;T&gt; PointerA = <span class="keyword">new</span> <span class="built_in">T</span>(...);</span><br><span class="line">TUniquePtr&lt;T&gt; PointerB;</span><br><span class="line">PointerB = <span class="built_in">MoveTemp</span>(PointerA);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>release: there are various ways to release the <code>TUniquePtr</code></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// way #1 : release implicitly</span></span><br><span class="line">PointerA = <span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// way #2 : release explicitly</span></span><br><span class="line">PointerB.<span class="built_in">Release</span>();</span><br><span class="line"></span><br><span class="line">&#123;   <span class="comment">// way #3 : using scope</span></span><br><span class="line">    TUniquePtr&lt;T&gt; PointerC = <span class="keyword">new</span> <span class="built_in">T</span>(...);</span><br><span class="line">    ....</span><br><span class="line">&#125;   <span class="comment">// the destructor of PointerC is called when this block ends</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/" data-id="clw50m6oz000rakqm0om9etex" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/10/25/unreal-input-system-via-gamepad/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Gamepad input process in UnrealEngine
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/01/unreal-cpp-ctor-and-dtor/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CPP ctor and dtor in UnrealEngine</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/" rel="tag">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoogleAnalytics/" rel="tag">GoogleAnalytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Home/" rel="tag">Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iptime/" rel="tag">Iptime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lecture/" rel="tag">Lecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSVC/" rel="tag">MSVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Migration/" rel="tag">Migration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network/" rel="tag">Network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retargeting/" rel="tag">Retargeting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextWrap/" rel="tag">TextWrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/About/" style="font-size: 10px;">About</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/Blueprint/" style="font-size: 13.33px;">Blueprint</a> <a href="/tags/CPP/" style="font-size: 13.33px;">CPP</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GoogleAnalytics/" style="font-size: 10px;">GoogleAnalytics</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Home/" style="font-size: 10px;">Home</a> <a href="/tags/Iptime/" style="font-size: 10px;">Iptime</a> <a href="/tags/Lecture/" style="font-size: 10px;">Lecture</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MSVC/" style="font-size: 10px;">MSVC</a> <a href="/tags/Migration/" style="font-size: 10px;">Migration</a> <a href="/tags/Natvis/" style="font-size: 10px;">Natvis</a> <a href="/tags/Network/" style="font-size: 10px;">Network</a> <a href="/tags/Perforce/" style="font-size: 13.33px;">Perforce</a> <a href="/tags/Retargeting/" style="font-size: 10px;">Retargeting</a> <a href="/tags/Retrospection/" style="font-size: 16.67px;">Retrospection</a> <a href="/tags/RichTextBlock/" style="font-size: 10px;">RichTextBlock</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/TextBlock/" style="font-size: 13.33px;">TextBlock</a> <a href="/tags/TextWrap/" style="font-size: 10px;">TextWrap</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/UnrealEngine/" style="font-size: 20px;">UnrealEngine</a> <a href="/tags/WSL/" style="font-size: 13.33px;">WSL</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/04/migration-from-perforce-into-git-in-windows/">Migration from Perforce into Git in Windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/04/10/conversion-from-universal-analytics-into-google-analytics-4/">Conversion from UA into GA4</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/12/promotion-for-online-lecture-of-unrealengine-01/">The promotion for online lecture of UnrealEngine</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/04/retargeting-animations-in-unreal-engine-5/">Retargeting animations in UnrealEngine 5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/">How the RichTextBlock works in UnrealEngine (part.1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 MinCheon Bae<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/2020/02/03/home-page/index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'let-us-go-abroad';
+  
+  var disqus_url = 'https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

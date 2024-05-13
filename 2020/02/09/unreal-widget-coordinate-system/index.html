@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2P265ZP7M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R2P265ZP7M');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Calculating widget coordinate in UnrealEngine | LET US GO ABROAD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="this post covers introduction to widget coordinate system what is FGeometry is how to get transform of widget the meaning of each part of transform tips for manipulating widget transform   environmen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Calculating widget coordinate in UnrealEngine">
+<meta property="og:url" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/index.html">
+<meta property="og:site_name" content="LET US GO ABROAD">
+<meta property="og:description" content="this post covers introduction to widget coordinate system what is FGeometry is how to get transform of widget the meaning of each part of transform tips for manipulating widget transform   environmen">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/02.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/03.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/04.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/05.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/09.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/10.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/11.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/12.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/06.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/07.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/08.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/13.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/14.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/15.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/16.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/20.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/17.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/18.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/19.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/22.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/23.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/25.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/26.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/24.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/21.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/27.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/28.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/29.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/30.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/31.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/09.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/15.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/32.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/33.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/34.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/35.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/36.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/37.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/38.jpg">
+<meta property="article:published_time" content="2020-02-09T10:46:17.000Z">
+<meta property="article:modified_time" content="2020-02-09T10:46:17.000Z">
+<meta property="article:author" content="MinCheon Bae">
+<meta property="article:tag" content="UnrealEngine">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/02.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="LET US GO ABROAD" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LET US GO ABROAD</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/2020/02/03/home-page/index.html">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://baemincheon.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-unreal-widget-coordinate-system" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/09/unreal-widget-coordinate-system/" class="article-date">
+  <time datetime="2020-02-09T10:46:17.000Z" itemprop="datePublished">2020-02-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Calculating widget coordinate in UnrealEngine
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>this post covers<ul>
+<li>introduction to widget coordinate system</li>
+<li>what is <code>FGeometry</code> is</li>
+<li>how to get transform of widget</li>
+<li>the meaning of each part of transform</li>
+<li>tips for manipulating widget transform</li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Unreal Engine (4.24)</li>
+<li>Visual Studio 2017</li>
+<li>Windows 10</li>
+</ul>
+</li>
+<li>reference<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/API/Runtime/SlateCore/Layout/FGeometry/index.html">https://docs.unrealengine.com/en-US/API/Runtime/SlateCore/Layout/FGeometry/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.unrealengine.com/index.php?title=UE4_Transform_Calculus_-_Part_1">https://wiki.unrealengine.com/index.php?title=UE4_Transform_Calculus_-_Part_1</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.unrealengine.com/index.php?title=UE4_Transform_Calculus_-_Part_2">https://wiki.unrealengine.com/index.php?title=UE4_Transform_Calculus_-_Part_2</a></li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="widget-coordinate-system"><a href="#widget-coordinate-system" class="headerlink" title="widget coordinate system"></a><em>widget coordinate system</em></h1><img src="/2020/02/09/unreal-widget-coordinate-system/02.jpg" class="">
+
+<p>suppose you have a game window. it might look like the picture and focus onto the popup widget</p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/03.jpg" class="">
+
+<p>in this condition, we can call the coordinate system as <code>Window Space</code></p>
+<ul>
+<li><code>Window Space</code><ul>
+<li>a space has an origin with left-top of window</li>
+<li>we can use this coordinate system for getting certain position in window</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/02/09/unreal-widget-coordinate-system/04.jpg" class="">
+
+<p>even we can imagine the coordinate system <code>Monitor Space</code></p>
+<ul>
+<li><code>Monitor Space</code><ul>
+<li>a space has an origin with left-top of monitor</li>
+<li>we can use this coordinate system for getting certain position in monitor</li>
+</ul>
+</li>
+</ul>
+<p>※ position values are approximate<br>※ these terms are not official. they are just used for explaining this post</p>
+<h1 id="FGeometry-introduction"><a href="#FGeometry-introduction" class="headerlink" title="FGeometry introduction"></a><em><code>FGeometry</code> introduction</em></h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/SlateCore/Public/Layout/Geometry.h</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Represents the position, size, and absolute position of a Widget in Slate.</span></span><br><span class="line"><span class="comment"> * The absolute location of a geometry is usually screen space or</span></span><br><span class="line"><span class="comment"> * window space depending on where the geometry originated.</span></span><br><span class="line"><span class="comment"> * Geometries are usually paired with a SWidget pointer in order</span></span><br><span class="line"><span class="comment"> * to provide information about a specific widget (see FArrangedWidget).</span></span><br><span class="line"><span class="comment"> * A Geometry&#x27;s parent is generally thought to be the Geometry of the</span></span><br><span class="line"><span class="comment"> * the corresponding parent widget.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">USTRUCT</span>(BlueprintType)</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SLATECORE_API</span> FGeometry</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>in unreal engine, <code>FGeometry</code> can help getting those transforms mentioned above</li>
+<li>the <code>FGeometry</code><ul>
+<li>contains useful data for widget especially the transform</li>
+<li>is updated whenever widget is painted or ticked</li>
+</ul>
+</li>
+<li>every variance to transform is accumulated in <code>FGeometry</code><ul>
+<li>in short, each tick, every widget has latest information for calculating transform</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/SlateCore/Private/Widgets/SWidget.h</span><br><span class="line"></span><br><span class="line"><span class="comment">//UE_DEPRECATED(4.23, &quot;GetCachedGeometry has been deprecated, use GetTickSpaceGeometry instead&quot;)</span></span><br><span class="line"><span class="function"><span class="type">const</span> FGeometry&amp; <span class="title">GetCachedGeometry</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Gets the last geometry used to Tick the widget.  This data may not exist yet if this call happens prior to</span></span><br><span class="line"><span class="comment"> * the widget having been ticked/painted, or it may be out of date, or a frame behind.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * We recommend not to use this data unless there&#x27;s no other way to solve your problem.  Normally in Slate we</span></span><br><span class="line"><span class="comment"> * try and handle these issues by making a dependent widget part of the hierarchy, as to avoid frame behind</span></span><br><span class="line"><span class="comment"> * or what are referred to as hysteresis problems, both caused by depending on geometry from the previous frame</span></span><br><span class="line"><span class="comment"> * being used to advise how to layout a dependent object the current frame.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">const</span> FGeometry&amp; <span class="title">GetTickSpaceGeometry</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Gets the last geometry used to Tick the widget.  This data may not exist yet if this call happens prior to</span></span><br><span class="line"><span class="comment"> * the widget having been ticked/painted, or it may be out of date, or a frame behind.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">const</span> FGeometry&amp; <span class="title">GetPaintSpaceGeometry</span><span class="params">()</span> <span class="type">const</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/SlateCore/Private/Widgets/SWidget.<span class="function">cpp</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="type">const</span> FGeometry&amp; <span class="title">SWidget::GetCachedGeometry</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">GetTickSpaceGeometry</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">const</span> FGeometry&amp; <span class="title">SWidget::GetTickSpaceGeometry</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> PersistentState.DesktopGeometry;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">const</span> FGeometry&amp; <span class="title">SWidget::GetPaintSpaceGeometry</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> PersistentState.AllottedGeometry;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>we can get <code>FGeometry</code> object via <code>SWidget::Get*Geometry()</code> series<ul>
+<li>FYI, <code>SWidget::GetCachedGeometry()</code> has been deprecated from 4.23</li>
+</ul>
+</li>
+<li>for general purpose, you can use any getter<ul>
+<li><code>DesktopGeometry</code> and <code>AllottedGeometry</code> are not that different</li>
+<li>but unreal engine recommend you to use <code>AllottedGeometry</code> one</li>
+</ul>
+</li>
+</ul>
+<p>※ for more information, visit <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/API/Runtime/SlateCore/Layout/FGeometry/index.html">reference #1</a> + <a target="_blank" rel="noopener" href="https://wiki.unrealengine.com/index.php?title=UE4_Transform_Calculus_-_Part_1">reference #2</a> + <a target="_blank" rel="noopener" href="https://wiki.unrealengine.com/index.php?title=UE4_Transform_Calculus_-_Part_2">reference #3</a></p>
+<h1 id="FGeometry-APIs"><a href="#FGeometry-APIs" class="headerlink" title="FGeometry APIs"></a><em><code>FGeometry</code> APIs</em></h1><ul>
+<li><code>GetLocalSize()</code></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/SlateCore/Public/Layout/Geometry.h</span><br><span class="line"></span><br><span class="line"><span class="comment">/** @return the size of the geometry in local space. */</span></span><br><span class="line"><span class="function">FORCEINLINE <span class="type">const</span> FVector2D&amp; <span class="title">GetLocalSize</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> Size; &#125;</span><br></pre></td></tr></table></figure>
+<p>returns a size in local space. this size is usually determined with value set in editor</p>
+<ul>
+<li><code>GetAbsoluteSize()</code></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/SlateCore/Public/Layout/Geometry.h</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Get the absolute size of the geometry in render space.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">FORCEINLINE FVector2D <span class="title">GetAbsoluteSize</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> AccumulatedRenderTransform.<span class="built_in">TransformVector</span>(<span class="built_in">GetLocalSize</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>returns a size in outer space. this size is based on your screen, which is real size</p>
+<ul>
+<li><code>LocalToViewport()</code></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/UMG/Public/Blueprint/SlateBlueprintLibrary.h</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Translates local coordinate of the geometry provided into local viewport coordinates.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param PixelPosition The position in the game&#x27;s viewport, usable for line traces and </span></span><br><span class="line"><span class="comment"> * other uses where you need a coordinate in the space of viewport resolution units.</span></span><br><span class="line"><span class="comment"> * @param ViewportPosition The position in the space of other widgets in the viewport.  Like if you wanted</span></span><br><span class="line"><span class="comment"> * to add another widget to the viewport at the same position in viewport space as this location, this is</span></span><br><span class="line"><span class="comment"> * what you would use.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">UFUNCTION</span>(BlueprintPure, Category=<span class="string">&quot;User Interface|Geometry&quot;</span>, meta=( WorldContext=<span class="string">&quot;WorldContextObject&quot;</span> ))</span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">LocalToViewport</span><span class="params">(UObject* WorldContextObject, <span class="type">const</span> FGeometry&amp; Geometry, FVector2D LocalCoordinate, FVector2D&amp; PixelPosition, FVector2D&amp; ViewportPosition)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>returns positions in outer space and local space respectively with parameters, which are <code>PixelPosition</code> and <code>ViewportPosition</code></p>
+<ul>
+<li><code>LocalToAbsolute()</code></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/UMG/Public/Blueprint/SlateBlueprintLibrary.h</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Translates local coordinates into absolute coordinates</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Absolute coordinates could be either desktop or window space depending on what space the root of the widget hierarchy is in.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return  Absolute coordinates</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">UFUNCTION</span>(BlueprintPure, Category=<span class="string">&quot;User Interface|Geometry&quot;</span>)</span><br><span class="line"><span class="function"><span class="type">static</span> FVector2D <span class="title">LocalToAbsolute</span><span class="params">(<span class="type">const</span> FGeometry&amp; Geometry, FVector2D LocalCoordinate)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>returns a position in <code>Monitor Space</code></p>
+<h1 id="how-to-use"><a href="#how-to-use" class="headerlink" title="how to use"></a><em>how to use</em></h1><p>those APIs can be used for calculating transform. let us find out how to use them</p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/05.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/09.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/10.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/11.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/12.jpg" class="">
+
+<table>
+<thead>
+<tr>
+<th>Child</th>
+<th>Position</th>
+<th>Size</th>
+<th>Parent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Red One</td>
+<td>(100, 50)</td>
+<td>(60, 30)</td>
+<td>Canvas Panel #1</td>
+</tr>
+<tr>
+<td>Green One</td>
+<td>(0, 0)</td>
+<td>(60, 30)</td>
+<td>Canvas Panel #2</td>
+</tr>
+<tr>
+<td>Blue One</td>
+<td>NaN</td>
+<td>(60, 30)</td>
+<td>Horizontal Box</td>
+</tr>
+<tr>
+<td>White One</td>
+<td>NaN</td>
+<td>(60, 30)</td>
+<td>Horizontal Box</td>
+</tr>
+</tbody></table>
+<p>we gotta use this widget for example. the widget has children with multiple depth. each editor property of child is above</p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/06.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/07.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/08.jpg" class="">
+
+<p>※ transform property can be divided into <em>local</em> and <em>absolute</em> due to <code>DPI Scale</code><br>※ in this example(and also default value), we got <code>DPI Scale = 2/3</code> which means that every property gets multiplied with 0.666666…</p>
+<ul>
+<li><p><code>Window Space</code></p>
+<ul>
+<li>widget<ul>
+<li>size<img src="/2020/02/09/unreal-widget-coordinate-system/13.jpg" class="">
+<ul>
+<li>local &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;GetLocalSize()</code><img src="/2020/02/09/unreal-widget-coordinate-system/14.jpg" class=""></li>
+<li>absolute &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;GetAbsoluteSize()</code><br>  <em>(60, 30) * 0.666666… ≒ (39.99996…, 19.99998…)</em></li>
+</ul>
+</li>
+<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/15.jpg" class="">
+<ul>
+<li>local &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;LocalToViewport()-&gt;ViewportPosition</code><img src="/2020/02/09/unreal-widget-coordinate-system/16.jpg" class=""></li>
+<li>absolute &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;LocalToViewport()-&gt;PixelPosition</code><br>  <em>(100, 50) * 0.666666… ≒ (66.66666…, 33.33333…)</em></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>verification (with Adobe Photoshop)</p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/20.jpg" class="">
+<ul>
+<li>widget<ul>
+<li>size<img src="/2020/02/09/unreal-widget-coordinate-system/17.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/18.jpg" class=""></li>
+<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/19.jpg" class=""></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>Monitor Space</code></p>
+<ul>
+<li>window<ul>
+<li>size<ul>
+<li>local<img src="/2020/02/09/unreal-widget-coordinate-system/22.jpg" class="">
+  approximately 1920x1080</li>
+<li>absolute<img src="/2020/02/09/unreal-widget-coordinate-system/23.jpg" class="">
+  <em>(1920, 1080) * 0.666666… &#x3D; (1280, 720)</em></li>
+</ul>
+</li>
+<li>position<ul>
+<li>local<img src="/2020/02/09/unreal-widget-coordinate-system/25.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/26.jpg" class="">
+  cannot calculate. also not meaningful, unless the `DPI Scale` is the same with system's one</li>
+<li>absolute<img src="/2020/02/09/unreal-widget-coordinate-system/24.jpg" class=""></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>widget<ul>
+<li>size<br>  the same with before</li>
+<li>position<ul>
+<li>local<br>  cannot calculate. also not meaningful, unless the <code>DPI Scale</code> is the same with system’s one</li>
+<li>absolute<img src="/2020/02/09/unreal-widget-coordinate-system/21.jpg" class=""></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>verification (with Adobe Photoshop)</p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/27.jpg" class="">
+<ul>
+<li>window<ul>
+<li>size<img src="/2020/02/09/unreal-widget-coordinate-system/28.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/29.jpg" class=""></li>
+<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/30.jpg" class=""></li>
+</ul>
+</li>
+<li>widget<ul>
+<li>size<br>  the same with before</li>
+<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/31.jpg" class=""></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>Window Space</code> summary</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Widget</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Size.Local</td>
+<td>(60, 30)</td>
+</tr>
+<tr>
+<td>Size.Absolute</td>
+<td>(40, 20)</td>
+</tr>
+<tr>
+<td>Position.Local</td>
+<td>(100, 50)</td>
+</tr>
+<tr>
+<td>Position.Absolute</td>
+<td>(66, 33)</td>
+</tr>
+</tbody></table>
+<p><code>Monitor Space</code> summary</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Window</th>
+<th>Widget</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Size.Local</td>
+<td>(1920, 1080)</td>
+<td>(60, 30)</td>
+</tr>
+<tr>
+<td>Size.Absolute</td>
+<td>(1280, 720)</td>
+<td>(40, 20)</td>
+</tr>
+<tr>
+<td>Position.Local</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>Position.Absoulte</td>
+<td>(640, 350)</td>
+<td>(640 + 66, 350 + 33) &#x3D; (706, 383)</td>
+</tr>
+</tbody></table>
+<h1 id="widget-translation"><a href="#widget-translation" class="headerlink" title="widget translation"></a><em>widget translation</em></h1><p>suppose you have to translate a widget into certain position. how will you ?<br>first, we need to check whether the slot of widget has <code>SetPosition</code> API. if the slot does not, we cannot do widget translation<br>but we can do it, as the red image was in <code>Canvas Panel</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/UMG/Public/Components/CanvasPanelSlot.h</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Sets the position of the slot */</span></span><br><span class="line"><span class="built_in">UFUNCTION</span>(BlueprintCallable, Category=<span class="string">&quot;Layout|Canvas Slot&quot;</span>)</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetPosition</span><span class="params">(FVector2D InPosition)</span></span>;</span><br></pre></td></tr></table></figure>
+</br>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/UMG/Public/Components/CanvasPanelSlot.<span class="function">cpp</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UCanvasPanelSlot::SetPosition</span><span class="params">(FVector2D InPosition)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    LayoutData.Offsets.Left = InPosition.X;</span><br><span class="line">    LayoutData.Offsets.Top = InPosition.Y;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ( Slot )</span><br><span class="line">    &#123;</span><br><span class="line">        Slot-&gt;<span class="built_in">Offset</span>(LayoutData.Offsets);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>the parameter <code>InPosition</code> should be local position. it is easy to think, this is the same work with changing value in editor<br>second, we need to get local position of the widget. let us use the example red image again<br>in previous example, red image had a local position of (100, 50) in <code>Window Space</code></p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/09.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/15.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/32.jpg" class="">
+
+<p>let us move the widget with offset (100, 50) again<br>third, we need to set local position with new one. in this time, <code>SetPosition(200, 100)</code> will be needed<br>and we gotta check a local position at next tick. the local position would be (200, 100) and absolute position also be twice</p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/33.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/34.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/35.jpg" class="">
+
+<ul>
+<li>verification (with Adobe Photoshop)<img src="/2020/02/09/unreal-widget-coordinate-system/36.jpg" class="">
+<ul>
+<li>size<br>  the same with before</li>
+<li>position<ul>
+<li>absolute position in <code>Window Space</code><img src="/2020/02/09/unreal-widget-coordinate-system/37.jpg" class=""></li>
+<li>absolute position in <code>Monitor Space</code><img src="/2020/02/09/unreal-widget-coordinate-system/38.jpg" class=""></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>wrap-up !</p>
+<ul>
+<li>getting local or absolute position is usually possible regardless of layout of widget such as widget hierarchy</li>
+<li>we can only set local position through the API of slot such as <code>Canvas Panel Slot</code></li>
+<li>you need to calculate new position (based on several conditions, especially <code>DPI Scale</code>) to translate widget into desired position</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/" data-id="clw50m6oz000takqm03ew9ui1" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/03/01/unreal-cpp-ctor-and-dtor/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          CPP ctor and dtor in UnrealEngine
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/03/home-page/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Homepage</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/" rel="tag">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoogleAnalytics/" rel="tag">GoogleAnalytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Home/" rel="tag">Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iptime/" rel="tag">Iptime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lecture/" rel="tag">Lecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSVC/" rel="tag">MSVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Migration/" rel="tag">Migration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network/" rel="tag">Network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retargeting/" rel="tag">Retargeting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextWrap/" rel="tag">TextWrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/About/" style="font-size: 10px;">About</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/Blueprint/" style="font-size: 13.33px;">Blueprint</a> <a href="/tags/CPP/" style="font-size: 13.33px;">CPP</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GoogleAnalytics/" style="font-size: 10px;">GoogleAnalytics</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Home/" style="font-size: 10px;">Home</a> <a href="/tags/Iptime/" style="font-size: 10px;">Iptime</a> <a href="/tags/Lecture/" style="font-size: 10px;">Lecture</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MSVC/" style="font-size: 10px;">MSVC</a> <a href="/tags/Migration/" style="font-size: 10px;">Migration</a> <a href="/tags/Natvis/" style="font-size: 10px;">Natvis</a> <a href="/tags/Network/" style="font-size: 10px;">Network</a> <a href="/tags/Perforce/" style="font-size: 13.33px;">Perforce</a> <a href="/tags/Retargeting/" style="font-size: 10px;">Retargeting</a> <a href="/tags/Retrospection/" style="font-size: 16.67px;">Retrospection</a> <a href="/tags/RichTextBlock/" style="font-size: 10px;">RichTextBlock</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/TextBlock/" style="font-size: 13.33px;">TextBlock</a> <a href="/tags/TextWrap/" style="font-size: 10px;">TextWrap</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/UnrealEngine/" style="font-size: 20px;">UnrealEngine</a> <a href="/tags/WSL/" style="font-size: 13.33px;">WSL</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/04/migration-from-perforce-into-git-in-windows/">Migration from Perforce into Git in Windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/04/10/conversion-from-universal-analytics-into-google-analytics-4/">Conversion from UA into GA4</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/12/promotion-for-online-lecture-of-unrealengine-01/">The promotion for online lecture of UnrealEngine</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/04/retargeting-animations-in-unreal-engine-5/">Retargeting animations in UnrealEngine 5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/">How the RichTextBlock works in UnrealEngine (part.1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 MinCheon Bae<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/2020/02/03/home-page/index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'let-us-go-abroad';
+  
+  var disqus_url = 'https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

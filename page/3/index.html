@@ -1,0 +1,2223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2P265ZP7M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R2P265ZP7M');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>LET US GO ABROAD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="a blog for game programmer">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LET US GO ABROAD">
+<meta property="og:url" content="https://baemincheon.github.io/page/3/index.html">
+<meta property="og:site_name" content="LET US GO ABROAD">
+<meta property="og:description" content="a blog for game programmer">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="MinCheon Bae">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="LET US GO ABROAD" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LET US GO ABROAD</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/2020/02/03/home-page/index.html">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://baemincheon.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-unreal-widget-coordinate-system" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/09/unreal-widget-coordinate-system/" class="article-date">
+  <time datetime="2020-02-09T10:46:17.000Z" itemprop="datePublished">2020-02-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/09/unreal-widget-coordinate-system/">Calculating widget coordinate in UnrealEngine</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>this post covers<ul>
+<li>introduction to widget coordinate system</li>
+<li>what is <code>FGeometry</code> is</li>
+<li>how to get transform of widget</li>
+<li>the meaning of each part of transform</li>
+<li>tips for manipulating widget transform</li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Unreal Engine (4.24)</li>
+<li>Visual Studio 2017</li>
+<li>Windows 10</li>
+</ul>
+</li>
+<li>reference<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/API/Runtime/SlateCore/Layout/FGeometry/index.html">https://docs.unrealengine.com/en-US/API/Runtime/SlateCore/Layout/FGeometry/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.unrealengine.com/index.php?title=UE4_Transform_Calculus_-_Part_1">https://wiki.unrealengine.com/index.php?title=UE4_Transform_Calculus_-_Part_1</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.unrealengine.com/index.php?title=UE4_Transform_Calculus_-_Part_2">https://wiki.unrealengine.com/index.php?title=UE4_Transform_Calculus_-_Part_2</a></li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="widget-coordinate-system"><a href="#widget-coordinate-system" class="headerlink" title="widget coordinate system"></a><em>widget coordinate system</em></h1><img src="/2020/02/09/unreal-widget-coordinate-system/02.jpg" class="">
+
+<p>suppose you have a game window. it might look like the picture and focus onto the popup widget</p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/03.jpg" class="">
+
+<p>in this condition, we can call the coordinate system as <code>Window Space</code></p>
+<ul>
+<li><code>Window Space</code><ul>
+<li>a space has an origin with left-top of window</li>
+<li>we can use this coordinate system for getting certain position in window</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/02/09/unreal-widget-coordinate-system/04.jpg" class="">
+
+<p>even we can imagine the coordinate system <code>Monitor Space</code></p>
+<ul>
+<li><code>Monitor Space</code><ul>
+<li>a space has an origin with left-top of monitor</li>
+<li>we can use this coordinate system for getting certain position in monitor</li>
+</ul>
+</li>
+</ul>
+<p>※ position values are approximate<br>※ these terms are not official. they are just used for explaining this post</p>
+<h1 id="FGeometry-introduction"><a href="#FGeometry-introduction" class="headerlink" title="FGeometry introduction"></a><em><code>FGeometry</code> introduction</em></h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/SlateCore/Public/Layout/Geometry.h</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Represents the position, size, and absolute position of a Widget in Slate.</span></span><br><span class="line"><span class="comment"> * The absolute location of a geometry is usually screen space or</span></span><br><span class="line"><span class="comment"> * window space depending on where the geometry originated.</span></span><br><span class="line"><span class="comment"> * Geometries are usually paired with a SWidget pointer in order</span></span><br><span class="line"><span class="comment"> * to provide information about a specific widget (see FArrangedWidget).</span></span><br><span class="line"><span class="comment"> * A Geometry&#x27;s parent is generally thought to be the Geometry of the</span></span><br><span class="line"><span class="comment"> * the corresponding parent widget.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">USTRUCT</span>(BlueprintType)</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SLATECORE_API</span> FGeometry</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>in unreal engine, <code>FGeometry</code> can help getting those transforms mentioned above</li>
+<li>the <code>FGeometry</code><ul>
+<li>contains useful data for widget especially the transform</li>
+<li>is updated whenever widget is painted or ticked</li>
+</ul>
+</li>
+<li>every variance to transform is accumulated in <code>FGeometry</code><ul>
+<li>in short, each tick, every widget has latest information for calculating transform</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/SlateCore/Private/Widgets/SWidget.h</span><br><span class="line"></span><br><span class="line"><span class="comment">//UE_DEPRECATED(4.23, &quot;GetCachedGeometry has been deprecated, use GetTickSpaceGeometry instead&quot;)</span></span><br><span class="line"><span class="function"><span class="type">const</span> FGeometry&amp; <span class="title">GetCachedGeometry</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Gets the last geometry used to Tick the widget.  This data may not exist yet if this call happens prior to</span></span><br><span class="line"><span class="comment"> * the widget having been ticked/painted, or it may be out of date, or a frame behind.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * We recommend not to use this data unless there&#x27;s no other way to solve your problem.  Normally in Slate we</span></span><br><span class="line"><span class="comment"> * try and handle these issues by making a dependent widget part of the hierarchy, as to avoid frame behind</span></span><br><span class="line"><span class="comment"> * or what are referred to as hysteresis problems, both caused by depending on geometry from the previous frame</span></span><br><span class="line"><span class="comment"> * being used to advise how to layout a dependent object the current frame.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">const</span> FGeometry&amp; <span class="title">GetTickSpaceGeometry</span><span class="params">()</span> <span class="type">const</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Gets the last geometry used to Tick the widget.  This data may not exist yet if this call happens prior to</span></span><br><span class="line"><span class="comment"> * the widget having been ticked/painted, or it may be out of date, or a frame behind.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">const</span> FGeometry&amp; <span class="title">GetPaintSpaceGeometry</span><span class="params">()</span> <span class="type">const</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/SlateCore/Private/Widgets/SWidget.<span class="function">cpp</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="type">const</span> FGeometry&amp; <span class="title">SWidget::GetCachedGeometry</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">GetTickSpaceGeometry</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">const</span> FGeometry&amp; <span class="title">SWidget::GetTickSpaceGeometry</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> PersistentState.DesktopGeometry;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">const</span> FGeometry&amp; <span class="title">SWidget::GetPaintSpaceGeometry</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> PersistentState.AllottedGeometry;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>we can get <code>FGeometry</code> object via <code>SWidget::Get*Geometry()</code> series<ul>
+<li>FYI, <code>SWidget::GetCachedGeometry()</code> has been deprecated from 4.23</li>
+</ul>
+</li>
+<li>for general purpose, you can use any getter<ul>
+<li><code>DesktopGeometry</code> and <code>AllottedGeometry</code> are not that different</li>
+<li>but unreal engine recommend you to use <code>AllottedGeometry</code> one</li>
+</ul>
+</li>
+</ul>
+<p>※ for more information, visit <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/API/Runtime/SlateCore/Layout/FGeometry/index.html">reference #1</a> + <a target="_blank" rel="noopener" href="https://wiki.unrealengine.com/index.php?title=UE4_Transform_Calculus_-_Part_1">reference #2</a> + <a target="_blank" rel="noopener" href="https://wiki.unrealengine.com/index.php?title=UE4_Transform_Calculus_-_Part_2">reference #3</a></p>
+<h1 id="FGeometry-APIs"><a href="#FGeometry-APIs" class="headerlink" title="FGeometry APIs"></a><em><code>FGeometry</code> APIs</em></h1><ul>
+<li><code>GetLocalSize()</code></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/SlateCore/Public/Layout/Geometry.h</span><br><span class="line"></span><br><span class="line"><span class="comment">/** @return the size of the geometry in local space. */</span></span><br><span class="line"><span class="function">FORCEINLINE <span class="type">const</span> FVector2D&amp; <span class="title">GetLocalSize</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> Size; &#125;</span><br></pre></td></tr></table></figure>
+<p>returns a size in local space. this size is usually determined with value set in editor</p>
+<ul>
+<li><code>GetAbsoluteSize()</code></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/SlateCore/Public/Layout/Geometry.h</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Get the absolute size of the geometry in render space.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">FORCEINLINE FVector2D <span class="title">GetAbsoluteSize</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> AccumulatedRenderTransform.<span class="built_in">TransformVector</span>(<span class="built_in">GetLocalSize</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>returns a size in outer space. this size is based on your screen, which is real size</p>
+<ul>
+<li><code>LocalToViewport()</code></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/UMG/Public/Blueprint/SlateBlueprintLibrary.h</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Translates local coordinate of the geometry provided into local viewport coordinates.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param PixelPosition The position in the game&#x27;s viewport, usable for line traces and </span></span><br><span class="line"><span class="comment"> * other uses where you need a coordinate in the space of viewport resolution units.</span></span><br><span class="line"><span class="comment"> * @param ViewportPosition The position in the space of other widgets in the viewport.  Like if you wanted</span></span><br><span class="line"><span class="comment"> * to add another widget to the viewport at the same position in viewport space as this location, this is</span></span><br><span class="line"><span class="comment"> * what you would use.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">UFUNCTION</span>(BlueprintPure, Category=<span class="string">&quot;User Interface|Geometry&quot;</span>, meta=( WorldContext=<span class="string">&quot;WorldContextObject&quot;</span> ))</span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">LocalToViewport</span><span class="params">(UObject* WorldContextObject, <span class="type">const</span> FGeometry&amp; Geometry, FVector2D LocalCoordinate, FVector2D&amp; PixelPosition, FVector2D&amp; ViewportPosition)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>returns positions in outer space and local space respectively with parameters, which are <code>PixelPosition</code> and <code>ViewportPosition</code></p>
+<ul>
+<li><code>LocalToAbsolute()</code></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/UMG/Public/Blueprint/SlateBlueprintLibrary.h</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Translates local coordinates into absolute coordinates</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Absolute coordinates could be either desktop or window space depending on what space the root of the widget hierarchy is in.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return  Absolute coordinates</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">UFUNCTION</span>(BlueprintPure, Category=<span class="string">&quot;User Interface|Geometry&quot;</span>)</span><br><span class="line"><span class="function"><span class="type">static</span> FVector2D <span class="title">LocalToAbsolute</span><span class="params">(<span class="type">const</span> FGeometry&amp; Geometry, FVector2D LocalCoordinate)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>returns a position in <code>Monitor Space</code></p>
+<h1 id="how-to-use"><a href="#how-to-use" class="headerlink" title="how to use"></a><em>how to use</em></h1><p>those APIs can be used for calculating transform. let us find out how to use them</p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/05.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/09.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/10.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/11.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/12.jpg" class="">
+
+<table>
+<thead>
+<tr>
+<th>Child</th>
+<th>Position</th>
+<th>Size</th>
+<th>Parent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Red One</td>
+<td>(100, 50)</td>
+<td>(60, 30)</td>
+<td>Canvas Panel #1</td>
+</tr>
+<tr>
+<td>Green One</td>
+<td>(0, 0)</td>
+<td>(60, 30)</td>
+<td>Canvas Panel #2</td>
+</tr>
+<tr>
+<td>Blue One</td>
+<td>NaN</td>
+<td>(60, 30)</td>
+<td>Horizontal Box</td>
+</tr>
+<tr>
+<td>White One</td>
+<td>NaN</td>
+<td>(60, 30)</td>
+<td>Horizontal Box</td>
+</tr>
+</tbody></table>
+<p>we gotta use this widget for example. the widget has children with multiple depth. each editor property of child is above</p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/06.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/07.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/08.jpg" class="">
+
+<p>※ transform property can be divided into <em>local</em> and <em>absolute</em> due to <code>DPI Scale</code><br>※ in this example(and also default value), we got <code>DPI Scale = 2/3</code> which means that every property gets multiplied with 0.666666…</p>
+<ul>
+<li><p><code>Window Space</code></p>
+<ul>
+<li>widget<ul>
+<li>size<img src="/2020/02/09/unreal-widget-coordinate-system/13.jpg" class="">
+<ul>
+<li>local &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;GetLocalSize()</code><img src="/2020/02/09/unreal-widget-coordinate-system/14.jpg" class=""></li>
+<li>absolute &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;GetAbsoluteSize()</code><br>  <em>(60, 30) * 0.666666… ≒ (39.99996…, 19.99998…)</em></li>
+</ul>
+</li>
+<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/15.jpg" class="">
+<ul>
+<li>local &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;LocalToViewport()-&gt;ViewportPosition</code><img src="/2020/02/09/unreal-widget-coordinate-system/16.jpg" class=""></li>
+<li>absolute &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;LocalToViewport()-&gt;PixelPosition</code><br>  <em>(100, 50) * 0.666666… ≒ (66.66666…, 33.33333…)</em></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>verification (with Adobe Photoshop)</p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/20.jpg" class="">
+<ul>
+<li>widget<ul>
+<li>size<img src="/2020/02/09/unreal-widget-coordinate-system/17.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/18.jpg" class=""></li>
+<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/19.jpg" class=""></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>Monitor Space</code></p>
+<ul>
+<li>window<ul>
+<li>size<ul>
+<li>local<img src="/2020/02/09/unreal-widget-coordinate-system/22.jpg" class="">
+  approximately 1920x1080</li>
+<li>absolute<img src="/2020/02/09/unreal-widget-coordinate-system/23.jpg" class="">
+  <em>(1920, 1080) * 0.666666… &#x3D; (1280, 720)</em></li>
+</ul>
+</li>
+<li>position<ul>
+<li>local<img src="/2020/02/09/unreal-widget-coordinate-system/25.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/26.jpg" class="">
+  cannot calculate. also not meaningful, unless the `DPI Scale` is the same with system's one</li>
+<li>absolute<img src="/2020/02/09/unreal-widget-coordinate-system/24.jpg" class=""></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>widget<ul>
+<li>size<br>  the same with before</li>
+<li>position<ul>
+<li>local<br>  cannot calculate. also not meaningful, unless the <code>DPI Scale</code> is the same with system’s one</li>
+<li>absolute<img src="/2020/02/09/unreal-widget-coordinate-system/21.jpg" class=""></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>verification (with Adobe Photoshop)</p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/27.jpg" class="">
+<ul>
+<li>window<ul>
+<li>size<img src="/2020/02/09/unreal-widget-coordinate-system/28.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/29.jpg" class=""></li>
+<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/30.jpg" class=""></li>
+</ul>
+</li>
+<li>widget<ul>
+<li>size<br>  the same with before</li>
+<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/31.jpg" class=""></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>Window Space</code> summary</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Widget</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Size.Local</td>
+<td>(60, 30)</td>
+</tr>
+<tr>
+<td>Size.Absolute</td>
+<td>(40, 20)</td>
+</tr>
+<tr>
+<td>Position.Local</td>
+<td>(100, 50)</td>
+</tr>
+<tr>
+<td>Position.Absolute</td>
+<td>(66, 33)</td>
+</tr>
+</tbody></table>
+<p><code>Monitor Space</code> summary</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Window</th>
+<th>Widget</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Size.Local</td>
+<td>(1920, 1080)</td>
+<td>(60, 30)</td>
+</tr>
+<tr>
+<td>Size.Absolute</td>
+<td>(1280, 720)</td>
+<td>(40, 20)</td>
+</tr>
+<tr>
+<td>Position.Local</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr>
+<td>Position.Absoulte</td>
+<td>(640, 350)</td>
+<td>(640 + 66, 350 + 33) &#x3D; (706, 383)</td>
+</tr>
+</tbody></table>
+<h1 id="widget-translation"><a href="#widget-translation" class="headerlink" title="widget translation"></a><em>widget translation</em></h1><p>suppose you have to translate a widget into certain position. how will you ?<br>first, we need to check whether the slot of widget has <code>SetPosition</code> API. if the slot does not, we cannot do widget translation<br>but we can do it, as the red image was in <code>Canvas Panel</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/UMG/Public/Components/CanvasPanelSlot.h</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Sets the position of the slot */</span></span><br><span class="line"><span class="built_in">UFUNCTION</span>(BlueprintCallable, Category=<span class="string">&quot;Layout|Canvas Slot&quot;</span>)</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SetPosition</span><span class="params">(FVector2D InPosition)</span></span>;</span><br></pre></td></tr></table></figure>
+</br>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/UMG/Public/Components/CanvasPanelSlot.<span class="function">cpp</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UCanvasPanelSlot::SetPosition</span><span class="params">(FVector2D InPosition)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    LayoutData.Offsets.Left = InPosition.X;</span><br><span class="line">    LayoutData.Offsets.Top = InPosition.Y;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ( Slot )</span><br><span class="line">    &#123;</span><br><span class="line">        Slot-&gt;<span class="built_in">Offset</span>(LayoutData.Offsets);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>the parameter <code>InPosition</code> should be local position. it is easy to think, this is the same work with changing value in editor<br>second, we need to get local position of the widget. let us use the example red image again<br>in previous example, red image had a local position of (100, 50) in <code>Window Space</code></p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/09.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/15.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/32.jpg" class="">
+
+<p>let us move the widget with offset (100, 50) again<br>third, we need to set local position with new one. in this time, <code>SetPosition(200, 100)</code> will be needed<br>and we gotta check a local position at next tick. the local position would be (200, 100) and absolute position also be twice</p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/33.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/34.jpg" class="">
+</br>
+<img src="/2020/02/09/unreal-widget-coordinate-system/35.jpg" class="">
+
+<ul>
+<li>verification (with Adobe Photoshop)<img src="/2020/02/09/unreal-widget-coordinate-system/36.jpg" class="">
+<ul>
+<li>size<br>  the same with before</li>
+<li>position<ul>
+<li>absolute position in <code>Window Space</code><img src="/2020/02/09/unreal-widget-coordinate-system/37.jpg" class=""></li>
+<li>absolute position in <code>Monitor Space</code><img src="/2020/02/09/unreal-widget-coordinate-system/38.jpg" class=""></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>wrap-up !</p>
+<ul>
+<li>getting local or absolute position is usually possible regardless of layout of widget such as widget hierarchy</li>
+<li>we can only set local position through the API of slot such as <code>Canvas Panel Slot</code></li>
+<li>you need to calculate new position (based on several conditions, especially <code>DPI Scale</code>) to translate widget into desired position</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/" data-id="clw50m6oz000takqm03ew9ui1" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-home-page" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/02/03/home-page/" class="article-date">
+  <time datetime="2020-02-02T15:27:08.000Z" itemprop="datePublished">2020-02-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/02/03/home-page/">Homepage</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Career"><a href="#Career" class="headerlink" title="Career"></a><em>Career</em></h3><table>
+<thead>
+<tr>
+<th>Period</th>
+<th>Thing</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2020.03 ~ now</td>
+<td>PUBG Studio, Live Tech Team at KRAFTON Inc.</td>
+</tr>
+<tr>
+<td>2019.07 ~ 2021.06</td>
+<td>PUBG Studio, Console Platform Contents Engineering Team at KRAFTON Inc.</td>
+</tr>
+<tr>
+<td>2014.03 ~ 2020.02</td>
+<td>Major CSE in <a target="_blank" rel="noopener" href="https://www.koreatech.ac.kr/kor/Main.do">Koreatech university</a></td>
+</tr>
+<tr>
+<td>2018.11 ~ 2019.04</td>
+<td>N2 unity client programmer</td>
+</tr>
+<tr>
+<td>2015.05 ~ 2017.02</td>
+<td>Service as <em>Signal Corps</em> in Republic of Korean Army</td>
+</tr>
+</tbody></table>
+<h3 id="Contacts"><a href="#Contacts" class="headerlink" title="Contacts"></a><em>Contacts</em></h3><table>
+<thead>
+<tr>
+<th>Media</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Github</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/BaeMinCheon">https://github.com/BaeMinCheon</a></td>
+</tr>
+<tr>
+<td>Facebook</td>
+<td><a target="_blank" rel="noopener" href="https://www.facebook.com/Thanyang/">https://www.facebook.com/Thanyang/</a></td>
+</tr>
+<tr>
+<td>Email</td>
+<td><a href="mailto:&#x62;&#97;&#101;&#x6d;&#x69;&#110;&#x63;&#104;&#101;&#111;&#110;&#64;&#x67;&#109;&#97;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#x6d;">&#x62;&#97;&#101;&#x6d;&#x69;&#110;&#x63;&#104;&#101;&#111;&#110;&#64;&#x67;&#109;&#97;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#x6d;</a></td>
+</tr>
+<tr>
+<td>Twitter</td>
+<td><a target="_blank" rel="noopener" href="https://twitter.com/Ross_Public">https://twitter.com/Ross_Public</a>_</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2020/02/03/home-page/" data-id="clw50m6ov0005akqm5if42uhm" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2020/02/03/home-page/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Home/" rel="tag">Home</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-unreal-blueprint-practical-use" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/28/unreal-blueprint-practical-use/" class="article-date">
+  <time datetime="2020-01-28T14:59:47.000Z" itemprop="datePublished">2020-01-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/28/unreal-blueprint-practical-use/">Practical usage of BlueprintImplementableEvent in UnrealEngine</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>this post covers<ul>
+<li>limitation of <code>Hot Reload</code></li>
+<li>the pros and cons of blueprint in Unreal Engine</li>
+<li>what is <code>BlueprintImplementableEvent</code> specifier</li>
+<li>how the <code>BlueprintImplementableEvent</code> can be used</li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Unreal Engine (4.24)</li>
+<li>Visual Studio 2017</li>
+<li>Windows 10</li>
+</ul>
+</li>
+<li>reference<ol>
+<li><a target="_blank" rel="noopener" href="https://wiki.unrealengine.com/Hot_Reload">https://wiki.unrealengine.com/Hot_Reload</a></li>
+<li><a target="_blank" rel="noopener" href="https://wiki.unrealengine.com/Blueprint_FAQ_and_Tips">https://wiki.unrealengine.com/Blueprint_FAQ_and_Tips</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Functions/Specifiers/index.html">https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Functions/Specifiers/index.html</a></li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="two-edged-Hot-Reload"><a href="#two-edged-Hot-Reload" class="headerlink" title="two-edged Hot Reload"></a>two-edged <code>Hot Reload</code></h3><ul>
+<li>almost everyone uses this fascinating feature, which accelerates one’s development process</li>
+<li>this feature can make you skip Editor loading, but cannot make you skip CPP compilation<ul>
+<li>in game development using Unreal Engine, most of time is still consumed in CPP compilation</li>
+</ul>
+</li>
+<li>even you may miss some of changes or encounter unexpected bugs<ul>
+<li>this means, <code>Hot Reload</code> feature is not the stable one</li>
+</ul>
+</li>
+</ul>
+<p>※ for more information, see the <a target="_blank" rel="noopener" href="https://wiki.unrealengine.com/Hot_Reload">reference #1</a><br>※ one of the bugs: <a target="_blank" rel="noopener" href="https://forums.unrealengine.com/unreal-engine/feedback-for-epic/37624-hot-reload-for-components-is-a-mess-with-the-hotreload-name-bug-at-the-moment">https://forums.unrealengine.com/unreal-engine/feedback-for-epic/37624-hot-reload-for-components-is-a-mess-with-the-hotreload-name-bug-at-the-moment</a></p>
+<ul>
+<li>then, is there another way to reduce compilation time ?<ul>
+<li>while ensuring not to occur a malfunction ?</li>
+</ul>
+</li>
+<li>now it is time to use blueprint more practically</li>
+</ul>
+<h3 id="blueprint-versus-CPP"><a href="#blueprint-versus-CPP" class="headerlink" title="blueprint versus CPP"></a>blueprint versus CPP</h3><ul>
+<li>as we know, blueprint is useful enough to work with personal project<ul>
+<li>because there are no merge conflict and no number of context switchings in personal project</li>
+</ul>
+</li>
+<li>blueprint usually bullies developers in group project<ul>
+<li>because blueprint asset file is binary, there is no good way to merge them or see them without Editor</li>
+</ul>
+</li>
+<li>but blueprint instead has positive aspects in other sides<ul>
+<li>let us summary the pros and cons of blueprint</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Blueprint</th>
+<th>CPP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Compilation</td>
+<td>absolutely fast (do not need to compile CPP)</td>
+<td>hell it is so slow (if with Engine build, too ? better kill me)</td>
+</tr>
+<tr>
+<td>View &amp; Diff</td>
+<td>must open Unreal Editor (even some changes cannot be shown)</td>
+<td>can be opened or diffed with common VCS such as git</td>
+</tr>
+<tr>
+<td>Merge</td>
+<td>almost impossible (even need to re-work for rebase)</td>
+<td>not that different from merging an ordinary text file</td>
+</tr>
+<tr>
+<td>Exception Handling</td>
+<td>warning in best and shutting down Game in worst</td>
+<td>unless handling, everyting shuts down (Editor, Game…etc)</td>
+</tr>
+<tr>
+<td>Debugging</td>
+<td>can visit all nodes and variables</td>
+<td>some of codes can be optimized</td>
+</tr>
+</tbody></table>
+<p>※ for more information about <em>Compilation</em> item, see the <a target="_blank" rel="noopener" href="https://wiki.unrealengine.com/Blueprint_FAQ_and_Tips">reference #2</a></p>
+<ul>
+<li>so, as you saw the table, I want to say that “prototyping with blueprint is quite useful”</li>
+<li>in this post, I will show you one of tips to use blueprint efficiently<ul>
+<li>it may be faster than development using <code>Hot Reload</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="BlueprintImplementableEvent"><a href="#BlueprintImplementableEvent" class="headerlink" title="BlueprintImplementableEvent"></a><code>BlueprintImplementableEvent</code></h3><ul>
+<li>blueprint is efficient when it used only for prototyping<ul>
+<li>if you run your project with features implemented with blueprint, there would be much cost:<ul>
+<li>view or diff blueprint asset → time to open Unreal Editor</li>
+<li>merge blueprint asset → time to open Unreal Editor &amp; re-work the changes<br>  (+ effort to remember what were the changes)</li>
+<li>…etc</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>the <code>UFUNCTION</code> specifier <code>BlueprintImplementableEvent</code><ul>
+<li>is fit in this purpose</li>
+<li>will help your prototyping with unit of function</li>
+</ul>
+</li>
+</ul>
+<p>※ for more information about <em>BlueprintImplementableEvent</em> specifier, see the <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Functions/Specifiers/index.html">reference #3</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/// This function is designed to be overridden by a blueprint.  Do not provide a body for this function;</span><br><span class="line">/// the autogenerated code will include a thunk that calls ProcessEvent to execute the overridden body.</span><br><span class="line">BlueprintImplementableEvent</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>at <code>ObjectMacro.h</code> we can find the enum of <code>BlueprintImplementableEvent</code> and its comment</li>
+</ul>
+<img src="/2020/01/28/unreal-blueprint-practical-use/01.jpg" class="">
+
+<ul>
+<li>the access specifier of function using <code>BlueprintImplementableEvent</code> must not be <code>private</code><ul>
+<li>which means, it must be <code>public</code> or <code>protected</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2020/01/28/unreal-blueprint-practical-use/02.jpg" class="">
+
+<ul>
+<li>you cannot implement the body of function in cpp<ul>
+<li>you must implement the body of function in blueprint</li>
+<li>as UBT(unreal build tool) makes an implementation of the <code>BlueprintImplementableEvent</code> function, your cpp implementation causes error</li>
+</ul>
+</li>
+</ul>
+<h3 id="example"><a href="#example" class="headerlink" title="example"></a>example</h3><ul>
+<li>suppose you want to make a simple feature<ul>
+<li>when the game starts, a widget is shown at the center of screen</li>
+<li>the widget is kind of textblock, which contains a text like “Hello World !”</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/01/28/unreal-blueprint-practical-use/03.jpg" class="">
+
+<ul>
+<li>let us call the function in <code>BeginPlay()</code><ul>
+<li>when the player controller is created, the <code>NotifyTestFunc()</code> will be executed</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/01/28/unreal-blueprint-practical-use/04.jpg" class="">
+</br>
+<img src="/2020/01/28/unreal-blueprint-practical-use/05.jpg" class="">
+
+<ul>
+<li>add a variable for widget<ul>
+<li>create blueprint class of the cpp player controller</li>
+<li>it can be assigned at the inspector of <code>Class Defaults</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2020/01/28/unreal-blueprint-practical-use/06.jpg" class="">
+
+<ul>
+<li>you can implement the function in <code>Event Graph</code><ul>
+<li>let us just show a screen debug message</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/01/28/unreal-blueprint-practical-use/07.jpg" class="">
+
+<ul>
+<li>prepare game mode<ul>
+<li>set the game mode, character and player controller as ours</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/01/28/unreal-blueprint-practical-use/08.jpg" class="">
+
+<ul>
+<li>screen debug message is shown well</li>
+<li>now let us show the widget</li>
+</ul>
+<img src="/2020/01/28/unreal-blueprint-practical-use/09.jpg" class="">
+
+<ul>
+<li>create a widget and add it to viewport</li>
+</ul>
+<img src="/2020/01/28/unreal-blueprint-practical-use/08.jpg" class="">
+
+<ul>
+<li>what happened ? I cannot see any widget</li>
+<li>let us see the <code>Message Log</code></li>
+</ul>
+<img src="/2020/01/28/unreal-blueprint-practical-use/10.jpg" class="">
+
+<ul>
+<li>the log says, there is access to <code>None</code> at <code>Add to Viewport</code> node<ul>
+<li>add breakpoint at the node and find why</li>
+</ul>
+</li>
+<li>absolutely this could be a crash in cpp code<ul>
+<li>with blueprint, we can keep going unless shuting down the editor</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/01/28/unreal-blueprint-practical-use/11.jpg" class="">
+</br>
+<img src="/2020/01/28/unreal-blueprint-practical-use/12.jpg" class="">
+
+<ul>
+<li>oh, the <code>Target</code> is <code>None</code><ul>
+<li>that is why the message log is created</li>
+</ul>
+</li>
+<li>as we did not assign the class of widget, <code>Create User Widget</code> node returned <code>None</code></li>
+<li>let us create a widget and assign it</li>
+</ul>
+<img src="/2020/01/28/unreal-blueprint-practical-use/13.jpg" class="">
+</br>
+<img src="/2020/01/28/unreal-blueprint-practical-use/14.jpg" class="">
+</br>
+<img src="/2020/01/28/unreal-blueprint-practical-use/15.jpg" class="">
+
+<ul>
+<li>now it works !<ul>
+<li>almost work is written with blueprint and there is only one cpp compilation</li>
+<li>this development process can improve your productivity</li>
+</ul>
+</li>
+<li>the rest of work is converting the blueprint things into cpp code</li>
+</ul>
+<h3 id="wrap-up"><a href="#wrap-up" class="headerlink" title="wrap-up"></a>wrap-up</h3><ul>
+<li><code>Hot Reload</code> is fast enough to develop personal project<ul>
+<li>if you do not take much time to compile cpp, there is no significant benefits to using blueprint</li>
+<li>time to compile cpp can be similar much than blueprint one</li>
+</ul>
+</li>
+<li>blueprint using <code>BlueprintImplementableEvent</code> is useful<ul>
+<li>if it takes more than 5~10 minutes whenever cpp compiles, you should consider blueprint</li>
+<li>but, you need to convert blueprint into cpp when it completes</li>
+</ul>
+</li>
+<li>as a result, the workflow I recommend you is:<ul>
+<li>design a feature as one function with <code>BlueprintImplementableEvent</code></li>
+<li>implement the function with blueprint</li>
+<li>remove blueprint implementation &amp; implement the function with cpp</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2020/01/28/unreal-blueprint-practical-use/" data-id="clw50m6ox000eakqmgdh48c41" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2020/01/28/unreal-blueprint-practical-use/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-unreal-fname-anatomy" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/17/unreal-fname-anatomy/" class="article-date">
+  <time datetime="2020-01-16T15:09:22.000Z" itemprop="datePublished">2020-01-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/17/unreal-fname-anatomy/">UnrealEngine FName anatomy</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>this post covers<ul>
+<li>what is <code>FName</code> in Unreal Engine</li>
+<li>how <code>FName</code> works</li>
+</ul>
+</li>
+<li>environment<ul>
+<li><em>Custom</em> Unreal Engine (based on 4.24)</li>
+<li>Visual Studio 2017</li>
+<li>Windows 10</li>
+</ul>
+</li>
+<li>reference<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/StringHandling/FName/index.html">https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/StringHandling/FName/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/API/Runtime/Core/UObject/FScriptName/index.html">https://docs.unrealengine.com/en-US/API/Runtime/Core/UObject/FScriptName/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://dq8iqaixvew1d.cloudfront.net/en-US/Programming/Assets/Registry/index.html?lang=zh-CN">https://dq8iqaixvew1d.cloudfront.net/en-US/Programming/Assets/Registry/index.html?lang=zh-CN</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="what-FName-is"><a href="#what-FName-is" class="headerlink" title="what FName is"></a>what <code>FName</code> is</h3><ul>
+<li>one of the 3 main string types in Unreal Engine, which is used for indicating individual object in game</li>
+<li>as its purpose, <code>FName</code> do not have features for string manipulation such as trim, reverse…etc.</li>
+<li>it would be better to consider <code>FName</code> is a literal index rather than a digital index</li>
+</ul>
+<h3 id="case-insensitive"><a href="#case-insensitive" class="headerlink" title="case-insensitive"></a>case-insensitive</h3><ul>
+<li>you may have seen the expression, “FNames are case-insensitive”, which means you cannot make more than one <code>FName</code> with the same alphabet arrangement</li>
+<li>for example, if you already have an object its name is “Sheri”, you cannot make an object its name is “sheri”. let us see below:</li>
+</ul>
+<img src="/2020/01/17/unreal-fname-anatomy/01.jpg" class="">
+
+<ul>
+<li>why this happens ? find it out in the code</li>
+</ul>
+<img src="/2020/01/17/unreal-fname-anatomy/02.jpg" class="">
+
+<ul>
+<li>we can find the phrase at the <code>ContentBrowserUtils::IsValidObjectPathForCrate()</code><ul>
+<li>the function validates whether new object can be created in certain directory</li>
+</ul>
+</li>
+<li>as the comment says, the phrase is shown when there is already an object with the same path<ul>
+<li>in other words, you can create an object with the same name in different path</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/01/17/unreal-fname-anatomy/03.jpg" class="">
+
+<ul>
+<li>yes, not only object, folder is also affected with the rule</li>
+</ul>
+<h3 id="FName-as-a-hash-value"><a href="#FName-as-a-hash-value" class="headerlink" title="FName as a hash value"></a><code>FName</code> as a hash value</h3><ul>
+<li>now, you should have a question:<ul>
+<li><em>“how does Unreal Engine save the object path ?”</em></li>
+</ul>
+</li>
+<li>we can assume that may be not literal method, rather hash method<ul>
+<li>because literal method would tell us that upper case differs from lower case</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/01/17/unreal-fname-anatomy/04.jpg" class="">
+
+<ul>
+<li>digging one step, we can find something strange</li>
+<li>as we saw, the warning pharse is shown when there is already an object with the same path<ul>
+<li>we can see returning some object ( that is not <code>nullptr</code> ) in picture above</li>
+</ul>
+</li>
+<li><code>ObjectPath</code> does not have the identical indices<ul>
+<li>especially, <code>ComparisonIndex</code> and <code>DisplayIndex</code></li>
+<li>strangefully, <code>DisplayIndex</code> indicates the intended string, other does not</li>
+</ul>
+</li>
+</ul>
+<p>※ more information about the indices in #2 reference</p>
+<img src="/2020/01/17/unreal-fname-anatomy/05.jpg" class="">
+</br>
+<img src="/2020/01/17/unreal-fname-anatomy/06.jpg" class="">
+
+<ul>
+<li>digging one step more, <code>ComparisonIndex</code> is set by one of <code>FName</code> that is created earlier<ul>
+<li>it may be confusing, let us summary as table</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>String</th>
+<th>ComparisonIndex</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Sheri</code> (AssetName)</td>
+<td>884751</td>
+</tr>
+<tr>
+<td><code>/Game/ThirdPersonCPP/Blueprints/Sheri.Sheri</code> (ObjectPath)</td>
+<td>884754</td>
+</tr>
+<tr>
+<td><code>sheri</code> (AssetName)</td>
+<td>886628</td>
+</tr>
+<tr>
+<td><code>/Game/ThirdPersonCPP/Blueprints/sheri.sheri</code> (ObjectPath)</td>
+<td>886631</td>
+</tr>
+</tbody></table>
+<p>※ the value of index is not consistent. it can have a different value each time<br>※ more information about the names and pathes in #3 reference</p>
+<h3 id="lower-case-string-compare"><a href="#lower-case-string-compare" class="headerlink" title="lower-case string compare"></a>lower-case string compare</h3><ul>
+<li>digging one step more !!<ul>
+<li>why did later one set by earlier one ?</li>
+</ul>
+</li>
+<li>let us look at <code>StaticFindObjectFastInternalThreadSafe()</code><ul>
+<li>the function finds and returns an certain object(or package) depending on parameters</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/01/17/unreal-fname-anatomy/07.jpg" class="">
+
+<ul>
+<li>at line #588, there is an <code>==</code> operation between two <code>FName</code>s<ul>
+<li>if they are the same, the expression must become true</li>
+</ul>
+</li>
+<li>then, we got the one last destination <code>FName::operator==()</code><ul>
+<li>actually, we should go to <code>StrnicmpImpl()</code> due to the callstack below</li>
+<li><code>FName::operator==() → FNameHelper::EqualString() → StringAndNumberEqualsString() → FPlatformString::Strnicmp() → StrnicmpImpl()</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2020/01/17/unreal-fname-anatomy/08.jpg" class="">
+
+<ul>
+<li>in this function, each character of each string is compared in lower case</li>
+<li>now we understand why <code>Sheri</code> and <code>sheri</code> are identical in using <code>FName</code></li>
+</ul>
+<h3 id="wrap-up"><a href="#wrap-up" class="headerlink" title="wrap-up"></a>wrap-up</h3><ul>
+<li><code>FName</code> is not identified with case<ul>
+<li>we could see it with <code>Sheri</code> and <code>sheri</code> example</li>
+<li>every <code>FName</code> is compared in lower case</li>
+</ul>
+</li>
+<li><code>FName</code> is used with index format<ul>
+<li>for effectiveness, real string is cached and is accessed with index</li>
+<li>there are two indices, <code>ComparisonIndex</code> and <code>DisplayIndex</code></li>
+</ul>
+</li>
+<li><code>FName</code> duplication test is relying on path name<ul>
+<li>you can have two objects such as <code>/Game/Sheri/Umbrella</code> and <code>/Game/Donita/Umbrella</code></li>
+<li>this means that the same <code>AssetName</code> can exist multiple times in one project</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2020/01/17/unreal-fname-anatomy/" data-id="clw50m6oy000jakqm6tsuahtg" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2020/01/17/unreal-fname-anatomy/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-retrospection-2019" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/12/24/retrospection-2019/" class="article-date">
+  <time datetime="2019-12-24T13:34:51.000Z" itemprop="datePublished">2019-12-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/24/retrospection-2019/">Retrospection 2019</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="overview"><a href="#overview" class="headerlink" title="overview"></a><em>overview</em></h1><img src="/2019/12/24/retrospection-2019/12.jpg" class="">
+
+<p>it is first time to write retrospection as a post. with starting a job for game programming and wraping up my university activity, I thought it is good time to write it. regardless of anyone, every new year is the hardest one. yeap, this year was so hard and eventful to me. so you can see me grumble in this post many times. anyway, that would be a retrospection too.</p>
+<p>timeline is below:</p>
+<ul>
+<li>being a senior year in university</li>
+<li>having a role of leader in HPC Lab</li>
+<li>working at a start-up company as part-time job</li>
+<li>moving in Seoul for work</li>
+<li>getting a full-time job at PUBG</li>
+</ul>
+<hr>
+<h1 id="graduation"><a href="#graduation" class="headerlink" title="graduation"></a><em>graduation</em></h1><p>being a senior year, as same as usual university, I had to do several tasks for graduation. some of them are easy, but others are not. that below is why:</p>
+<ul>
+<li><p><code>internship as credit (-&gt; internship issue)</code><br>in my university, student must have an internship for essential credit. in other words, students did not have internship cannot graduate, even they are hired with regular job. making matters worse, only an internship satisfying terms of agreement made by the university is approved to get the essential credit. otherwise, the student cannot get the essential credit.</p>
+</li>
+<li><p><code>graduation project</code><br>like the internship issue, student must complete an project for essential credit. the scale of project is usually forced to be big as possible as by professors, which have right to pass project. that means, you cannot throw away the graduation project with the mind “I do not care that one bit of shit.”.</p>
+</li>
+</ul>
+<p>first of all, the two issues have been solved…but there were so much pain. X( …especially the internship issue tortured me for 1~2 months.</p>
+<img src="/2019/12/24/retrospection-2019/01.jpg" class="">
+
+<p>the agreement mentioned above should be reviewed by company’s legal team and personnel team. in worst case, they could reject the agreement. even they accept the agreement, university could reject your request of essential credit for the reason the internship period is not fit in some schedule they planned. crap ! though students should take care of everything unnecessary, university insists this system help the students get a job. actually, I could not get the essential credit with my first internship for complicated reasons. I do not want to tell about it more…just disgusting. university made me fight to company and themselves. early 2019 was that time mentally weak.</p>
+<img src="/2019/12/24/retrospection-2019/02.jpg" class="">
+
+<p>graduation project, this one bullied me too. I could not choose my team member by myself, and the members to go with were very passive. that is, they did not proceed the project on themselves. I had to take care of both development and team management. although I had many tasks to do, the project has been made most by me. anyway, on developing the project, I found this funny moment: <a target="_blank" rel="noopener" href="https://twitter.com/Thanang/status/1171038097024307200?s=20">https://twitter.com/Thanang/status/1171038097024307200?s=20</a> my graduation project was about automation of making game agent. mainly used Tensorflow and BizHawk, Tensorflow as machine learning framework and BizHawk as reinforcement learning environment. you can visit the repository in my github: <a target="_blank" rel="noopener" href="https://github.com/BaeMinCheon/BizHawk">https://github.com/BaeMinCheon/BizHawk</a> and <a target="_blank" rel="noopener" href="https://github.com/BaeMinCheon/street-fighter-agent">https://github.com/BaeMinCheon/street-fighter-agent</a></p>
+<hr>
+<h1 id="lectures"><a href="#lectures" class="headerlink" title="lectures"></a><em>lectures</em></h1><img src="/2019/12/24/retrospection-2019/03.jpg" class="">
+
+<p>took various lectures, too. specially, lecture multicore-programming (-&gt; MP) and virtual-reality-programming (-&gt; VRP) are remained in my memory. in MP, I learned CUDA and could improve it with several projects. these experiences gave me insight of multi-thread things. and it helped me when the multi-thread subject were appeared at job interview in future. I learned VR and AR with intuitive explanation in VRP. thanks to the professor, I could get more understanding on Unity Engine and its usage. this helped me after when I use Unity Engine at start-up part-time job. the project repo is: <a target="_blank" rel="noopener" href="https://github.com/beat-kids">https://github.com/beat-kids</a></p>
+<hr>
+<h1 id="laboratory-activities"><a href="#laboratory-activities" class="headerlink" title="laboratory activities"></a><em>laboratory activities</em></h1><img src="/2019/12/24/retrospection-2019/04.jpg" class="">
+
+<p>in previous year, 2018, I entered laboratory specialized in high performance computing (-&gt; HPC) on my foot. mid 2018, I started a role of undergraduate researcher in the HPC lab. from the time, studying machine learning and multi-core programming, I got much experience and intense feedback from professor. though this activity was light than a graduate course, I could learn many things useful: how to research, how to present and how to write English. feeling being respected, I could do my best on HPC tasks and get more skills.</p>
+<img src="/2019/12/24/retrospection-2019/05.jpg" class="">
+
+<p>time goes on, senior researchers graduated by ones and twos, leader position came to me. not having any reason to refuse it, I accepted the position. and I started to fix almost everything in HPC. especially laboratory workflow and infra. I recommended slack as the messenger and trello as the issue tracker (for kanban-board). taught members how to use git and gitlab. due to these tries, we could work together more efficiently. setting up small infra was enough for me to apply computer network techs. installing APs and setting internal route protocol, turning and using server remotely…etc. every work was associated to network theory and became a good review.</p>
+<hr>
+<h1 id="start-up-amp-job-hunting"><a href="#start-up-amp-job-hunting" class="headerlink" title="start-up &amp; job hunting"></a><em>start-up &amp; job hunting</em></h1><p>kept to follow those who are in game development field on twitter, I could get various information about game development things including job post. fortunately, this activity led me to get a part-time job as Unity game programming. was a beginner in Unity game programming at that time, I was hired to do small potion of works. but it was the first time that I made money with programming, I did my best on almost things and also tried to learn skills that will be required in future. the motive might be come from self-esteem and a will to give a good impression.</p>
+<img src="/2019/12/24/retrospection-2019/06.jpg" class="">
+
+<p>at there, I developed two games and they were both for mobile platform. so I had a chance to study for mobile platform especially Android. despite Unity’s multi-platform support, there is sometimes extra work for platform specific issues. stuck in Android Studio, I suffered so many times. one of the games was about flight fight game. as only my experience about flight in game was battlefield series, I had to play some flight games such as Ace Combat series. in addition, aircraft physics was not that easy. though I thought that I am fit in this kind of job, it was not. applying theory into code is not the same level with just knowing theory. everyday I struggled for expecting what happens on aircraft physics code changes.</p>
+<img src="/2019/12/24/retrospection-2019/07.jpg" class="">
+
+<p>after end of the part-time job, as planned, I sought for job of game programming. applied to several companies: Pearl Abyss, NC Soft, Bluehole, PUBG…etc. target position was primarily the game client programmer. continued job hunting, I could join interview many times. some of them were bad enough to fail the interview, some of them were good enough to pass the interview. by the time I engaged the 5th interview in my life, taking an interview could not bother me to relax. absolutely practice makes everything fine.</p>
+<img src="/2019/12/24/retrospection-2019/08.jpg" class="">
+
+<p>topics on interview were similar regardless of what company is. in other words, what they want from fresh recruit like me. three main topics are below:</p>
+<ul>
+<li>Object Oriented Programming theory (based on cpp)<ul>
+<li>why is it needed ?</li>
+<li>what is virtual function and how it works ?</li>
+<li>show me explanation of function overriding<br>  …etc</li>
+</ul>
+</li>
+<li>Computer Science &#x2F; Engineering theory (related to game)<ul>
+<li>what is multi-thread and race condition ?</li>
+<li>tell me difference between mutex and semaphore</li>
+<li>why a cube is used for view projection in graphics pipeline ?<br>  …etc</li>
+</ul>
+</li>
+<li>Project Experience (as a team)<ul>
+<li>what did you think learn from the project experience ?</li>
+<li>why did you do this (on the code &#x2F; on the feature …etc) ?</li>
+<li>talk about the most critical situation in the project and how did you overcome ?<br>  …etc</li>
+</ul>
+</li>
+<li><del>Work Experience</del>  😂  (but it is appealing one too…)</li>
+</ul>
+<hr>
+<h1 id="uneasy-yearly-rent"><a href="#uneasy-yearly-rent" class="headerlink" title="uneasy yearly rent"></a><em>uneasy yearly rent</em></h1><p>after the hectic job hunting, I got informed of acceptances from each company. had to choose one among companies, finally I decided to join the PUBG. as Korean office of PUBG is located in Seoul, that was the time to move into Seoul ! I lived in Chungcheong-Namdo for almost whole life. born in there, graduated schools in there, even attended university in there ! these events made me wish to get out of this little world. however, the move was not that easy going.</p>
+<p>everyone recommends you yearly rent (“전세”) to save the money. ummm, that is right answer. but you may be suffered with horrible documents and tasks for “전세” loan. a job beginner like me cannot apply the loan from bank due to lack of career. even the loan from government asks you for strict conditions. while on dealing with these difficulties, you might give up and settle to monthly rent (“월세”).</p>
+<p>in my case, PUBG provided a fund for renting house. so I could manage to rent a small room near the office as “전세”. unless it, I also had to settle to “월세”. keep in mind that looking for a room with “전세” using any loan is a really hard work needed patience. if you have no time and no patience, just starting as “월세” is not that bad option. particularly for job beginner like me.</p>
+<hr>
+<h1 id="PUBG-life"><a href="#PUBG-life" class="headerlink" title="PUBG life"></a><em>PUBG life</em></h1><img src="/2019/12/24/retrospection-2019/09.jpg" class="">
+
+<p>it has been 4 months after I started a full-time job in PUBG. there were so many happenings within that short period. I cannot tell the whole stories now, but someday I will tell some of them. just now, I do contents programming for console platform PUBG. XBox One and Play Station 4 are my playground and workplace at the same time. these days I am quite good at handling game-pad, differently before. also been familiar to low-spec HW causing delay of work. ;D</p>
+<img src="/2019/12/24/retrospection-2019/11.jpg" class="">
+
+<p>as I expected, many employees in game company are like nerd. many of them love to play games or develop games. they are knowledgeable to games than the average people. just…well…I wanted to meet these people who have these pure mind that makes games with a hope to make users be fun. the truth I can work with them made me excited. it lasted quite long time. and also game programmers are usually interested in physics things. now I am happy that have someone to talk about these subjects.</p>
+<img src="/2019/12/24/retrospection-2019/10.jpg" class="">
+
+<p>task is not easy, but enough to challenge. almost everyday I learn something new. there are chances to conversate with foreign programmer. now I know they are usual human beings, too. their thinking is not that different from us (korean programmer), and they can either make basic faults. as a result, I met someone or something new many times, and tried to understand he&#x2F;she&#x2F;it. so…during the PUBG life in 2019, I think I could have developed my view to the world.</p>
+<hr>
+<h1 id="wrap-up"><a href="#wrap-up" class="headerlink" title="wrap up"></a><em>wrap up</em></h1><img src="/2019/12/24/retrospection-2019/13.jpg" class="">
+
+<p>this year 2019, was the hardest one to me. I had to deal with so many tasks in simultaneously such as university works, internship, job hunting, personal development project, even my job. I only wanted to focus on developing something, however, there was always something else in society life. anyway, it was successful to harvest my effort for 4 years in university. I also achieved my target: be a FPS game developer. cheers. 🍺</p>
+<p>next year, I might be able to do these tasks below:</p>
+<ul>
+<li>university graduation and degree acquisition</li>
+<li>practical and useful project about Unreal Engine</li>
+<li>hanging out with more people</li>
+<li>getting pretty good evaluation on peer review at work</li>
+<li>helping the new comer to game development industry</li>
+</ul>
+<p>EOF.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2019/12/24/retrospection-2019/" data-id="clw50m6ou0003akqmdoo81gui" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2019/12/24/retrospection-2019/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-shared-folder-in-wsl" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/19/shared-folder-in-wsl/" class="article-date">
+  <time datetime="2019-08-18T15:57:29.000Z" itemprop="datePublished">2019-08-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/19/shared-folder-in-wsl/">Shared folder in WSL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>this post covers<ul>
+<li>how to share a folder in wsl</li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Windows 10 &#x2F; Home</li>
+<li>WSL &#x2F; Ubuntu 18.04 LTS</li>
+<li>Visual Studio Code</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="pre-task"><a href="#pre-task" class="headerlink" title="pre-task"></a>pre-task</h3><ul>
+<li>install WSL in your Windows 10<ul>
+<li>open the <code>Microsoft Store</code></li>
+<li>search for <code>Ubuntu</code></li>
+<li>click <code>Ubuntu 18.04 LTS</code></li>
+<li>get and install it</li>
+</ul>
+</li>
+<li>prepare the environment<ul>
+<li>initialize your wsl</li>
+</ul>
+</li>
+</ul>
+<h3 id="make-link"><a href="#make-link" class="headerlink" title="make-link"></a>make-link</h3><img src="/2019/08/19/shared-folder-in-wsl/01.png" class="">
+<ul>
+<li>make a folder in some directory on Windows<ul>
+<li>ex) <code>D:\Code\LinuxShare</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/19/shared-folder-in-wsl/02.png" class="">
+<ul>
+<li>make a link in some directory on WSL<ul>
+<li>format) <code>ln -s /mnt/[partition]/[folder...] [link-name]</code></li>
+<li>ex) <code>ln -s /mnt/d/Code/LinuxShare share-with-windows</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="make-file"><a href="#make-file" class="headerlink" title="make-file"></a>make-file</h3><img src="/2019/08/19/shared-folder-in-wsl/03.png" class="">
+<ul>
+<li>make a text file on Windows side<ul>
+<li>ex) <code>D:\Code\LinuxShare\test.txt</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/19/shared-folder-in-wsl/04.png" class="">
+<ul>
+<li>check out the text file on WSL side<ul>
+<li>ex) <code>~/share-with-windows/test.txt</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/19/shared-folder-in-wsl/05.png" class="">
+<img src="/2019/08/19/shared-folder-in-wsl/06.png" class="">
+<ul>
+<li>edit the text file and save it on WSL side<ul>
+<li>ex) <code>hello WSL !</code> → <code>hello Windows !</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/19/shared-folder-in-wsl/07.png" class="">
+<ul>
+<li>check out the text file on Windows side</li>
+</ul>
+<h3 id="typing-and-compiling"><a href="#typing-and-compiling" class="headerlink" title="typing-and-compiling"></a>typing-and-compiling</h3><img src="/2019/08/19/shared-folder-in-wsl/08.png" class="">
+<img src="/2019/08/19/shared-folder-in-wsl/09.png" class="">
+<ul>
+<li>make a c file and edit it on Windows side<ul>
+<li>ex) <code>D:\Code\LinuxShare\test.c</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/19/shared-folder-in-wsl/10.png" class="">
+<ul>
+<li>compile the c file and execute it<ul>
+<li>ex) <code>~/share-with-windows/test.c</code></li>
+</ul>
+</li>
+<li>you can now type texts on Windows and compile that on WSL</li>
+</ul>
+<img src="/2019/08/19/shared-folder-in-wsl/11.png" class="">
+<ul>
+<li>also output file, <code>a.out</code> will be seen on Windows side</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2019/08/19/shared-folder-in-wsl/" data-id="clw50m6ou0004akqm5tl02tcm" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2019/08/19/shared-folder-in-wsl/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-unreal-linux-server-build" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/19/unreal-linux-server-build/" class="article-date">
+  <time datetime="2019-08-18T15:46:45.000Z" itemprop="datePublished">2019-08-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/19/unreal-linux-server-build/">UnrealEngine linux server build</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>recommend to read first<ul>
+<li><a href="https://baemincheon.github.io/2019/08/06/what-is-unreal-build-target/">what-is-unreal-build-target</a></li>
+<li><a href="https://baemincheon.github.io/2019/08/11/custom-unreal-engine-build/">custom-unreal-engine-build</a></li>
+<li><a href="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/">differences-of-unreal-build-targets</a></li>
+</ul>
+</li>
+<li>this post covers<ul>
+<li>how to setup cross compile environment</li>
+<li>how to build linux server</li>
+<li>how to use client and server in cross platform</li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Windows &#x2F; 10</li>
+<li>Visual Studio IDE &#x2F; 2017 Community</li>
+<li>Unreal Engine &#x2F; 4.21 Built From Source Code</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="overview"><a href="#overview" class="headerlink" title="overview"></a>overview</h1><ul>
+<li>if you want to seperate the game into client and server<ul>
+<li>mostly, the clients would be executed on windows</li>
+<li>as the server is up to you, you can select more efficient option<ul>
+<li>in aws, linux server instead of windows to save cost</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>so it is needed to build linux server, but you can use cross compilation<ul>
+<li>this makes you can build linux server on windows</li>
+</ul>
+</li>
+<li>in this post, I suppose you have already an unreal engine built from source code and test project<ul>
+<li>especially, I used 4.21 version</li>
+</ul>
+</li>
+</ul>
+<h1 id="setup"><a href="#setup" class="headerlink" title="setup"></a>setup</h1><ul>
+<li>download the proper toolchain from <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Platforms/Linux/GettingStarted/index.html">this document</a><ul>
+<li>in my case, <code>clang-6.0.1-based</code> toolchain is needed</li>
+</ul>
+</li>
+<li>execute the toolchain installer<ul>
+<li>you do not have to do extra works when your engine version is equal to or over 4.14</li>
+<li>if not, reference the document mentioned for the details</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/19/unreal-linux-server-build/01.jpg" class="">
+<ul>
+<li>in the test project, edit the <code>DefaultEngine.ini</code> of <code>[ProjectRoot]/Config/DefaultEngine.ini</code><ul>
+<li>add the code below</li>
+<li>the code will add configurations for linux version build</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[/Script/LinuxTargetPlatform.LinuxTargetSettings]</span><br><span class="line">TargetArchitecture=X86_64UnknownLinuxGnu</span><br></pre></td></tr></table></figure>
+
+<img src="/2019/08/19/unreal-linux-server-build/02.jpg" class="">
+<ul>
+<li>right click <code>uproject</code> and select <code>Generate Visual Studio project files</code><ul>
+<li>open <code>sln</code> and build the test project with <code>Development Editor &amp; Win64</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="build"><a href="#build" class="headerlink" title="build"></a>build</h1><img src="/2019/08/19/unreal-linux-server-build/03.jpg" class="">
+<ul>
+<li>double click <code>uproject</code> and you would see the test project on unreal editor</li>
+</ul>
+<img src="/2019/08/19/unreal-linux-server-build/04.jpg" class="">
+<ul>
+<li>select <code>Development</code> in <code>File/Package Project/Build Configuration</code></li>
+</ul>
+<img src="/2019/08/19/unreal-linux-server-build/05.jpg" class="">
+<ul>
+<li>select <code>Linux</code> in <code>File/Package Project</code><ul>
+<li>choose an arbitrary directory for saving the package</li>
+<li>in my case, I created <code>Packages</code> folder in project directory and use it</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/19/unreal-linux-server-build/06.jpg" class="">
+<ul>
+<li>after packaging, you can see the directory like this</li>
+</ul>
+<img src="/2019/08/19/unreal-linux-server-build/07.jpg" class="">
+<ul>
+<li>open <code>sln</code> and build the test project with <code>Development Server &amp; Linux</code></li>
+</ul>
+<img src="/2019/08/19/unreal-linux-server-build/08.jpg" class="">
+<ul>
+<li>you can see the <code>[ProjectName]Server</code> build, which will be executed on linux</li>
+</ul>
+<img src="/2019/08/19/unreal-linux-server-build/09.jpg" class="">
+<ul>
+<li>copy the <code>[ProjectName]Server</code> into package binary folder<ul>
+<li>now you can execute <code>[ProjectName]Server</code> on linux</li>
+</ul>
+</li>
+</ul>
+<h1 id="usage"><a href="#usage" class="headerlink" title="usage"></a>usage</h1><ul>
+<li>in this post, I will show you an example with wsl<ul>
+<li>I recommend to make shared folder for sharing files</li>
+<li>if you do not know about it, read <a href="https://baemincheon.github.io/2019/08/19/shared-folder-in-wsl/">this post</a></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/19/unreal-linux-server-build/10.jpg" class="">
+<ul>
+<li>I used a shared folder called <code>LinuxShare</code> for sharing the package files</li>
+</ul>
+<img src="/2019/08/19/unreal-linux-server-build/11.jpg" class="">
+<ul>
+<li>there are build files in package binary folder<ul>
+<li><code>[ProjectName]</code> is build file from <code>Game</code> build target, which cannot be executed for absense of graphics api</li>
+<li><code>[ProjectName]Server</code> is build file from <code>Server</code> build target, which is copied by you</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/19/unreal-linux-server-build/12.jpg" class="">
+<img src="/2019/08/19/unreal-linux-server-build/13.jpg" class="">
+<ul>
+<li>execute server build with option <code>127.0.0.1 -log</code> on wsl(linux)</li>
+</ul>
+<img src="/2019/08/19/unreal-linux-server-build/14.jpg" class="">
+<ul>
+<li>execute client build twice with option <code>127.0.0.1 -log -windowed resx=720 resy=480</code> on windows<ul>
+<li>you can see the same result that we saw in previous post</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2019/08/19/unreal-linux-server-build/" data-id="clw50m6ow0008akqm088geu7k" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2019/08/19/unreal-linux-server-build/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-differences-of-unreal-build-targets" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/16/differences-of-unreal-build-targets/" class="article-date">
+  <time datetime="2019-08-15T15:13:26.000Z" itemprop="datePublished">2019-08-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/16/differences-of-unreal-build-targets/">Differences in UnrealEngine build targets</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>recommend to read first<ul>
+<li><a href="https://baemincheon.github.io/2019/08/06/what-is-unreal-build-target/">what-is-unreal-build-target</a></li>
+<li><a href="https://baemincheon.github.io/2019/08/11/custom-unreal-engine-build/">custom-unreal-engine-build</a></li>
+</ul>
+</li>
+<li>this post covers<ul>
+<li>what does mean each build target</li>
+<li>how to use each build target</li>
+<li>differences of some build targets</li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Windows &#x2F; 10</li>
+<li>Visual Studio IDE &#x2F; 2017 Community</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="overview"><a href="#overview" class="headerlink" title="overview"></a>overview</h1><ul>
+<li>I suppose you already have the unreal engine built from source of 4.21 version<ul>
+<li>if you do not, read the <code>custom-unreal-engine-build</code> post</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/02.jpg" class="">
+<ul>
+<li>once you build the <code>UE4</code> project with option <code>Development Editor &amp; Win64</code><ul>
+<li>you can find <code>[EngineRoot]/Engine/Binaries/Win64/UE4Editor.exe</code> and execute it</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/01.jpg" class="">
+<ul>
+<li>in this window, you can create project using your custom engine<ul>
+<li>create a <code>Third Person</code> template project for testing several build targets in this post</li>
+</ul>
+</li>
+</ul>
+<h1 id="build-targets"><a href="#build-targets" class="headerlink" title="build-targets"></a>build-targets</h1><img src="/2019/08/16/differences-of-unreal-build-targets/12.jpg" class="">
+<ul>
+<li><p>in unreal engine, “build (file)” means the executable file or library file made from source code</p>
+<ul>
+<li>ex1) <code>UE4Editor-[ProjectName].dll</code> of <code>Editor</code> build target</li>
+<li>ex2) <code>[ProjectName]Client.exe</code> of <code>Client</code> build target</li>
+<li>ex3) <code>[ProjectName].exe</code> of <code>Game</code> build target</li>
+</ul>
+</li>
+<li><p>there are four build targets frequently used</p>
+<ul>
+<li>Client</li>
+<li>Server</li>
+<li>Game</li>
+<li>Editor</li>
+</ul>
+</li>
+<li><p><code>Client</code></p>
+<ul>
+<li>this target is used for building only client</li>
+<li>it has several features especially displaying screen</li>
+<li>so if the system does not have any graphics API, it cannot be executed</li>
+</ul>
+</li>
+<li><p><code>Server</code></p>
+<ul>
+<li>this target is used for building only server</li>
+<li>it does not have several features especially displaying screen</li>
+<li>so regardless of graphics API, it can be executed</li>
+</ul>
+</li>
+<li><p><code>Game</code></p>
+<ul>
+<li>this target is used for building whole game</li>
+<li>it has all features from <code>Client</code> and <code>Server</code> targets</li>
+<li>so a build from this target can be used as client, and server too<ul>
+<li>it is not recommended for the commercial game project because user could get the server feature</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>Editor</code></p>
+<ul>
+<li>this target is used for executing the game on unreal editor</li>
+<li>only the build from this target can be opened in unreal editor<ul>
+<li>also, unreal editor only can open this build, which means packaging impossible</li>
+</ul>
+</li>
+<li>totally, it has all features from <code>Game</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="packaging"><a href="#packaging" class="headerlink" title="packaging"></a>packaging</h1><ul>
+<li>because build files do not contain unreal assets, it cannot be executed alone<ul>
+<li>we have checked out what happens when only using a build file in previous post</li>
+<li>so, executing the game from any build file, you need to package unreal assets used in the project file</li>
+<li>and packaging can be done in unreal editor, not the source code editor such as visual studio IDE</li>
+</ul>
+</li>
+<li>there are some prerequisites for pacakaging the test project</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/08.jpg" class="">
+<ul>
+<li>open the <code>sln</code> for the test project and build it with <code>Development Editor &amp; Win64</code><ul>
+<li>and press <code>F5</code> to start debugging</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/09.jpg" class="">
+<ul>
+<li>you would see the <code>Third Person</code> default map with unreal editor</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/10.jpg" class="">
+<ul>
+<li>open the <code>Project Settings</code> window and find <code>Maps &amp; Modes</code> tab<ul>
+<li>set every map with the default map</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/11.jpg" class="">
+<ul>
+<li>find <code>Packaging</code> tab<ul>
+<li>add the default map to the <code>List of maps to include in a packaged build</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/06.jpg" class="">
+<img src="/2019/08/16/differences-of-unreal-build-targets/13.jpg" class="">
+<ul>
+<li>write target config files for <code>Client</code> and <code>Server</code> targets</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/07.jpg" class="">
+<ul>
+<li><p>right click <code>uproject</code> and select <code>Generate project files</code></p>
+</li>
+<li><p>re-open the <code>sln</code> and build the test project with each solution configuration</p>
+<ul>
+<li><code>Development &amp; Win64</code></li>
+<li><code>Development Client &amp; Win64</code></li>
+<li><code>Development Server &amp; Win64</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/14.jpg" class="">
+<ul>
+<li><p>now you can see the three build files</p>
+</li>
+<li><p>open the test project with unreal editor</p>
+<ul>
+<li>way1) double click <code>uproject</code></li>
+<li>way2) execute <code>[EngineRoot]/Engine/Binaries/Win64/UE4Editor.exe</code> and select the project</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/15.jpg" class="">
+<ul>
+<li>select <code>Development</code> in <code>File/Package Project/Build Configuration</code></li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/16.jpg" class="">
+<img src="/2019/08/16/differences-of-unreal-build-targets/17.jpg" class="">
+<ul>
+<li>select <code>Windows (64-bit)</code> in <code>File/Package Project/Windows</code><ul>
+<li>choose an arbitrary directory for saving the package</li>
+<li>in my case, I created <code>Packages</code> folder in project directory and use it</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/18.jpg" class="">
+<ul>
+<li>after packaging, you can see the directory like this</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/19.jpg" class="">
+<ul>
+<li>as we packaged the project with <code>Development</code> the executable files are the same</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/20.jpg" class="">
+<ul>
+<li>copy the build files into the <code>Packages/WindowsNoEditor/[ProjectName]/Binaries/Win64</code><ul>
+<li><code>[ProjectName].exe</code></li>
+<li><code>[ProjectName]Client.exe</code></li>
+<li><code>[ProjectName]Server.exe</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/21.jpg" class="">
+<ul>
+<li>run the command prompt and move to the <code>Packages/WindowsNoEditor/[ProjectName]/Binaries/Win64</code><ul>
+<li>execute each build file with some options for knowing what happens inside</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/22.jpg" class="">
+<img src="/2019/08/16/differences-of-unreal-build-targets/23.jpg" class="">
+<ul>
+<li>execute <code>Game</code> build file with options <code>-log -windowed resx=720 resy=480</code><ul>
+<li><code>-log</code> option makes the game print logs</li>
+<li><code>-windowed</code> option prevents the game from running as full-screen</li>
+</ul>
+</li>
+<li>you can terminate the game<ul>
+<li>way1) click <code>X</code> on the right of game window</li>
+<li>way2) press a <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Grave_accent">grave accent</a> and type <code>exit</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/24.jpg" class="">
+<ul>
+<li>execute <code>Client</code> build file with options <code>-log -windowed resx=720 resy=480</code><ul>
+<li>you can see the same result of <code>Game</code> build</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/25.jpg" class="">
+<ul>
+<li>execute <code>Server</code> build file with options <code>-log</code><ul>
+<li>you can see there is no game screen with <code>Server</code> build</li>
+</ul>
+</li>
+</ul>
+<h1 id="game-client-server"><a href="#game-client-server" class="headerlink" title="game-client-server"></a>game-client-server</h1><ul>
+<li><p>I mentioned <code>Game</code> as “it has all features from <code>Client</code> and <code>Server</code> targets”</p>
+</li>
+<li><p>execute <code>Game</code> build 3 times with options below</p>
+<ul>
+<li><ol>
+<li><code>-server 127.0.0.1 -log -windowed resx=720 resy=480</code></li>
+</ol>
+</li>
+<li><ol start="2">
+<li><code>127.0.0.1 -log -windowed resx=720 resy=480</code></li>
+</ol>
+</li>
+<li><ol start="3">
+<li><code>127.0.0.1 -log -windowed resx=720 resy=480</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/26.jpg" class="">
+<ul>
+<li><p>the first game acts as (client + server) and other games act as client</p>
+<ul>
+<li>this means <code>Game target = Client target + Server target</code></li>
+</ul>
+</li>
+<li><p>execute <code>Server</code> build with options below</p>
+<ul>
+<li><code>127.0.0.1 -log</code></li>
+</ul>
+</li>
+<li><p>execute <code>Client</code> twice with options below</p>
+<ul>
+<li><ol>
+<li><code>127.0.0.1 -log -windowed resx=720 resy=480</code></li>
+</ol>
+</li>
+<li><ol start="2">
+<li><code>127.0.0.1 -log -windowed resx=720 resy=480</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/27.jpg" class="">
+<ul>
+<li>the first game acts as server and other games act as client<ul>
+<li>you can see server do not have a screen</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/" data-id="clw50m6ot0001akqmhq1c4wzc" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-custom-unreal-engine-build" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/11/custom-unreal-engine-build/" class="article-date">
+  <time datetime="2019-08-11T05:50:32.000Z" itemprop="datePublished">2019-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/11/custom-unreal-engine-build/">UnrealEngine custom build</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>recommend to read first<ul>
+<li><a href="https://baemincheon.github.io/2019/08/06/what-is-unreal-build-target/">what-is-unreal-build-target</a></li>
+</ul>
+</li>
+<li>this post covers<ul>
+<li>why we need the custom unreal engine</li>
+<li>how to access to unreal engine code</li>
+<li>how to build and configure our custom unreal engine</li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Windows &#x2F; 10</li>
+<li>Visual Studio IDE &#x2F; 2017 Community</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="overview"><a href="#overview" class="headerlink" title="overview"></a>overview</h1><ul>
+<li>using unreal engine with the <code>Epic Games Launcher</code> means that you can use some parts of unreal engine<ul>
+<li>because, engines provided from <code>Epic Games Launcher</code> are lack of some features ( find more at <a target="_blank" rel="noopener" href="https://answers.unrealengine.com/questions/39658/differences-between-github-and-unreal-download.html">here</a> )</li>
+<li>especially, you can only use <code>Client</code> and <code>Server</code> build target with custom unreal engine</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/01.jpg" class="">
+<ul>
+<li>if you want to use whole of unreal engine, you need to build unreal engine from source code<ul>
+<li>making a project with custom engine, <code>Epic Games Launcher</code> recognizes the project but not the version of engine</li>
+<li>you can see the <code>Other</code> on the screenshot above, which means that versioning is not meaningful no more</li>
+</ul>
+</li>
+<li>for example, suppose you need to seperate your game project into client and server<ul>
+<li>that means, client version of your game only has the feature for client and <em>vice versa</em></li>
+<li>build targets supported by engine from <code>Epic Games Launcher</code> are only <code>Game</code> and <code>Editor</code> so you cannot</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/02.jpg" class="">
+
+<h1 id="access"><a href="#access" class="headerlink" title="access"></a>access</h1><ul>
+<li>accessing to unreal engine repository needs some process below</li>
+<li>visit <a target="_blank" rel="noopener" href="https://www.unrealengine.com/en-US/?lang=en-US">epic games page</a> and sign in</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/03.jpg" class="">
+<img src="/2019/08/11/custom-unreal-engine-build/04.jpg" class="">
+<ul>
+<li>click <code>PERSONAL</code> in the combo box on your nickname and click <code>CONNECTED ACCOUNTS</code><ul>
+<li>click <code>CONNECT</code> in the <code>GITHUB</code> box and sign in with your github account</li>
+<li>then, some mails would be sent to your email and accept them</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/05.jpg" class="">
+<ul>
+<li>now you can find that you have entered the <code>Epic Games</code> organization</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/06.jpg" class="">
+<ul>
+<li>visit the unreal engine repository and download or clone it</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/08.jpg" class="">
+<ul>
+<li>if you want to make custom engine based on a specific version, select the proper branch</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/07.jpg" class="">
+<ul>
+<li>now you are ready to build custom engine</li>
+</ul>
+<h1 id="build"><a href="#build" class="headerlink" title="build"></a>build</h1><ul>
+<li>before starting, there are some requirements to visual studio IDE</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/09.jpg" class="">
+<ul>
+<li>execute visual studio 2017 and click <code>Tools/Get Tools and Features...</code><ul>
+<li>in <code>Individual components</code> tab, you should check the components below<ul>
+<li><code>.NET Framework 4.5</code> things</li>
+<li><code>.NET Framework 4.6</code> things</li>
+<li><code>VC++ 2015 for desktop</code> things</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/10.jpg" class="">
+<ul>
+<li>right click the <code>Setup.bat</code> in engine root folder and select <code>Run as administrator</code></li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/11.jpg" class="">
+<ul>
+<li>execute command prompt and move to engine root folder<ul>
+<li>type <code>GenerateProjectFiles.bat -2017</code> and enter</li>
+<li>now you can see <code>UE4.sln</code> is generated and open it with visual studio 2017</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/12.jpg" class="">
+<ul>
+<li>right click <code>UE4</code> project and select build<ul>
+<li>it takes soooo long time ( about 1~2 hours )</li>
+</ul>
+</li>
+</ul>
+<h1 id="usage"><a href="#usage" class="headerlink" title="usage"></a>usage</h1><ul>
+<li>launch any engine on <code>Epic Games Launcher</code></li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/13.jpg" class="">
+<ul>
+<li>create some project</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/14.jpg" class="">
+<ul>
+<li>right click <code>uproject</code> and select <code>Switch Unreal Engine version...</code></li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/15.jpg" class="">
+<ul>
+<li>if the build was successfully done, there is the engine root in combo box<ul>
+<li>if not, find and choose the engine root directory</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/16.jpg" class="">
+<ul>
+<li>select proper one and it starts generating project files</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/17.jpg" class="">
+<ul>
+<li>open the <code>[ProjectName].sln</code> and you can check out the <code>UE4</code> in solution explorer</li>
+</ul>
+<img src="/2019/08/11/custom-unreal-engine-build/18.jpg" class="">
+<ul>
+<li>even you would find the <code>Client</code> and <code>Server</code> options in solution configurations<ul>
+<li>this process is required whenever you want to use custom engine</li>
+<li>hooh ! now you can use your own custom unreal engine !</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2019/08/11/custom-unreal-engine-build/" data-id="clw50m6oq0000akqmhnkiar5z" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2019/08/11/custom-unreal-engine-build/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-what-is-unreal-build-target" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/06/what-is-unreal-build-target/" class="article-date">
+  <time datetime="2019-08-06T14:49:20.000Z" itemprop="datePublished">2019-08-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/06/what-is-unreal-build-target/">What is UnrealEngine build target</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>this post covers<ul>
+<li>what is the build target in unreal engine</li>
+<li>why we need the several build targets</li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Windows &#x2F; 10</li>
+<li>Unreal Engine &#x2F; 4.19.2</li>
+<li>Visual Studio IDE &#x2F; 2017 Community</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="overview"><a href="#overview" class="headerlink" title="overview"></a>overview</h3><img src="/2019/08/06/what-is-unreal-build-target/01.jpg" class="">
+<ul>
+<li>create new project with <code>Basic Code</code> in cpp tab</li>
+</ul>
+<img src="/2019/08/06/what-is-unreal-build-target/02.jpg" class="">
+<ul>
+<li>then you can see the directory like this</li>
+</ul>
+<img src="/2019/08/06/what-is-unreal-build-target/03.jpg" class="">
+<ul>
+<li>open the <code>[ProjectName].sln</code> and check out the csharp files whose name are ending up with <code>Target.cs</code></li>
+<li>now you may wonder…<ul>
+<li>what the <code>Type = TargetType.Game</code> means</li>
+<li>what the heck is <code>UnrealBuildTool</code></li>
+<li>what is difference between <code>[ProjectName]Target</code> and <code>[ProjectName]EditorTarget</code></li>
+</ul>
+</li>
+<li>do not hurry, first of all, we gonna learn about the build targets</li>
+</ul>
+<h3 id="solution-configuration"><a href="#solution-configuration" class="headerlink" title="solution-configuration"></a>solution-configuration</h3><img src="/2019/08/06/what-is-unreal-build-target/04.jpg" class="">
+<ul>
+<li>most of you may have developed the game with no manipulation of <code>Solution Configurations</code></li>
+</ul>
+<img src="/2019/08/06/what-is-unreal-build-target/05.jpg" class="">
+<ul>
+<li>when you folds it out, there are several options and each option is explained in <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/Development/BuildConfigurations/index.html">this document</a> detailed<ul>
+<li><code>DebugGame</code> and <code>Development</code> : build output is stand-alone binary file, which has <code>exe</code> extension</li>
+<li><code>DebugGame Editor</code> and <code>Development Editor</code> : build output is dynamic link library, which has <code>dll</code> extension</li>
+<li><code>Shipping</code> : build output is stand-alone binary file, which has <code>exe</code> extension</li>
+</ul>
+</li>
+<li>the difference between<ul>
+<li><code>DebugGame</code> and <code>Development</code> : the level and depth of debugging features</li>
+<li><code>DebugGame</code>, <code>Development</code> and <code>Shipping</code> : output of <code>Shipping</code> is more optimized for the reason of absence of command prompt and screen debug, etc. but, having no assets for the level presentation, both cannot be executed normally</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/06/what-is-unreal-build-target/06.jpg" class="">
+
+<h3 id="build-target"><a href="#build-target" class="headerlink" title="build-target"></a>build-target</h3><ul>
+<li>yep, you have seen the <code>Solution Configurations</code> and what they do</li>
+<li>and there is the way to change the behavior of each configuration by editing the <code>Target.cs</code> files</li>
+</ul>
+<img src="/2019/08/06/what-is-unreal-build-target/07.jpg" class="">
+<ul>
+<li>let us change the text <code>Editor</code> into <code>Game</code> in <code>[ProjectName]Editor.Target.cs</code></li>
+</ul>
+<img src="/2019/08/06/what-is-unreal-build-target/08.jpg" class="">
+<ul>
+<li>remove the <code>Binaries</code> folder for checking the build output</li>
+</ul>
+<img src="/2019/08/06/what-is-unreal-build-target/09.jpg" class="">
+<ul>
+<li>build our project with <code>Development Editor</code></li>
+</ul>
+<img src="/2019/08/06/what-is-unreal-build-target/10.jpg" class="">
+<ul>
+<li><p>look at the build output, what happened ? exe file has been generated, not the dll</p>
+</li>
+<li><p>okay, now I would think it is time to tell you how the build works</p>
+<ul>
+<li>when you select <code>DebugGame</code> or <code>Development</code>, unreal engine does the build based on <code>[ProjectName].Target.cs</code></li>
+<li>also, when you select <code>DebugGame Editor</code> or <code>Development Editor</code>, unreal engine will build based on <code>[ProjectName]Editor.Target.cs</code></li>
+<li>and the <code>Type</code> in <code>Target.cs</code> file is a key value of build configuration, which is read by UnrealBuildTool</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/06/what-is-unreal-build-target/11.jpg" class="">
+<ul>
+<li>as a result, there is no significant difference except for the file names<ul>
+<li>first 5 files are built with <code>Development</code> and <code>Test419.Target.cs</code> with <code>Type = TargetType.Game</code></li>
+<li>later 5 files are built with <code>Development Editor</code> and <code>Test419Editor.Target.cs</code> with <code>Type = TargetType.Game</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="why-it-needed"><a href="#why-it-needed" class="headerlink" title="why-it-needed"></a>why-it-needed</h3><ul>
+<li>this structure can help you customize build configurations<ul>
+<li>if you need to build for several enviroments, take care of the target files</li>
+<li>there are many options not only <code>Type</code> value, find at <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/BuildTools/UnrealBuildTool/TargetFiles/index.html">this document</a></li>
+</ul>
+</li>
+<li>typically, the target file is used for building an unreal server<ul>
+<li>at that time, we will use <code>[ProjectName]Server.Target.cs</code> with <code>Type = TargetType.Server</code></li>
+<li>because, in the production level, we need a server executing unreal dedicated server</li>
+</ul>
+</li>
+</ul>
+<h3 id="further"><a href="#further" class="headerlink" title="further"></a>further</h3><ul>
+<li>I will write about unreal server build and combination with aws game lift</li>
+<li>in the following contents, this post should be useful for you</li>
+<li>there is <a target="_blank" rel="noopener" href="https://answers.unrealengine.com/questions/194712/differences-between-build-configurations.html">a good QnA</a> for these subjects</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2019/08/06/what-is-unreal-build-target/" data-id="clw50m6ow0009akqm19eogmmh" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2019/08/06/what-is-unreal-build-target/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/" rel="tag">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoogleAnalytics/" rel="tag">GoogleAnalytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Home/" rel="tag">Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iptime/" rel="tag">Iptime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lecture/" rel="tag">Lecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSVC/" rel="tag">MSVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Migration/" rel="tag">Migration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network/" rel="tag">Network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retargeting/" rel="tag">Retargeting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextWrap/" rel="tag">TextWrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/About/" style="font-size: 10px;">About</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/Blueprint/" style="font-size: 13.33px;">Blueprint</a> <a href="/tags/CPP/" style="font-size: 13.33px;">CPP</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GoogleAnalytics/" style="font-size: 10px;">GoogleAnalytics</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Home/" style="font-size: 10px;">Home</a> <a href="/tags/Iptime/" style="font-size: 10px;">Iptime</a> <a href="/tags/Lecture/" style="font-size: 10px;">Lecture</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MSVC/" style="font-size: 10px;">MSVC</a> <a href="/tags/Migration/" style="font-size: 10px;">Migration</a> <a href="/tags/Natvis/" style="font-size: 10px;">Natvis</a> <a href="/tags/Network/" style="font-size: 10px;">Network</a> <a href="/tags/Perforce/" style="font-size: 13.33px;">Perforce</a> <a href="/tags/Retargeting/" style="font-size: 10px;">Retargeting</a> <a href="/tags/Retrospection/" style="font-size: 16.67px;">Retrospection</a> <a href="/tags/RichTextBlock/" style="font-size: 10px;">RichTextBlock</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/TextBlock/" style="font-size: 13.33px;">TextBlock</a> <a href="/tags/TextWrap/" style="font-size: 10px;">TextWrap</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/UnrealEngine/" style="font-size: 20px;">UnrealEngine</a> <a href="/tags/WSL/" style="font-size: 13.33px;">WSL</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/04/migration-from-perforce-into-git-in-windows/">Migration from Perforce into Git in Windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/04/10/conversion-from-universal-analytics-into-google-analytics-4/">Conversion from UA into GA4</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/12/promotion-for-online-lecture-of-unrealengine-01/">The promotion for online lecture of UnrealEngine</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/04/retargeting-animations-in-unreal-engine-5/">Retargeting animations in UnrealEngine 5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/">How the RichTextBlock works in UnrealEngine (part.1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 MinCheon Bae<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/2020/02/03/home-page/index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'let-us-go-abroad';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2P265ZP7M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R2P265ZP7M');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Differences in UnrealEngine build targets | LET US GO ABROAD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="recommend to read first what-is-unreal-build-target custom-unreal-engine-build   this post covers what does mean each build target how to use each build target differences of some build targets   env">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Differences in UnrealEngine build targets">
+<meta property="og:url" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/index.html">
+<meta property="og:site_name" content="LET US GO ABROAD">
+<meta property="og:description" content="recommend to read first what-is-unreal-build-target custom-unreal-engine-build   this post covers what does mean each build target how to use each build target differences of some build targets   env">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/02.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/01.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/12.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/08.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/09.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/10.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/11.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/06.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/13.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/07.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/14.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/15.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/16.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/17.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/18.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/19.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/20.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/21.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/22.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/23.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/24.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/25.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/26.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/27.jpg">
+<meta property="article:published_time" content="2019-08-15T15:13:26.000Z">
+<meta property="article:modified_time" content="2019-08-15T15:13:26.000Z">
+<meta property="article:author" content="MinCheon Bae">
+<meta property="article:tag" content="UnrealEngine">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/02.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="LET US GO ABROAD" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LET US GO ABROAD</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/2020/02/03/home-page/index.html">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://baemincheon.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-differences-of-unreal-build-targets" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/16/differences-of-unreal-build-targets/" class="article-date">
+  <time datetime="2019-08-15T15:13:26.000Z" itemprop="datePublished">2019-08-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Differences in UnrealEngine build targets
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>recommend to read first<ul>
+<li><a href="https://baemincheon.github.io/2019/08/06/what-is-unreal-build-target/">what-is-unreal-build-target</a></li>
+<li><a href="https://baemincheon.github.io/2019/08/11/custom-unreal-engine-build/">custom-unreal-engine-build</a></li>
+</ul>
+</li>
+<li>this post covers<ul>
+<li>what does mean each build target</li>
+<li>how to use each build target</li>
+<li>differences of some build targets</li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Windows &#x2F; 10</li>
+<li>Visual Studio IDE &#x2F; 2017 Community</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="overview"><a href="#overview" class="headerlink" title="overview"></a>overview</h1><ul>
+<li>I suppose you already have the unreal engine built from source of 4.21 version<ul>
+<li>if you do not, read the <code>custom-unreal-engine-build</code> post</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/02.jpg" class="">
+<ul>
+<li>once you build the <code>UE4</code> project with option <code>Development Editor &amp; Win64</code><ul>
+<li>you can find <code>[EngineRoot]/Engine/Binaries/Win64/UE4Editor.exe</code> and execute it</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/01.jpg" class="">
+<ul>
+<li>in this window, you can create project using your custom engine<ul>
+<li>create a <code>Third Person</code> template project for testing several build targets in this post</li>
+</ul>
+</li>
+</ul>
+<h1 id="build-targets"><a href="#build-targets" class="headerlink" title="build-targets"></a>build-targets</h1><img src="/2019/08/16/differences-of-unreal-build-targets/12.jpg" class="">
+<ul>
+<li><p>in unreal engine, “build (file)” means the executable file or library file made from source code</p>
+<ul>
+<li>ex1) <code>UE4Editor-[ProjectName].dll</code> of <code>Editor</code> build target</li>
+<li>ex2) <code>[ProjectName]Client.exe</code> of <code>Client</code> build target</li>
+<li>ex3) <code>[ProjectName].exe</code> of <code>Game</code> build target</li>
+</ul>
+</li>
+<li><p>there are four build targets frequently used</p>
+<ul>
+<li>Client</li>
+<li>Server</li>
+<li>Game</li>
+<li>Editor</li>
+</ul>
+</li>
+<li><p><code>Client</code></p>
+<ul>
+<li>this target is used for building only client</li>
+<li>it has several features especially displaying screen</li>
+<li>so if the system does not have any graphics API, it cannot be executed</li>
+</ul>
+</li>
+<li><p><code>Server</code></p>
+<ul>
+<li>this target is used for building only server</li>
+<li>it does not have several features especially displaying screen</li>
+<li>so regardless of graphics API, it can be executed</li>
+</ul>
+</li>
+<li><p><code>Game</code></p>
+<ul>
+<li>this target is used for building whole game</li>
+<li>it has all features from <code>Client</code> and <code>Server</code> targets</li>
+<li>so a build from this target can be used as client, and server too<ul>
+<li>it is not recommended for the commercial game project because user could get the server feature</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>Editor</code></p>
+<ul>
+<li>this target is used for executing the game on unreal editor</li>
+<li>only the build from this target can be opened in unreal editor<ul>
+<li>also, unreal editor only can open this build, which means packaging impossible</li>
+</ul>
+</li>
+<li>totally, it has all features from <code>Game</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="packaging"><a href="#packaging" class="headerlink" title="packaging"></a>packaging</h1><ul>
+<li>because build files do not contain unreal assets, it cannot be executed alone<ul>
+<li>we have checked out what happens when only using a build file in previous post</li>
+<li>so, executing the game from any build file, you need to package unreal assets used in the project file</li>
+<li>and packaging can be done in unreal editor, not the source code editor such as visual studio IDE</li>
+</ul>
+</li>
+<li>there are some prerequisites for pacakaging the test project</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/08.jpg" class="">
+<ul>
+<li>open the <code>sln</code> for the test project and build it with <code>Development Editor &amp; Win64</code><ul>
+<li>and press <code>F5</code> to start debugging</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/09.jpg" class="">
+<ul>
+<li>you would see the <code>Third Person</code> default map with unreal editor</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/10.jpg" class="">
+<ul>
+<li>open the <code>Project Settings</code> window and find <code>Maps &amp; Modes</code> tab<ul>
+<li>set every map with the default map</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/11.jpg" class="">
+<ul>
+<li>find <code>Packaging</code> tab<ul>
+<li>add the default map to the <code>List of maps to include in a packaged build</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/06.jpg" class="">
+<img src="/2019/08/16/differences-of-unreal-build-targets/13.jpg" class="">
+<ul>
+<li>write target config files for <code>Client</code> and <code>Server</code> targets</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/07.jpg" class="">
+<ul>
+<li><p>right click <code>uproject</code> and select <code>Generate project files</code></p>
+</li>
+<li><p>re-open the <code>sln</code> and build the test project with each solution configuration</p>
+<ul>
+<li><code>Development &amp; Win64</code></li>
+<li><code>Development Client &amp; Win64</code></li>
+<li><code>Development Server &amp; Win64</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/14.jpg" class="">
+<ul>
+<li><p>now you can see the three build files</p>
+</li>
+<li><p>open the test project with unreal editor</p>
+<ul>
+<li>way1) double click <code>uproject</code></li>
+<li>way2) execute <code>[EngineRoot]/Engine/Binaries/Win64/UE4Editor.exe</code> and select the project</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/15.jpg" class="">
+<ul>
+<li>select <code>Development</code> in <code>File/Package Project/Build Configuration</code></li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/16.jpg" class="">
+<img src="/2019/08/16/differences-of-unreal-build-targets/17.jpg" class="">
+<ul>
+<li>select <code>Windows (64-bit)</code> in <code>File/Package Project/Windows</code><ul>
+<li>choose an arbitrary directory for saving the package</li>
+<li>in my case, I created <code>Packages</code> folder in project directory and use it</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/18.jpg" class="">
+<ul>
+<li>after packaging, you can see the directory like this</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/19.jpg" class="">
+<ul>
+<li>as we packaged the project with <code>Development</code> the executable files are the same</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/20.jpg" class="">
+<ul>
+<li>copy the build files into the <code>Packages/WindowsNoEditor/[ProjectName]/Binaries/Win64</code><ul>
+<li><code>[ProjectName].exe</code></li>
+<li><code>[ProjectName]Client.exe</code></li>
+<li><code>[ProjectName]Server.exe</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/21.jpg" class="">
+<ul>
+<li>run the command prompt and move to the <code>Packages/WindowsNoEditor/[ProjectName]/Binaries/Win64</code><ul>
+<li>execute each build file with some options for knowing what happens inside</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/22.jpg" class="">
+<img src="/2019/08/16/differences-of-unreal-build-targets/23.jpg" class="">
+<ul>
+<li>execute <code>Game</code> build file with options <code>-log -windowed resx=720 resy=480</code><ul>
+<li><code>-log</code> option makes the game print logs</li>
+<li><code>-windowed</code> option prevents the game from running as full-screen</li>
+</ul>
+</li>
+<li>you can terminate the game<ul>
+<li>way1) click <code>X</code> on the right of game window</li>
+<li>way2) press a <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Grave_accent">grave accent</a> and type <code>exit</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/24.jpg" class="">
+<ul>
+<li>execute <code>Client</code> build file with options <code>-log -windowed resx=720 resy=480</code><ul>
+<li>you can see the same result of <code>Game</code> build</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/25.jpg" class="">
+<ul>
+<li>execute <code>Server</code> build file with options <code>-log</code><ul>
+<li>you can see there is no game screen with <code>Server</code> build</li>
+</ul>
+</li>
+</ul>
+<h1 id="game-client-server"><a href="#game-client-server" class="headerlink" title="game-client-server"></a>game-client-server</h1><ul>
+<li><p>I mentioned <code>Game</code> as “it has all features from <code>Client</code> and <code>Server</code> targets”</p>
+</li>
+<li><p>execute <code>Game</code> build 3 times with options below</p>
+<ul>
+<li><ol>
+<li><code>-server 127.0.0.1 -log -windowed resx=720 resy=480</code></li>
+</ol>
+</li>
+<li><ol start="2">
+<li><code>127.0.0.1 -log -windowed resx=720 resy=480</code></li>
+</ol>
+</li>
+<li><ol start="3">
+<li><code>127.0.0.1 -log -windowed resx=720 resy=480</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/26.jpg" class="">
+<ul>
+<li><p>the first game acts as (client + server) and other games act as client</p>
+<ul>
+<li>this means <code>Game target = Client target + Server target</code></li>
+</ul>
+</li>
+<li><p>execute <code>Server</code> build with options below</p>
+<ul>
+<li><code>127.0.0.1 -log</code></li>
+</ul>
+</li>
+<li><p>execute <code>Client</code> twice with options below</p>
+<ul>
+<li><ol>
+<li><code>127.0.0.1 -log -windowed resx=720 resy=480</code></li>
+</ol>
+</li>
+<li><ol start="2">
+<li><code>127.0.0.1 -log -windowed resx=720 resy=480</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2019/08/16/differences-of-unreal-build-targets/27.jpg" class="">
+<ul>
+<li>the first game acts as server and other games act as client<ul>
+<li>you can see server do not have a screen</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/" data-id="clw50m6ot0001akqmhq1c4wzc" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/19/unreal-linux-server-build/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          UnrealEngine linux server build
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/11/custom-unreal-engine-build/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">UnrealEngine custom build</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/" rel="tag">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoogleAnalytics/" rel="tag">GoogleAnalytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Home/" rel="tag">Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iptime/" rel="tag">Iptime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lecture/" rel="tag">Lecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSVC/" rel="tag">MSVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Migration/" rel="tag">Migration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network/" rel="tag">Network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retargeting/" rel="tag">Retargeting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextWrap/" rel="tag">TextWrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/About/" style="font-size: 10px;">About</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/Blueprint/" style="font-size: 13.33px;">Blueprint</a> <a href="/tags/CPP/" style="font-size: 13.33px;">CPP</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GoogleAnalytics/" style="font-size: 10px;">GoogleAnalytics</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Home/" style="font-size: 10px;">Home</a> <a href="/tags/Iptime/" style="font-size: 10px;">Iptime</a> <a href="/tags/Lecture/" style="font-size: 10px;">Lecture</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MSVC/" style="font-size: 10px;">MSVC</a> <a href="/tags/Migration/" style="font-size: 10px;">Migration</a> <a href="/tags/Natvis/" style="font-size: 10px;">Natvis</a> <a href="/tags/Network/" style="font-size: 10px;">Network</a> <a href="/tags/Perforce/" style="font-size: 13.33px;">Perforce</a> <a href="/tags/Retargeting/" style="font-size: 10px;">Retargeting</a> <a href="/tags/Retrospection/" style="font-size: 16.67px;">Retrospection</a> <a href="/tags/RichTextBlock/" style="font-size: 10px;">RichTextBlock</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/TextBlock/" style="font-size: 13.33px;">TextBlock</a> <a href="/tags/TextWrap/" style="font-size: 10px;">TextWrap</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/UnrealEngine/" style="font-size: 20px;">UnrealEngine</a> <a href="/tags/WSL/" style="font-size: 13.33px;">WSL</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/04/migration-from-perforce-into-git-in-windows/">Migration from Perforce into Git in Windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/04/10/conversion-from-universal-analytics-into-google-analytics-4/">Conversion from UA into GA4</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/12/promotion-for-online-lecture-of-unrealengine-01/">The promotion for online lecture of UnrealEngine</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/04/retargeting-animations-in-unreal-engine-5/">Retargeting animations in UnrealEngine 5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/">How the RichTextBlock works in UnrealEngine (part.1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 MinCheon Bae<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/2020/02/03/home-page/index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'let-us-go-abroad';
+  
+  var disqus_url = 'https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2P265ZP7M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R2P265ZP7M');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Natvis in UnrealEngine | LET US GO ABROAD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="this post covers what is Natvis how to write custom Natvis visualization customization in UnrealEngine   environment Unreal Engine 4 ver. 4.25 Visual Studio 2019 ver. 16.8.1   reference https:&#x2F;&#x2F;docs.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Natvis in UnrealEngine">
+<meta property="og:url" content="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/index.html">
+<meta property="og:site_name" content="LET US GO ABROAD">
+<meta property="og:description" content="this post covers what is Natvis how to write custom Natvis visualization customization in UnrealEngine   environment Unreal Engine 4 ver. 4.25 Visual Studio 2019 ver. 16.8.1   reference https:&#x2F;&#x2F;docs.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/01.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/02.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/03.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/04.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/05.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/06.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/07.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/08.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/09.png">
+<meta property="article:published_time" content="2021-03-01T13:10:07.000Z">
+<meta property="article:modified_time" content="2021-03-01T13:10:07.000Z">
+<meta property="article:author" content="MinCheon Bae">
+<meta property="article:tag" content="UnrealEngine">
+<meta property="article:tag" content="Natvis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="LET US GO ABROAD" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LET US GO ABROAD</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/2020/02/03/home-page/index.html">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://baemincheon.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-unreal-engine-natvis" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/01/unreal-engine-natvis/" class="article-date">
+  <time datetime="2021-03-01T13:10:07.000Z" itemprop="datePublished">2021-03-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Natvis in UnrealEngine
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>this post covers<ul>
+<li>what is Natvis</li>
+<li>how to write custom Natvis visualization</li>
+<li>customization in UnrealEngine</li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Unreal Engine 4 <code>ver. 4.25</code></li>
+<li>Visual Studio 2019 <code>ver. 16.8.1</code></li>
+</ul>
+</li>
+<li>reference<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/visualstudio/debugger/create-custom-views-of-native-objects?view=vs-2019">https://docs.microsoft.com/en-us/visualstudio/debugger/create-custom-views-of-native-objects?view=vs-2019</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2015/debugger/format-specifiers-in-cpp?view=vs-2015&redirectedfrom=MSDN">https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2015/debugger/format-specifiers-in-cpp?view=vs-2015&redirectedfrom=MSDN</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/rwlp_xml_escape.html">https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty&#x2F;com.ibm.websphere.wlp.doc&#x2F;ae&#x2F;rwlp_xml_escape.html</a></li>
+</ol>
+</li>
+</ul>
+<h1 id="NATive-type-VISualization"><a href="#NATive-type-VISualization" class="headerlink" title="NATive type VISualization"></a>NATive type VISualization</h1><p>According to <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/visualstudio/debugger/create-custom-views-of-native-objects?view=vs-2019">reference #1</a>, the name of Natvis framework means visualization of native types. It can help your debugging with more plentiful visibility, and sometimes support mutiple environments that have a different size on the same data type. Suppose you want to make a string class storing its text as UTF-32 or something custom format, it should not be displayed well because it is not kind of ASCII. Though, do you want to see the data (in this case, the text) at <code>Watch</code> or <code>Local</code> viewport ? Then you should implement your own xml for custom Natvis visualization.</p>
+<p><em>SCREENSHOT WITHOUT CUSTOM NATVIS</em></p>
+<img src="/2021/03/01/unreal-engine-natvis/01.png" class="">
+
+<p><em>SCREENSHOT WITH CUSTOM NATVIS</em></p>
+<img src="/2021/03/01/unreal-engine-natvis/02.png" class="">
+
+<h1 id="Basic-syntax-and-usage"><a href="#Basic-syntax-and-usage" class="headerlink" title="Basic syntax and usage"></a>Basic syntax and usage</h1><p>The custom visualizer has XML syntax and it would be comfortable than a sole programming language. Just create a file of any name with <code>.natvis</code> extension and locate at the directory <code>Documents/Visual Studio 2019/Visualizers</code>. The Visual Studio IDE will find all natvis files at there and parse them. At first after you create the file, you need the tag <code>AutoVisualizer</code>.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">AutoVisualizer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">AutoVisualizer</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>But you may meet the error like below with our current visualizer. (You should turn on an option for showing errors related to Natvis. Manipulate the option at <code>Tools/Options/Debugging/Output Window/General OutputSettings/Natvisdiagnostic messages</code>. I recommend you to set the level as <code>Error</code>.)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Natvis: ...\Documents\Visual Studio 2019\Visualizers\Example.natvis(1,2): Fatal error:</span><br><span class="line">Expected element with namespace &#x27;http://schemas.microsoft.com/vstudio/debugger/natvis/2010&#x27;.</span><br></pre></td></tr></table></figure>
+
+<p>So you should specify the schemas. Like this.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">AutoVisualizer</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://schemas.microsoft.com/vstudio/debugger/natvis/2010&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">AutoVisualizer</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>And, the <code>AutoVisualizer</code> tag can have a child tag such as <code>Type</code>. The <code>Type</code> tag must have an attribute <code>Name</code>. <code>Name</code> can be set as the name of type. For example, you should type <code>SomeClass</code> at the attribute when you created a type <code>SomeClass</code>.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SomeClass</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> ID = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    SomeClass Some01;</span><br><span class="line">    Some01.ID = <span class="number">100</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">AutoVisualizer</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://schemas.microsoft.com/vstudio/debugger/natvis/2010&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Type</span> <span class="attr">Name</span>=<span class="string">&quot;SomeClass&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">Type</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">AutoVisualizer</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="/2021/03/01/unreal-engine-natvis/03.png" class="">
+
+<p>The <code>Type</code> tag can have a child tag such <code>DisplayString/Expand</code>. The <code>DisplayString</code> tag can be used for displaying a string at the debugging window like below.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">AutoVisualizer</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://schemas.microsoft.com/vstudio/debugger/natvis/2010&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Type</span> <span class="attr">Name</span>=<span class="string">&quot;SomeClass&quot;</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">DisplayString</span>&gt;</span></span><br><span class="line">			This is my class</span><br><span class="line">		<span class="tag">&lt;/<span class="name">DisplayString</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">Type</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">AutoVisualizer</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="/2021/03/01/unreal-engine-natvis/04.png" class="">
+
+<p>You can get the value of member variable. Brace the member variable as <code>&#123;&#125;</code>.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">AutoVisualizer</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://schemas.microsoft.com/vstudio/debugger/natvis/2010&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Type</span> <span class="attr">Name</span> = <span class="string">&quot;SomeClass&quot;</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">DisplayString</span>&gt;</span></span><br><span class="line">			My ID is &#123;ID&#125;</span><br><span class="line">		<span class="tag">&lt;/<span class="name">DisplayString</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">Type</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">AutoVisualizer</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="/2021/03/01/unreal-engine-natvis/05.png" class="">
+
+<p>With the <code>Expand</code> tag, you can customize the expanded view. The <code>Item</code> tags consist of the list. If you customize the expanded view as <code>Expand</code> tag, automatically <code>Raw View</code> item created, which was the original expanded view. You can decorate each line of list in expanded view. The specifier <code>sb</code> and <code>x</code> are respectively meaning “Display the string without quotation marks” and “Display the integer with hexa-decimal format”. For more details, visit <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2015/debugger/format-specifiers-in-cpp?view=vs-2015&redirectedfrom=MSDN">reference #2</a>.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">AutoVisualizer</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://schemas.microsoft.com/vstudio/debugger/natvis/2010&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">Type</span> <span class="attr">Name</span> = <span class="string">&quot;SomeClass&quot;</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">DisplayString</span>&gt;</span></span><br><span class="line">			My ID is &#123;ID&#125;</span><br><span class="line">		<span class="tag">&lt;/<span class="name">DisplayString</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">Expand</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">Item</span> <span class="attr">Name</span>=<span class="string">&quot;Description&quot;</span>&gt;</span></span><br><span class="line">				&quot;Natvis is awesome&quot;, sb</span><br><span class="line">			<span class="tag">&lt;/<span class="name">Item</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">Item</span> <span class="attr">Name</span>=<span class="string">&quot;ID&quot;</span>&gt;</span></span><br><span class="line">				ID, x</span><br><span class="line">			<span class="tag">&lt;/<span class="name">Item</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">Expand</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">Type</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">AutoVisualizer</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<img src="/2021/03/01/unreal-engine-natvis/06.png" class="">
+
+<h1 id="Example-in-UnrealEngine"><a href="#Example-in-UnrealEngine" class="headerlink" title="Example in UnrealEngine"></a>Example in UnrealEngine</h1><p>Let us find an example in UnrealEngine one. You can find <code>UE4.natvis</code> if you installed UnrealEngine at your local system. Mostly, the <code>UE4.natvis</code> located in <code>Engine/Extras/VisualStudioDebugging/UE4.natvis</code>.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">AutoVisualizer</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://schemas.microsoft.com/vstudio/debugger/natvis/2010&quot;</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">&lt;!-- FString visualizer --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Type</span> <span class="attr">Name</span>=<span class="string">&quot;FString&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DisplayString</span> <span class="attr">Condition</span>=<span class="string">&quot;Data.ArrayNum == 0&quot;</span>&gt;</span>Empty<span class="tag">&lt;/<span class="name">DisplayString</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DisplayString</span> <span class="attr">Condition</span>=<span class="string">&quot;Data.ArrayNum <span class="symbol">&amp;lt;</span> 0&quot;</span>&gt;</span>Invalid<span class="tag">&lt;/<span class="name">DisplayString</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DisplayString</span> <span class="attr">Condition</span>=<span class="string">&quot;Data.ArrayMax <span class="symbol">&amp;lt;</span> Data.ArrayNum&quot;</span>&gt;</span>Invalid<span class="tag">&lt;/<span class="name">DisplayString</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">DisplayString</span> <span class="attr">Condition</span>=<span class="string">&quot;Data.ArrayMax <span class="symbol">&amp;gt;</span>= Data.ArrayNum&quot;</span>&gt;</span>&#123;Data.AllocatorInstance.Data,su&#125;<span class="tag">&lt;/<span class="name">DisplayString</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">StringView</span> <span class="attr">Condition</span>=<span class="string">&quot;Data.ArrayMax <span class="symbol">&amp;gt;</span>= Data.ArrayNum&quot;</span>&gt;</span>Data.AllocatorInstance.Data,su<span class="tag">&lt;/<span class="name">StringView</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Type</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">AutoVisualizer</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>First of all, the <code>FString</code> welcomes us. Have a look for why the <code>FString</code> visualizer has been made like this. ( <code>&amp;lt;</code> and <code>&amp;gt;</code> things are escaped characters in xml. For more details, visit <a target="_blank" rel="noopener" href="https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/rwlp_xml_escape.html">reference #3</a>. )</p>
+<img src="/2021/03/01/unreal-engine-natvis/07.png" class="">
+
+<p>Put a breakpoint at where the <code>FString</code> is initialized. Before initialization, we can see <code>Invalid</code> at the debugging window.</p>
+<img src="/2021/03/01/unreal-engine-natvis/08.png" class="">
+
+<p>Expand the items. We can see the <code>ArrayNum</code> has a negative value. The condition <code>Data.ArrayNum &lt; 0</code> is satisfied and <code>Invalid</code> would be shown.</p>
+<img src="/2021/03/01/unreal-engine-natvis/09.png" class="">
+
+<p>After initialization, we can see the string very well. In this case, the condition <code>Data.ArrayMax &gt;= Data.ArrayNum</code> is satisfied and <code>L&quot;ABC&quot;</code> would be shown. Why does the string look like <code>L&quot;...&quot;</code> ? Because of the format specifier <code>su</code>. Check the <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2015/debugger/format-specifiers-in-cpp?view=vs-2015&redirectedfrom=MSDN">reference #2</a> again.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Engine/Source/Runtime/Core/Public/Containers/UnrealString.h</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CORE_API</span> FString</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">friend</span> <span class="keyword">struct</span> <span class="title class_">TContainerTraits</span>&lt;FString&gt;;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/** Array holding the character data */</span></span><br><span class="line">	<span class="keyword">typedef</span> TArray&lt;TCHAR&gt; DataType;</span><br><span class="line">	DataType Data;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>The <code>FString</code> stores its string with <code>TArray&lt;TCHAR&gt;</code>. So we could see the <code>ArrayNum</code> or <code>ArrayMax</code> things at the <code>FString</code> visualizer.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Engine/Source/Runtime/Core/Public/Containers/Array.h</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> InElementType, <span class="keyword">typename</span> InAllocator&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TArray</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">template</span> &lt;<span class="keyword">typename</span> OtherInElementType, <span class="keyword">typename</span> OtherAllocator&gt;</span><br><span class="line">	<span class="keyword">friend</span> <span class="keyword">class</span> <span class="title class_">TArray</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">typename</span> InAllocator::SizeType SizeType;</span><br><span class="line">	<span class="keyword">typedef</span> InElementType ElementType;</span><br><span class="line">	<span class="keyword">typedef</span> InAllocator   Allocator;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line"></span><br><span class="line">	<span class="keyword">template</span>&lt;<span class="keyword">typename</span> ElementType, <span class="keyword">typename</span> Allocator&gt;</span><br><span class="line">	<span class="keyword">friend</span> <span class="keyword">class</span> <span class="title class_">TIndirectArray</span>;</span><br><span class="line"></span><br><span class="line">	ElementAllocatorType AllocatorInstance;</span><br><span class="line">	SizeType             ArrayNum;</span><br><span class="line">	SizeType             ArrayMax;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Engine/Source/Runtime/Core/Public/Containers/ContainersFwd.h</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="type">int</span> IndexSize&gt; <span class="keyword">class</span> <span class="title class_">TSizedDefaultAllocator</span>;</span><br><span class="line"><span class="keyword">using</span> FDefaultAllocator = TSizedDefaultAllocator&lt;<span class="number">32</span>&gt;;</span><br><span class="line"><span class="keyword">using</span> FDefaultAllocator64 = TSizedDefaultAllocator&lt;<span class="number">64</span>&gt;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FDefaultSetAllocator</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FString</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Allocator = FDefaultAllocator&gt; <span class="keyword">class</span> TArray;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Engine/Source/Runtime/Core/Public/Containers/ContainerAllocationPolicies.h</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> IndexSize&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">TBitsToSizeType</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">static_assert</span>(IndexSize, <span class="string">&quot;Unsupported allocator index size.&quot;</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="keyword">struct</span> <span class="title class_">TBitsToSizeType</span>&lt;<span class="number">8</span>&gt;  &#123; <span class="keyword">using</span> Type = int8; &#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="keyword">struct</span> <span class="title class_">TBitsToSizeType</span>&lt;<span class="number">16</span>&gt; &#123; <span class="keyword">using</span> Type = int16; &#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="keyword">struct</span> <span class="title class_">TBitsToSizeType</span>&lt;<span class="number">32</span>&gt; &#123; <span class="keyword">using</span> Type = int32; &#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="keyword">struct</span> <span class="title class_">TBitsToSizeType</span>&lt;<span class="number">64</span>&gt; &#123; <span class="keyword">using</span> Type = int64; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** The indirect allocation policy always allocates the elements indirectly. */</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> IndexSize&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TSizedHeapAllocator</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">using</span> SizeType = <span class="keyword">typename</span> TBitsToSizeType&lt;IndexSize&gt;::Type;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> IndexSize&gt; <span class="keyword">class</span> <span class="title class_">TSizedDefaultAllocator</span> : <span class="keyword">public</span> TSizedHeapAllocator&lt;IndexSize&gt; &#123; <span class="keyword">public</span>: <span class="keyword">typedef</span> TSizedHeapAllocator&lt;IndexSize&gt; Typedef; &#125;;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>And you can find the type of <code>ArrayNum</code> and <code>ArrayMax</code> is <code>int32</code> with this flow.</p>
+<p>Sometimes, the <code>UE4.natvis</code> gives us a hint for understanding the complicated engine code. Even someday you may need to customize <code>UE4.natvis</code> for special case while supporting various platforms. It would be also good to learn Natvis if you mostly use Visual Studio IDE. Read premade ones and write your ones. :)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/" data-id="clw50m6p1001aakqm0bmbf2q3" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/04/07/difference-between-build-cs-and-target-cs/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Differences between Build.cs and Target.cs in UnrealEngine
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/12/24/retrospection-2020/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Retrospection 2020</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/" rel="tag">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoogleAnalytics/" rel="tag">GoogleAnalytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Home/" rel="tag">Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iptime/" rel="tag">Iptime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lecture/" rel="tag">Lecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSVC/" rel="tag">MSVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Migration/" rel="tag">Migration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network/" rel="tag">Network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retargeting/" rel="tag">Retargeting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextWrap/" rel="tag">TextWrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/About/" style="font-size: 10px;">About</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/Blueprint/" style="font-size: 13.33px;">Blueprint</a> <a href="/tags/CPP/" style="font-size: 13.33px;">CPP</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GoogleAnalytics/" style="font-size: 10px;">GoogleAnalytics</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Home/" style="font-size: 10px;">Home</a> <a href="/tags/Iptime/" style="font-size: 10px;">Iptime</a> <a href="/tags/Lecture/" style="font-size: 10px;">Lecture</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MSVC/" style="font-size: 10px;">MSVC</a> <a href="/tags/Migration/" style="font-size: 10px;">Migration</a> <a href="/tags/Natvis/" style="font-size: 10px;">Natvis</a> <a href="/tags/Network/" style="font-size: 10px;">Network</a> <a href="/tags/Perforce/" style="font-size: 13.33px;">Perforce</a> <a href="/tags/Retargeting/" style="font-size: 10px;">Retargeting</a> <a href="/tags/Retrospection/" style="font-size: 16.67px;">Retrospection</a> <a href="/tags/RichTextBlock/" style="font-size: 10px;">RichTextBlock</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/TextBlock/" style="font-size: 13.33px;">TextBlock</a> <a href="/tags/TextWrap/" style="font-size: 10px;">TextWrap</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/UnrealEngine/" style="font-size: 20px;">UnrealEngine</a> <a href="/tags/WSL/" style="font-size: 13.33px;">WSL</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/04/migration-from-perforce-into-git-in-windows/">Migration from Perforce into Git in Windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/04/10/conversion-from-universal-analytics-into-google-analytics-4/">Conversion from UA into GA4</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/12/promotion-for-online-lecture-of-unrealengine-01/">The promotion for online lecture of UnrealEngine</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/04/retargeting-animations-in-unreal-engine-5/">Retargeting animations in UnrealEngine 5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/">How the RichTextBlock works in UnrealEngine (part.1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 MinCheon Bae<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/2020/02/03/home-page/index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'let-us-go-abroad';
+  
+  var disqus_url = 'https://baemincheon.github.io/2021/03/01/unreal-engine-natvis/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

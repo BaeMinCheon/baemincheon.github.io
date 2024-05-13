@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2P265ZP7M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R2P265ZP7M');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Gamepad input process in UnrealEngine | LET US GO ABROAD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="this post covers key mapping of Xbox One controller in UnrealEngine how UnrealEngine handles input from user input process for gamepad (with Xbox One controller)   environment Unreal Engine 4 ver. 4.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gamepad input process in UnrealEngine">
+<meta property="og:url" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/index.html">
+<meta property="og:site_name" content="LET US GO ABROAD">
+<meta property="og:description" content="this post covers key mapping of Xbox One controller in UnrealEngine how UnrealEngine handles input from user input process for gamepad (with Xbox One controller)   environment Unreal Engine 4 ver. 4.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/01.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/02.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/03.png">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/04.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/06.png">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/07.png">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/08.png">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/09.png">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/10.png">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/11.png">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/12.png">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/13.png">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/14.png">
+<meta property="og:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/15.png">
+<meta property="article:published_time" content="2020-10-25T09:11:09.000Z">
+<meta property="article:modified_time" content="2020-10-25T09:11:09.000Z">
+<meta property="article:author" content="MinCheon Bae">
+<meta property="article:tag" content="UnrealEngine">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/01.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="LET US GO ABROAD" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LET US GO ABROAD</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/2020/02/03/home-page/index.html">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://baemincheon.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-unreal-input-system-via-gamepad" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/25/unreal-input-system-via-gamepad/" class="article-date">
+  <time datetime="2020-10-25T09:11:09.000Z" itemprop="datePublished">2020-10-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Gamepad input process in UnrealEngine
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>this post covers<ul>
+<li>key mapping of Xbox One controller in UnrealEngine</li>
+<li>how UnrealEngine handles input from user</li>
+<li>input process for gamepad (with Xbox One controller)</li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Unreal Engine 4 <code>ver. 4.25</code></li>
+<li>Visual Studio 2019 <code>ver. 16.7.6</code></li>
+<li>Windows 10 <code>ver. 2004</code></li>
+</ul>
+</li>
+<li>reference<ol>
+<li><a target="_blank" rel="noopener" href="https://support.xbox.com/en-US/help/hardware-network/controller/xbox-one-wireless-controller">https://support.xbox.com/en-US/help/hardware-network/controller/xbox-one-wireless-controller</a></li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="Terms"><a href="#Terms" class="headerlink" title="Terms"></a><em>Terms</em></h1><table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Synonym</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Non-Axis</td>
+<td>Key, Button</td>
+<td>input type which has only two states: <code>Pressed</code> or <code>Released</code></td>
+</tr>
+<tr>
+<td>Axis</td>
+<td>Stick</td>
+<td>input type which has numberless states</td>
+</tr>
+<tr>
+<td>Key</td>
+<td></td>
+<td>(sometimes) it is used for indicating any input type. be careful with context for distinction of <code>Non-Axis</code></td>
+</tr>
+<tr>
+<td>Deadzone</td>
+<td>Threshold</td>
+<td>range of input values, which blocks values in range. only bigger value cannot be blocked</td>
+</tr>
+</tbody></table>
+<h1 id="Gamepad-Non-Axis-x2F-Axis-Mapping-in-UnrealEngine"><a href="#Gamepad-Non-Axis-x2F-Axis-Mapping-in-UnrealEngine" class="headerlink" title="Gamepad Non-Axis&#x2F;Axis Mapping in UnrealEngine"></a><em>Gamepad Non-Axis&#x2F;Axis Mapping in UnrealEngine</em></h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/Core/Private/GenericPlatform/GenericApplication.cpp</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="function"><span class="type">const</span> FGamepadKeyNames::Type <span class="title">FGamepadKeyNames::LeftAnalogX</span><span class="params">(<span class="string">&quot;Gamepad_LeftX&quot;</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">const</span> FGamepadKeyNames::Type <span class="title">FGamepadKeyNames::LeftAnalogY</span><span class="params">(<span class="string">&quot;Gamepad_LeftY&quot;</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">const</span> FGamepadKeyNames::Type <span class="title">FGamepadKeyNames::RightAnalogX</span><span class="params">(<span class="string">&quot;Gamepad_RightX&quot;</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">const</span> FGamepadKeyNames::Type <span class="title">FGamepadKeyNames::RightAnalogY</span><span class="params">(<span class="string">&quot;Gamepad_RightY&quot;</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">const</span> FGamepadKeyNames::Type <span class="title">FGamepadKeyNames::LeftTriggerAnalog</span><span class="params">(<span class="string">&quot;Gamepad_LeftTriggerAxis&quot;</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">const</span> FGamepadKeyNames::Type <span class="title">FGamepadKeyNames::RightTriggerAnalog</span><span class="params">(<span class="string">&quot;Gamepad_RightTriggerAxis&quot;</span>)</span></span>;</span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>we can find some pre-defined non-axis&#x2F;axis keys as <code>FName</code> in <code>GenericApplication.cpp</code>. they are for mapping from various input messages to generic input messages. “various input messages” means, there are many types of gamepad in the world. the button&#x2F;stick layout differs in Xbox One controller, Playstation 4 controller and so on. the gamepads below are Xbox One, Playstation 4, Stadia and Switch in order.</p>
+<img src="/2020/10/25/unreal-input-system-via-gamepad/01.jpg" class="">
+<img src="/2020/10/25/unreal-input-system-via-gamepad/02.jpg" class="">
+<img src="/2020/10/25/unreal-input-system-via-gamepad/03.png" class="">
+<img src="/2020/10/25/unreal-input-system-via-gamepad/04.jpg" class="">
+
+<p>look at the Xbox One one and Playstation 4 one. they have many differences such as position of stick and exsitance of touch pad. even in comparison for Xbox One one and Switch one, the number of buttons differs. in this situation, it is not easy for every individual developer to support every type of gamepad, so the need of generic mapping for gamepad input arises. let us find out the generic mapping with Xbox One controller examples.</p>
+<img src="/2020/10/25/unreal-input-system-via-gamepad/06.png" class="">
+<img src="/2020/10/25/unreal-input-system-via-gamepad/07.png" class="">
+
+<p>the tables are from the <a target="_blank" rel="noopener" href="https://support.xbox.com/en-US/help/hardware-network/controller/xbox-one-wireless-controller">reference #1</a>. you can find more details for each button&#x2F;stick at the URL. though there are so many items in table, some of them are not counted as user input in common situation. so, we can gotta consider the items below:</p>
+<table>
+<thead>
+<tr>
+<th>Index</th>
+<th>Item Name</th>
+<th>Unreal Mapping</th>
+<th>Input Type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Left Stick</td>
+<td>(Move Horizontally) Gamepad_LeftX</td>
+<td>Key, Axis</td>
+</tr>
+<tr>
+<td></td>
+<td>(Move Vertically) Gamepad_LeftY</td>
+<td>Key, Axis</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>(Move Left Side More Than Deadzone) Gamepad_LeftStick_Left</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>(Move Up Side More Than Deadzone) Gamepad_LeftStick_Up</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>(Move Right Side More Than Deadzone) Gamepad_LeftStick_Up</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>(Move Down Side More Than Deadzone) Gamepad_LeftStick_Down</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>(Click) Gamepad_LeftThumbstick</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Left Bumper</td>
+<td>Gamepad_LeftShoulder</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>3</td>
+<td>View Button</td>
+<td>Gamepad_Special_Left</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Menu Button</td>
+<td>Gamepad_Special_Right</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Right Bumper</td>
+<td>Gamepad_RightShoulder</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Directional Pad</td>
+<td>(Left) Gamepad_DPad_Left</td>
+<td>Key</td>
+</tr>
+<tr>
+<td></td>
+<td>(Up) Gamepad_DPad_Up</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>(Right) Gamepad_DPad_Right</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>(Down) Gamepad_DPad_Down</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Right Stick</td>
+<td>(Move Horizontally) Gamepad_RightX</td>
+<td>Key, Axis</td>
+</tr>
+<tr>
+<td></td>
+<td>(Move Vertically) Gamepad_RightY</td>
+<td>Key, Axis</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>(Move Left Side More Than Deadzone) Gamepad_RightStick_Left</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>(Move Up Side More Than Deadzone) Gamepad_RightStick_Up</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>(Move Right Side More Than Deadzone) Gamepad_RightStick_Up</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>(Move Down Side More Than Deadzone) Gamepad_RightStick_Down</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>(Click) Gamepad_RightThumbstick</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>Right Trigger</td>
+<td>Gamepad_RightTriggerAxis</td>
+<td>Key, Axis</td>
+</tr>
+<tr>
+<td></td>
+<td>(Press More Than Deadzone) Gamepad_RightTrigger</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td>Left Trigger</td>
+<td>Gamepad_LeftTriggerAxis</td>
+<td>Key, Axis</td>
+</tr>
+<tr>
+<td></td>
+<td>(Press More Than Deadzone) Gamepad_LeftTrigger</td>
+<td>Key</td>
+<td></td>
+</tr>
+<tr>
+<td>X</td>
+<td>X Button</td>
+<td>Gamepad_FaceButton_Left</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>Y Button</td>
+<td>Gamepad_FaceButton_Up</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>A</td>
+<td>A Button</td>
+<td>Gamepad_FaceButton_Bottom</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>B</td>
+<td>B Button</td>
+<td>Gamepad_FaceButton_Right</td>
+<td>Key</td>
+</tr>
+</tbody></table>
+<p>some of them are handled as not only Key but Axis, too.</p>
+<img src="/2020/10/25/unreal-input-system-via-gamepad/08.png" class="">
+</br>
+<img src="/2020/10/25/unreal-input-system-via-gamepad/09.png" class="">
+
+<ul>
+<li>the <code>Gamepad_LeftY</code> is the one of cases</li>
+</ul>
+<h1 id="Gamepad-Non-Axis-Input-Handling-Process"><a href="#Gamepad-Non-Axis-Input-Handling-Process" class="headerlink" title="Gamepad Non-Axis Input Handling Process"></a><em>Gamepad Non-Axis Input Handling Process</em></h1><img src="/2020/10/25/unreal-input-system-via-gamepad/10.png" class="">
+
+<p>focus the function <code>XInputInterface::SendControllerEvents()</code>. there is the logic to filter hardware input state.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/ApplicationCore/Private/Windows/XInputInterface.cpp</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">XInputInterface::SendControllerEvents</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">0</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_A);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">1</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_B);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">2</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_X);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">3</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_Y);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">4</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_LEFT_SHOULDER);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">5</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_RIGHT_SHOULDER);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">6</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_BACK);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">7</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_START);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">8</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_LEFT_THUMB);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">9</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_RIGHT_THUMB);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">10</span>]] = !!(XInputState.Gamepad.bLeftTrigger &gt; XINPUT_GAMEPAD_TRIGGER_THRESHOLD);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">11</span>]] = !!(XInputState.Gamepad.bRightTrigger &gt; XINPUT_GAMEPAD_TRIGGER_THRESHOLD);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">12</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_DPAD_UP);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">13</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_DPAD_DOWN);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">14</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_DPAD_LEFT);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">15</span>]] = !!(XInputState.Gamepad.wButtons &amp; XINPUT_GAMEPAD_DPAD_RIGHT);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">16</span>]] = !!(XInputState.Gamepad.sThumbLY &gt; XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">17</span>]] = !!(XInputState.Gamepad.sThumbLY &lt; -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">18</span>]] = !!(XInputState.Gamepad.sThumbLX &lt; -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">19</span>]] = !!(XInputState.Gamepad.sThumbLX &gt; XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">20</span>]] = !!(XInputState.Gamepad.sThumbRY &gt; XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">21</span>]] = !!(XInputState.Gamepad.sThumbRY &lt; -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">22</span>]] = !!(XInputState.Gamepad.sThumbRX &lt; -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);</span><br><span class="line">    CurrentStates[X360ToXboxControllerMapping[<span class="number">23</span>]] = !!(XInputState.Gamepad.sThumbRX &gt; XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>the next screenshot shows the value of <code>CurrentStates</code> when you press A button in Xbox One gamepad.</p>
+<img src="/2020/10/25/unreal-input-system-via-gamepad/11.png" class="">
+
+<p>we can see the key, deadzone or threshold macro in the code. the macros are defined at <code>XInput.h</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">C:/<span class="function">Program <span class="title">Files</span> <span class="params">(x86)</span>/Windows Kits/10/Include/10.0.18362.0/um/XInput.h</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">...</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">//</span></span></span><br><span class="line"><span class="function"><span class="comment">// Constants for gamepad buttons</span></span></span><br><span class="line"><span class="function"><span class="comment">//</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_DPAD_UP          0x0001</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_DPAD_DOWN        0x0002</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_DPAD_LEFT        0x0004</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_DPAD_RIGHT       0x0008</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_START            0x0010</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_BACK             0x0020</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_LEFT_THUMB       0x0040</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_RIGHT_THUMB      0x0080</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_LEFT_SHOULDER    0x0100</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_RIGHT_SHOULDER   0x0200</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_A                0x1000</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_B                0x2000</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_X                0x4000</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_Y                0x8000</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">//</span></span></span><br><span class="line"><span class="function"><span class="comment">// Gamepad thresholds</span></span></span><br><span class="line"><span class="function"><span class="comment">//</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE  7849</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE 8689</span></span></span><br><span class="line"><span class="function"><span class="meta">#<span class="keyword">define</span> XINPUT_GAMEPAD_TRIGGER_THRESHOLD    30</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">...</span></span><br></pre></td></tr></table></figure>
+
+<p>there is an exception case for input smaller than deadzone. let us take an example with <code>Gamepad_LeftX</code> message. check out screenshots below.</p>
+<img src="/2020/10/25/unreal-input-system-via-gamepad/12.png" class="">
+
+<p>when you input a tiny change on left stick, <code>InputAxis()</code> is called. and the key will be accumulated in <code>EventAccumulator</code>.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/Engine/Private/UserInterface/PlayerInput.cpp</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UPlayerInput::ProcessInputStack</span><span class="params">(...)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Exchange</span>(KeyState-&gt;EventCounts[EventIndex], KeyState-&gt;EventAccumulator[EventIndex]);</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>after that, the key in <code>EventAccumulator</code> is moved to <code>EventCounts</code>.</p>
+<img src="/2020/10/25/unreal-input-system-via-gamepad/13.png" class="">
+
+<p>if you keep operating the stick, the key is regarded as down.</p>
+<img src="/2020/10/25/unreal-input-system-via-gamepad/14.png" class="">
+
+<p>in this situation, the key is regarded as released if all keys are flushed.</p>
+<img src="/2020/10/25/unreal-input-system-via-gamepad/15.png" class="">
+
+<h1 id="Gamepad-Axis-Input-Handling-Process"><a href="#Gamepad-Axis-Input-Handling-Process" class="headerlink" title="Gamepad Axis Input Handling Process"></a><em>Gamepad Axis Input Handling Process</em></h1><p>the callstack of Axis one is similar to the Non-Axis one. there is a difference of execution at <code>XInputInterface::SendControllerEvents()</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">UnrealEngine/Engine/Source/Runtime/ApplicationCore/Private/Windows/XInputInterface.cpp</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">XInputInterface::SendControllerEvents</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Send new analog data if it&#x27;s different or outside the platform deadzone.</span></span><br><span class="line">    <span class="keyword">auto</span> OnControllerAnalog = [<span class="keyword">this</span>, &amp;ControllerState](<span class="type">const</span> FName&amp; GamePadKey, <span class="type">const</span> <span class="keyword">auto</span> NewAxisValue, <span class="type">const</span> <span class="type">float</span> NewAxisValueNormalized, <span class="keyword">auto</span>&amp; OldAxisValue, <span class="type">const</span> <span class="keyword">auto</span> DeadZone) &#123;</span><br><span class="line">        <span class="keyword">if</span> (OldAxisValue != NewAxisValue || FMath::<span class="built_in">Abs</span>((int32)NewAxisValue) &gt; DeadZone)</span><br><span class="line">        &#123;</span><br><span class="line">            MessageHandler-&gt;<span class="built_in">OnControllerAnalog</span>(GamePadKey, ControllerState.ControllerId, NewAxisValueNormalized);</span><br><span class="line">        &#125;</span><br><span class="line">        OldAxisValue = NewAxisValue;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> <span class="keyword">auto</span>&amp; Gamepad = XInputState.Gamepad;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">OnControllerAnalog</span>(FGamepadKeyNames::LeftAnalogX, Gamepad.sThumbLX, <span class="built_in">ShortToNormalizedFloat</span>(Gamepad.sThumbLX), ControllerState.LeftXAnalog, XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);</span><br><span class="line">    <span class="built_in">OnControllerAnalog</span>(FGamepadKeyNames::LeftAnalogY, Gamepad.sThumbLY, <span class="built_in">ShortToNormalizedFloat</span>(Gamepad.sThumbLY), ControllerState.LeftYAnalog, XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">OnControllerAnalog</span>(FGamepadKeyNames::RightAnalogX, Gamepad.sThumbRX, <span class="built_in">ShortToNormalizedFloat</span>(Gamepad.sThumbRX), ControllerState.RightXAnalog, XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);</span><br><span class="line">    <span class="built_in">OnControllerAnalog</span>(FGamepadKeyNames::RightAnalogY, Gamepad.sThumbRY, <span class="built_in">ShortToNormalizedFloat</span>(Gamepad.sThumbRY), ControllerState.RightYAnalog, XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">OnControllerAnalog</span>(FGamepadKeyNames::LeftTriggerAnalog, Gamepad.bLeftTrigger, Gamepad.bLeftTrigger / <span class="number">255.f</span>, ControllerState.LeftTriggerAnalog, XINPUT_GAMEPAD_TRIGGER_THRESHOLD);</span><br><span class="line">    <span class="built_in">OnControllerAnalog</span>(FGamepadKeyNames::RightTriggerAnalog, Gamepad.bRightTrigger, Gamepad.bRightTrigger / <span class="number">255.f</span>, ControllerState.RightTriggerAnalog, XINPUT_GAMEPAD_TRIGGER_THRESHOLD);</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>in this case, <code>OnControllerAnalog()</code> is called even a tiny change of input value exists. because the code compares with <code>OldAxisValue != NewAxisValue</code>. the function will not be called only when there is no change on input value.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/" data-id="clw50m6oy000makqm0c70hzs1" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/12/24/retrospection-2020/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Retrospection 2020
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/14/unreal-unique-pointer/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">UnrealEngine unique pointer</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/" rel="tag">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoogleAnalytics/" rel="tag">GoogleAnalytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Home/" rel="tag">Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iptime/" rel="tag">Iptime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lecture/" rel="tag">Lecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSVC/" rel="tag">MSVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Migration/" rel="tag">Migration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network/" rel="tag">Network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retargeting/" rel="tag">Retargeting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextWrap/" rel="tag">TextWrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/About/" style="font-size: 10px;">About</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/Blueprint/" style="font-size: 13.33px;">Blueprint</a> <a href="/tags/CPP/" style="font-size: 13.33px;">CPP</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GoogleAnalytics/" style="font-size: 10px;">GoogleAnalytics</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Home/" style="font-size: 10px;">Home</a> <a href="/tags/Iptime/" style="font-size: 10px;">Iptime</a> <a href="/tags/Lecture/" style="font-size: 10px;">Lecture</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MSVC/" style="font-size: 10px;">MSVC</a> <a href="/tags/Migration/" style="font-size: 10px;">Migration</a> <a href="/tags/Natvis/" style="font-size: 10px;">Natvis</a> <a href="/tags/Network/" style="font-size: 10px;">Network</a> <a href="/tags/Perforce/" style="font-size: 13.33px;">Perforce</a> <a href="/tags/Retargeting/" style="font-size: 10px;">Retargeting</a> <a href="/tags/Retrospection/" style="font-size: 16.67px;">Retrospection</a> <a href="/tags/RichTextBlock/" style="font-size: 10px;">RichTextBlock</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/TextBlock/" style="font-size: 13.33px;">TextBlock</a> <a href="/tags/TextWrap/" style="font-size: 10px;">TextWrap</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/UnrealEngine/" style="font-size: 20px;">UnrealEngine</a> <a href="/tags/WSL/" style="font-size: 13.33px;">WSL</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/04/migration-from-perforce-into-git-in-windows/">Migration from Perforce into Git in Windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/04/10/conversion-from-universal-analytics-into-google-analytics-4/">Conversion from UA into GA4</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/12/promotion-for-online-lecture-of-unrealengine-01/">The promotion for online lecture of UnrealEngine</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/04/retargeting-animations-in-unreal-engine-5/">Retargeting animations in UnrealEngine 5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/">How the RichTextBlock works in UnrealEngine (part.1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 MinCheon Bae<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/2020/02/03/home-page/index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'let-us-go-abroad';
+  
+  var disqus_url = 'https://baemincheon.github.io/2020/10/25/unreal-input-system-via-gamepad/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

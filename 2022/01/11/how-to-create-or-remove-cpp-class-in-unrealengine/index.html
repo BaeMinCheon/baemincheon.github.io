@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2P265ZP7M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R2P265ZP7M');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>How to create or remove CPP class in UnrealEngine | LET US GO ABROAD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Environment     UnrealEngine branch: 5.0   Visual Studio 2022 version: 17.0.4   Windows 11 Pro build: 22000.376   OverviewDeveloping your UnrealEngine project with only the blueprint is not easy be">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to create or remove CPP class in UnrealEngine">
+<meta property="og:url" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/index.html">
+<meta property="og:site_name" content="LET US GO ABROAD">
+<meta property="og:description" content="Environment     UnrealEngine branch: 5.0   Visual Studio 2022 version: 17.0.4   Windows 11 Pro build: 22000.376   OverviewDeveloping your UnrealEngine project with only the blueprint is not easy be">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/01.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/02.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/03.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/04.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/05.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/06.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/08.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/17.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/09.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/10.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/11.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/12.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/13.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/14.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/15.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/16.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/18.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/07.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/19.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/20.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/21.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/22.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/23.png">
+<meta property="article:published_time" content="2022-01-11T13:08:04.000Z">
+<meta property="article:modified_time" content="2022-01-11T13:08:04.000Z">
+<meta property="article:author" content="MinCheon Bae">
+<meta property="article:tag" content="UnrealEngine">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="LET US GO ABROAD" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LET US GO ABROAD</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/2020/02/03/home-page/index.html">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://baemincheon.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-how-to-create-or-remove-cpp-class-in-unrealengine" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/" class="article-date">
+  <time datetime="2022-01-11T13:08:04.000Z" itemprop="datePublished">2022-01-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      How to create or remove CPP class in UnrealEngine
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <table>
+<thead>
+<tr>
+<th>Environment</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UnrealEngine</td>
+<td><code>branch: 5.0</code></td>
+</tr>
+<tr>
+<td>Visual Studio 2022</td>
+<td><code>version: 17.0.4</code></td>
+</tr>
+<tr>
+<td>Windows 11 Pro</td>
+<td><code>build: 22000.376</code></td>
+</tr>
+</tbody></table>
+<h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a><em><code>Overview</code></em></h1><p>Developing your UnrealEngine project with only the blueprint is not easy because the blueprint has some limitations on functionalities than the native, CPP. For instance, in blueprint you can access the source code tagged by <code>BlueprintCallable</code>, <code>BlueprintType</code>, <code>BlueprintReadOnly</code>, or those series. But, in CPP you can access all of the source code as possible and even you can modify the source code of engine. In other words, using only blueprint is like using a part of UnrealEngine. So eventually, you would want to create CPP class for more functionalities. This post covers that topic; how to create CPP class in UnrealEngine.</p>
+<p>Plus, not only creating something but removing something is important. I will tell you how to remove CPP class in UnrealEngine, too. Let us create a project from ThirdPerson template with the options below. I named it as <code>Unreal_5_0</code>. </p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/01.png" class="">
+
+<h1 id="Creating-CPP-class-method-1"><a href="#Creating-CPP-class-method-1" class="headerlink" title="Creating CPP class; method #1"></a><em><code>Creating CPP class; method #1</code></em></h1><img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/02.png" class="">
+
+<p>Open the <code>Content Drawer</code> and click <code>All/C++ Classes</code> folder. After the steps, you can see the option <code>New C++ Class...</code> when you click the <code>Add</code> button. Click it.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/03.png" class="">
+
+<p>In this dialog, you can select a parent of new CPP class. <code>Common Classes</code> tab contains the most commonly used classes, so you should switch to <code>All Classes</code> tab and find an appropriate class if needed.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/04.png" class="">
+
+<p>I chose the class <code>UserWidget</code> as a parent of new CPP class. Click the button <code>Next&gt;</code>.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/05.png" class="">
+
+<p>In this dialog, you can name the new CPP class and save it with some options. I will left the name as default, <code>My[ParentClassName]</code>. The combobox beside name is for selecting a module to include this class. Our project created from ThirdPerson template starts with only one module whose name is the same with project, in this case <code>Unreal_5_0</code>.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// GameProjectUtils.h</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** Where is this class located within the Source folder? */</span></span><br><span class="line"><span class="keyword">enum class</span> <span class="title class_">EClassLocation</span> : uint8</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/** The class is going to a user defined location (outside of the Public, Private, or Classes) folder for this module */</span></span><br><span class="line">    UserDefined,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** The class is going to the Public folder for this module */</span></span><br><span class="line">    Public,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** The class is going to the Private folder for this module */</span></span><br><span class="line">    Private,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** The class is going to the Classes folder for this module */</span></span><br><span class="line">    Classes,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>The radio button <code>Class Type</code> is for selecting a location of new CPP class. The enum value is <code>UserDefined</code> in default, but it would be forced to <code>Public</code> or <code>Private</code> when you select one of the radio buttons.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SNewClassDialog.cpp</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SNewClassDialog::OnClassLocationChanged</span><span class="params">(GameProjectUtils::EClassLocation InLocation)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">const</span> FString AbsoluteClassPath = FPaths::<span class="built_in">ConvertRelativePathToFull</span>(NewClassPath) / <span class="string">&quot;&quot;</span>; <span class="comment">// Ensure trailing /</span></span><br><span class="line"></span><br><span class="line">	GameProjectUtils::EClassLocation TmpClassLocation = GameProjectUtils::EClassLocation::UserDefined;</span><br><span class="line">	GameProjectUtils::<span class="built_in">GetClassLocation</span>(AbsoluteClassPath, *SelectedModuleInfo, TmpClassLocation);</span><br><span class="line"></span><br><span class="line">	<span class="type">const</span> FString RootPath = SelectedModuleInfo-&gt;ModuleSourcePath;</span><br><span class="line">	<span class="type">const</span> FString PublicPath = RootPath / <span class="string">&quot;Public&quot;</span> / <span class="string">&quot;&quot;</span>;		<span class="comment">// Ensure trailing /</span></span><br><span class="line">	<span class="type">const</span> FString PrivatePath = RootPath / <span class="string">&quot;Private&quot;</span> / <span class="string">&quot;&quot;</span>;		<span class="comment">// Ensure trailing /</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Update the class path to be rooted to the Public or Private folder based on InVisibility</span></span><br><span class="line">	<span class="keyword">switch</span> (InLocation)</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> GameProjectUtils::EClassLocation::Public:</span><br><span class="line">		<span class="keyword">if</span> (AbsoluteClassPath.<span class="built_in">StartsWith</span>(PrivatePath))</span><br><span class="line">		&#123;</span><br><span class="line">			NewClassPath = AbsoluteClassPath.<span class="built_in">Replace</span>(*PrivatePath, *PublicPath);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (AbsoluteClassPath.<span class="built_in">StartsWith</span>(RootPath))</span><br><span class="line">		&#123;</span><br><span class="line">			NewClassPath = AbsoluteClassPath.<span class="built_in">Replace</span>(*RootPath, *PublicPath);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			NewClassPath = PublicPath;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">case</span> GameProjectUtils::EClassLocation::Private:</span><br><span class="line">		<span class="keyword">if</span> (AbsoluteClassPath.<span class="built_in">StartsWith</span>(PublicPath))</span><br><span class="line">		&#123;</span><br><span class="line">			NewClassPath = AbsoluteClassPath.<span class="built_in">Replace</span>(*PublicPath, *PrivatePath);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (AbsoluteClassPath.<span class="built_in">StartsWith</span>(RootPath))</span><br><span class="line">		&#123;</span><br><span class="line">			NewClassPath = AbsoluteClassPath.<span class="built_in">Replace</span>(*RootPath, *PrivatePath);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			NewClassPath = PrivatePath;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Will update ClassVisibility correctly</span></span><br><span class="line">	<span class="built_in">UpdateInputValidity</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>With these codes, the radio buttons just change the location of new CPP class. The new CPP class would be included in <code>Public</code> folder when you clicked a radio button <code>Public</code>, vice versa. This setting makes some differences especially onto accessibility.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// GameProjectUtils.cpp</span></span><br><span class="line"><span class="comment">// GameProjectUtils::GenerateClassHeaderFile()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ( <span class="built_in">GetClassLocation</span>(NewHeaderFileName, ModuleInfo, ClassPathLocation) )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// If this class isn&#x27;t Private, make sure and include the API macro so it can be linked within other modules</span></span><br><span class="line">    <span class="keyword">if</span> ( ClassPathLocation != EClassLocation::Private )</span><br><span class="line">    &#123;</span><br><span class="line">        ModuleAPIMacro = ModuleInfo.ModuleName.<span class="built_in">ToUpper</span>() + <span class="string">&quot;_API &quot;</span>; <span class="comment">// include a trailing space for the template formatting</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Definitions.Unreal_5_0.h</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> UNREAL_5_0_API DLLEXPORT</span></span><br></pre></td></tr></table></figure>
+
+<p>Only the class of location for <code>Private</code> cannot have the macro <code>[ModuleName]_API</code>. And the macro is defined as <code>DLLEXPORT</code>. The attribute is used to export codes in MSVC, visit <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/cpp/cpp/dllexport-dllimport?view=msvc-170">here</a> for more details.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyUserWidget.h</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;CoreMinimal.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Blueprint/UserWidget.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MyUserWidget.generated.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">UCLASS</span>()</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UNREAL_5_0_API</span> UMyUserWidget : <span class="keyword">public</span> UUserWidget</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">GENERATED_BODY</span>()</span><br><span class="line">	</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Of course, my new CPP class <code>MyUserWidget</code> has the macro <code>[ModuleName]_API</code> because I had not chosen any radio button. It was left as <code>UserDefined</code> and <code>UserDefined</code> is usually treated like <code>Public</code>. Then, the new CPP class would not have the macro if you clicked <code>Private</code> at the dialog.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/06.png" class="">
+
+<p>Click <code>Create Class</code>. Engine will create intermediate files, generate project files, and build source codes.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/08.png" class="">
+
+<p>After that, the new CPP class is ready for you.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/17.png" class="">
+
+<p>FYI, remove <code>[ProjectRoot]/Binaries</code> folder and build again if you meet a dialog like above while opening the editor.</p>
+<h1 id="Creating-CPP-class-method-2"><a href="#Creating-CPP-class-method-2" class="headerlink" title="Creating CPP class; method #2"></a><em><code>Creating CPP class; method #2</code></em></h1><p>At the method #1, you must wait for a moment while engine does a process; creating intermediate files, generating project files, and build source codes. The process of creating new CPP class is not expensive when your project is small enough, but every project gets bigger and bigger as time goes on. When it comes to the point, you would want create multiple new CPP classes and wait for only one moment. At that time, the method #2 will be able to save you.</p>
+<p>The method #2 for creating new CPP class is quite simple; do it yourself what engine did for you. Let me explain step by step. Suppose you want to create new CPP class inherits <code>UserWidget</code> class.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/09.png" class="">
+
+<p>Open your VisualStudio project. Find an location to add your new CPP class at <code>Solution Explorer</code>. I will add a class at <code>Unreal_5_0</code> folder. Select <code>Add/New Item....</code> at the option.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/10.png" class="">
+
+<p>Select <code>Header File</code> and name the file. I will name the file as <code>SomeUserWidget.h</code>. And click the button <code>Browse...</code> to locate the file. I will locate the file as the same location in <code>Solution Explorer</code>, <code>[ProjectRoot]/Source/Unreal_5_0</code>.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/11.png" class="">
+
+<p>After click the button <code>Add</code>, you can find the new file at both file explorer and <code>Solution Explorer</code> in VisualStudio IDE. Repeat previous steps for creating a cpp file.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/12.png" class="">
+
+<p>Then you have two files for creating new CPP class.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/13.png" class="">
+
+<p>But they have no contents, in other words, empty. So what ? Let us fill the contents manually. The cpp file is very simple as it has only an include statement, <code>#include &quot;[HeaderName]&quot;</code>. Problem is the header file. Usually, a generated header file from a class inherits <code>UObject</code> (or child of <code>UObject</code>) has a format like below:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Copyright notice</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;CoreMinimal.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;[ParentClassHeaderFile]&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;[ThisClass].generated.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** Comment for documentation</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">UCLASS</span>()</span><br><span class="line"><span class="built_in">class</span> ([ModuleName]_API) U[ThisClass] : <span class="keyword">public</span> U[ParentClass]</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">GENERATED_BODY</span>()</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>For instance, we had created a class <code>MyUserWidget</code>. The header file <code>MyUserWidget.h</code> has the contents like below:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Fill out your copyright notice in the Description page of Project Settings.</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;CoreMinimal.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Blueprint/UserWidget.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MyUserWidget.generated.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">UCLASS</span>()</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UNREAL_5_0_API</span> UMyUserWidget : <span class="keyword">public</span> UUserWidget</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">GENERATED_BODY</span>()</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>FYI, the part <code>[ModuleName]_API</code> is optional as I explained at the method #1.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/14.png" class="">
+
+<p>Then, we can write down some codes for <code>SomeUserWidget</code>. They look like above. Alright, now we should generate intermediate files and project files. And then build the source codes.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/15.png" class="">
+
+<p>For this, close your VisualStudio IDE. Right click the uproject file and select <code>Generate Visual Studio project files</code>.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/16.png" class="">
+
+<p>Open your VisualStudio project after generation ends. And build the editor. The engine will generate intermediate files such as <code>generated.h</code> and <code>gen.cpp</code>. For more details about generating intermediate files, visit <a href="https://baemincheon.github.io/2021/08/06/how-unreal-macro-generated/">this post</a>.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/18.png" class="">
+
+<p>Now build ended. Let us open the editor. We can see new class <code>SomeUserWidget</code> well.</p>
+<h1 id="Removing-CPP-class"><a href="#Removing-CPP-class" class="headerlink" title="Removing CPP class"></a><em><code>Removing CPP class</code></em></h1><img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/07.png" class="">
+
+<p>As you can see, you cannot select <code>Delete</code> at the option about CPP class in editor. Then, how we can remove a class when we do not need it ? It is quite simple, but you cannot do it in editor.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/19.png" class="">
+
+<p>Close your editor and remove files for the class you want to remove. I will remove the files for the class <code>SomeUserWidget</code>.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/20.png" class="">
+
+<p>And then generate project files via uproject file. Plus, you must remove <code>[ProjectRoot]/Binaries</code> folder.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/21.png" class="">
+
+<p>Open your VisualStudio project and build editor.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/22.png" class="">
+
+<p>Now you can see the class <code>SomeUserWidget</code> disappeared.</p>
+<img src="/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/23.png" class="">
+
+<p>Still the intermediate files could be remained. Remove <code>[ProjectRoot]/Intermediate</code> folder and repeat the steps.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/" data-id="clw50m6p5002hakqmg9ideeh7" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/22/how-to-rename-your-project-in-unrealengine/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          How to rename your project in UnrealEngine
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/12/18/retrospection-2021/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Retrospection 2021</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/" rel="tag">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoogleAnalytics/" rel="tag">GoogleAnalytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Home/" rel="tag">Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iptime/" rel="tag">Iptime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lecture/" rel="tag">Lecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSVC/" rel="tag">MSVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Migration/" rel="tag">Migration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network/" rel="tag">Network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retargeting/" rel="tag">Retargeting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextWrap/" rel="tag">TextWrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/About/" style="font-size: 10px;">About</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/Blueprint/" style="font-size: 13.33px;">Blueprint</a> <a href="/tags/CPP/" style="font-size: 13.33px;">CPP</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GoogleAnalytics/" style="font-size: 10px;">GoogleAnalytics</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Home/" style="font-size: 10px;">Home</a> <a href="/tags/Iptime/" style="font-size: 10px;">Iptime</a> <a href="/tags/Lecture/" style="font-size: 10px;">Lecture</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MSVC/" style="font-size: 10px;">MSVC</a> <a href="/tags/Migration/" style="font-size: 10px;">Migration</a> <a href="/tags/Natvis/" style="font-size: 10px;">Natvis</a> <a href="/tags/Network/" style="font-size: 10px;">Network</a> <a href="/tags/Perforce/" style="font-size: 13.33px;">Perforce</a> <a href="/tags/Retargeting/" style="font-size: 10px;">Retargeting</a> <a href="/tags/Retrospection/" style="font-size: 16.67px;">Retrospection</a> <a href="/tags/RichTextBlock/" style="font-size: 10px;">RichTextBlock</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/TextBlock/" style="font-size: 13.33px;">TextBlock</a> <a href="/tags/TextWrap/" style="font-size: 10px;">TextWrap</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/UnrealEngine/" style="font-size: 20px;">UnrealEngine</a> <a href="/tags/WSL/" style="font-size: 13.33px;">WSL</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/04/migration-from-perforce-into-git-in-windows/">Migration from Perforce into Git in Windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/04/10/conversion-from-universal-analytics-into-google-analytics-4/">Conversion from UA into GA4</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/12/promotion-for-online-lecture-of-unrealengine-01/">The promotion for online lecture of UnrealEngine</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/04/retargeting-animations-in-unreal-engine-5/">Retargeting animations in UnrealEngine 5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/">How the RichTextBlock works in UnrealEngine (part.1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 MinCheon Bae<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/2020/02/03/home-page/index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'let-us-go-abroad';
+  
+  var disqus_url = 'https://baemincheon.github.io/2022/01/11/how-to-create-or-remove-cpp-class-in-unrealengine/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

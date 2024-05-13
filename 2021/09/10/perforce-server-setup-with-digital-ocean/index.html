@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2P265ZP7M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R2P265ZP7M');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>How to setup Perforce server with Ubuntu | LET US GO ABROAD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Environment     Helix Core (P4D) version: P4D&#x2F;LINUX26X86_64&#x2F;2021.1&#x2F;2156517   Ubuntu version: 20.04 LTS   Helix Visual Client (P4V) version: P4V&#x2F;NTX64&#x2F;2021.3&#x2F;2170446   Windows 10 build: 19043.1165">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to setup Perforce server with Ubuntu">
+<meta property="og:url" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/index.html">
+<meta property="og:site_name" content="LET US GO ABROAD">
+<meta property="og:description" content="Environment     Helix Core (P4D) version: P4D&#x2F;LINUX26X86_64&#x2F;2021.1&#x2F;2156517   Ubuntu version: 20.04 LTS   Helix Visual Client (P4V) version: P4V&#x2F;NTX64&#x2F;2021.3&#x2F;2170446   Windows 10 build: 19043.1165">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/01.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/02.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/03.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/04.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/05.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/06.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/07.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/08.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/09.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/10.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/11.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/12.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/13.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/14.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/15.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/16.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/17.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/18.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/19.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/20.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/21.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/22.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/23.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/24.png">
+<meta property="article:published_time" content="2021-09-10T14:50:39.000Z">
+<meta property="article:modified_time" content="2021-09-10T14:50:39.000Z">
+<meta property="article:author" content="MinCheon Bae">
+<meta property="article:tag" content="Perforce">
+<meta property="article:tag" content="DigitalOcean">
+<meta property="article:tag" content="Ubuntu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="LET US GO ABROAD" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LET US GO ABROAD</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/2020/02/03/home-page/index.html">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://baemincheon.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-perforce-server-setup-with-digital-ocean" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/09/10/perforce-server-setup-with-digital-ocean/" class="article-date">
+  <time datetime="2021-09-10T14:50:39.000Z" itemprop="datePublished">2021-09-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      How to setup Perforce server with Ubuntu
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <table>
+<thead>
+<tr>
+<th>Environment</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Helix Core (P4D)</td>
+<td><code>version: P4D/LINUX26X86_64/2021.1/2156517</code></td>
+</tr>
+<tr>
+<td>Ubuntu</td>
+<td><code>version: 20.04 LTS</code></td>
+</tr>
+<tr>
+<td>Helix Visual Client (P4V)</td>
+<td><code>version: P4V/NTX64/2021.3/2170446</code></td>
+</tr>
+<tr>
+<td>Windows 10</td>
+<td><code>build: 19043.1165</code></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>References</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Helix Core Server Administrator Guide</td>
+<td><a target="_blank" rel="noopener" href="https://www.perforce.com/manuals/p4sag/Content/P4SAG/chapter.install.html">https://www.perforce.com/manuals/p4sag/Content/P4SAG/chapter.install.html</a></td>
+</tr>
+<tr>
+<td>.p4ignore for UnrealEngine</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/mattmarcin/ue4-perforce/blob/master/.p4ignore">https://github.com/mattmarcin/ue4-perforce/blob/master/.p4ignore</a></td>
+</tr>
+<tr>
+<td>P4 Typemap for UnrealEngine</td>
+<td><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/SourceControl/Perforce/">https://docs.unrealengine.com/4.27/en-US/ProductionPipelines/SourceControl/Perforce/</a></td>
+</tr>
+</tbody></table>
+<h1 id="Prepare-Ubuntu-Instance"><a href="#Prepare-Ubuntu-Instance" class="headerlink" title="Prepare Ubuntu Instance"></a><em>Prepare Ubuntu Instance</em></h1><p>As the Perforce is a kind of CVCS*, it is recommended to use a dedicated server. The dedicated server should run all day and night, and should have a fixed IP address. Thus, you would better choose a cloud server if not have a machine for the purposes. In this post, I chose <a target="_blank" rel="noopener" href="https://www.digitalocean.com/">DigitalOcean</a> for a cloud server provider. The DigitalOcean provides instances with cheaper cost than others such as AWS. You know, you may not need a high quality instance for your small size project.<br>※ CVCS : Centralized Version Control System. Find more information at <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Distributed_version_control#Distributed_vs._centralized">here</a>.</p>
+<p>Sign-up and Sign-in the DigitalOcean. Click the button <code>Create</code> and choose <code>Droplets</code>.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/01.png" class="">
+<p>At the page <code>Create Droplets</code>, you would be asked to choose options for a instance. In this post, we gonna choose options like below:</p>
+<ul>
+<li><code>Choose an image</code><ul>
+<li>Ubuntu 20.04 (LTS) x64</li>
+</ul>
+</li>
+<li><code>Choose a plan</code><ul>
+<li>SHARED CPU<ul>
+<li>Basic</li>
+</ul>
+</li>
+<li>CPU options<ul>
+<li>Regular Intel with SSD</li>
+<li>$5&#x2F;month (&#x3D; $0.007&#x2F;hour)<ul>
+<li>1 core CPU, 1 GB RAM, 25 GB SSD, 1000 GB transfer</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>Add block storage</code><ul>
+<li>$5&#x2F;month (&#x3D; $0.007&#x2F;hour)<ul>
+<li>50 GB SSD</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>Choose a datacenter region</code><ul>
+<li>(Select a datacenter that is closest to your location)</li>
+<li>(In my case, it is Singapore)</li>
+</ul>
+</li>
+<li><code>Select additional options</code><ul>
+<li>Monitoring</li>
+</ul>
+</li>
+<li><code>Authentication</code><ul>
+<li>Password<ul>
+<li>(Choose a password for entering the instance)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Any options I did not mention are left as default selection. Let us create our Droplet by clicking the button <code>Create Droplet</code>.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/02.png" class="">
+<p>Now you can see the new Droplet. Connect the instance via SSH. You can do it with Powershell or WSL in Windows 10. The <code>X.X.X.X</code> must be replaced with the IP address of instance.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; ssh root@X.X.X.X</span><br></pre></td></tr></table></figure>
+<p>But, when you attempt to connect the instance via SSH, you are asked to enter a password.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@X.X.X.X&#x27;s password:</span><br></pre></td></tr></table></figure>
+<p>Enter the password that you typed at the <code>Authentication</code> text block. If the right password entered, you can see the logs like below:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.4.0-73-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com</span><br><span class="line"> * Management:     https://landscape.canonical.com</span><br><span class="line"> * Support:        https://ubuntu.com/advantage</span><br><span class="line"></span><br><span class="line">  System information as of Sat Sep 11 16:12:19 UTC 2021</span><br><span class="line"></span><br><span class="line">  System load:  0.0               Users logged in:       0</span><br><span class="line">  Usage of /:   9.3% of 24.06GB   IPv4 address for eth0: X.X.X.X</span><br><span class="line">  Memory usage: 24%               IPv4 address for eth0: X.X.X.X</span><br><span class="line">  Swap usage:   0%                IPv4 address for eth1: X.X.X.X</span><br><span class="line">  Processes:    113</span><br><span class="line"></span><br><span class="line">66 updates can be applied immediately.</span><br><span class="line">1 of these updates is a standard security update.</span><br><span class="line">To see these additional updates run: apt list --upgradable</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*** System restart required ***</span><br><span class="line">Last login: Sat Sep 11 11:35:09 2021 from X.X.X.X</span><br><span class="line">root@ubuntu-test:~#</span><br></pre></td></tr></table></figure>
+<p>At the your instance page, you can check the volume setting. Click the <code>Config Instructions</code>.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/03.png" class="">
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/04.png" class="">
+<p>If you selected the option <code>Automatically Format &amp; Mount</code> at the section <code>Add block storage</code>, the volume is already attached even you did nothing. In other words, the process <code>Mount the volume</code> is already done. Let us check whether the volume is well mounted. The <code>volume_X</code> must be replaced with yours.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; cd /mnt/volume_X</span><br><span class="line">&gt; ls</span><br><span class="line">lost+found</span><br></pre></td></tr></table></figure>
+
+<p>You successfully setup an Ubuntu instance. Good to go !</p>
+<h1 id="Install-amp-Setup-P4D"><a href="#Install-amp-Setup-P4D" class="headerlink" title="Install &amp; Setup P4D"></a><em>Install &amp; Setup P4D</em></h1><p>We need to setup public key for accessing Perforce packages. For this, you need to download the public key at <a target="_blank" rel="noopener" href="https://package.perforce.com/perforce.pubkey">https://package.perforce.com/perforce.pubkey</a>. The download can be done by command below:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl https://package.perforce.com/perforce.pubkey &gt; perforce.pubkey</span><br></pre></td></tr></table></figure>
+<p>This command let you save the public key as a file, whose name is <code>perforce.pubkey</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; curl https://package.perforce.com/perforce.pubkey &gt; perforce.pubkey</span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line">100  1707  100  1707    0     0   2024      0 --:--:-- --:--:-- --:--:--  2022</span><br><span class="line">&gt; ls</span><br><span class="line">perforce.pubkey  snap</span><br></pre></td></tr></table></figure>
+<p>You can check the contents of file with <code>cat</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&gt; cat perforce.pubkey</span><br><span class="line">-----BEGIN PGP PUBLIC KEY BLOCK-----</span><br><span class="line">Version: GnuPG v2.0.14 (GNU/Linux)</span><br><span class="line"></span><br><span class="line">mQINBFIOq14BEADUC4gm+gjS/E/y2xXouALvMuK2xO/8nbcXJCUAD6Bi1xxmyDaR</span><br><span class="line">LXHDJ5lIzZV8/Jctck2bBIWE1WE8Qfpfz/eAU5lJoQTovt0OkOnyyAyFBSk9yXtN</span><br><span class="line">fscQGdTXkl9LVVfsaTHVT3WGZF+iMCIZOVjYGjqRh3ozZp3LWOQl3cwgOZKQCi9Q</span><br><span class="line">y/YRn6XZIOiQQEfvLzrBL1oyD1BoOq8Y2CrwTfhyz93qIRu089mAr7lo2e6UM/KV</span><br><span class="line">JRjk6rPFcKIE0aOP2UwgY/6LMeK65MAKib76EFbygXBprz9K5zwq70A7MGSPjRPw</span><br><span class="line">A7kdzw53flZyNscI2c093jW/PkeDw4++01QFky/FFqJncjIHoOid42NvQXD/+E5e</span><br><span class="line">JKhqYReS2eHpv5qgsSc2Febd5Ccd0B4+2ryY3MBXqaj759NH6uWAowHjAv90y4Cb</span><br><span class="line">c2FugNBAJ6XQBQaXcWsfPnWpBFYL36LxBCcu+ddiycTWS9SWFT3h0FIgTbTQNNQr</span><br><span class="line">Fgjg5vYAw+TWU8wf1I3sak+wbU25h7ErKN1oSJ/EbPwUFOc6zjaDUlnIgmCnQgEj</span><br><span class="line">NdrlWGGfgCfYTHZTnGW6fGlpByDnYO0wn/okPJxRStnkbqb8QGKRa1uTObSM0/4J</span><br><span class="line">aqsaReo2E45x2TAIY6rNuiLet/r1hZzpLs3dffvoddscb/LshW1eiNU36QARAQAB</span><br><span class="line">tERQZXJmb3JjZSBTb2Z0d2FyZSAoUGFja2FnZSBTaWduaW5nKSA8c3VwcG9ydCtw</span><br><span class="line">YWNrYWdpbmdAcGVyZm9yY2UuY29tPokCPgQTAQIAKAUCUg6rXgIbAwUJEswDAAYL</span><br><span class="line">CQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQcSPLdg/xiGlcKxAAvkzIPVzhc2am</span><br><span class="line">GaAAUse4mQ6InNqCLiGEbNxPWnd13myGesbESfyBxex5Gb2t47gVllA7P9hOcvsv</span><br><span class="line">J6g56WPD1yb+5Wrdchdn6SkSEfg1MOAMTskFPPJJ/3ZgfHKn/kv3tOJPcQsidRFl</span><br><span class="line">uqNMHSroHpOExYaTgB7IhYBjnYHLwUgH1ikCFgkRzdaDW4Qfx6IRB1vpSjzxCjzP</span><br><span class="line">Cc78cf4VDmBdSfwsO6/ON19ZcxtLjHvQK5sz91qsEJdJZjyq6YCHYfP+Zx8/M55S</span><br><span class="line">ixZ6/QsLRAsUYGuBjuWMpMgXjB06TXVbSg97bZt2tHBMZJ2OEMgn09eysyS9uwlY</span><br><span class="line">HMtpu23jDTn6sKlRE6PYbZQirt2Ydq56wOQqJzrW1BbadX56DY8FLYBh8H9kcBaT</span><br><span class="line">MGT1fiLfaEn1C8dG3D9aHdaPXZu+zGcMrPY+GMcObAAk3ICRXR20NknSByOxNEyz</span><br><span class="line">nOqCsmr1nRdrpnf4+52G53xYKroWVRYeDdBukC8ik6weFjK4qy7C4ujOe1AmoBis</span><br><span class="line">g6+R0huka1TYr9r94um+idvHniLnaZvnxPKEUMLnGesx9LYio4slqQj+nN6fIelv</span><br><span class="line">onltXR49hpuAiOKtYUISmsk+rI+ep60DfDSQGbrV8HkW6KjuHjmE7EJKEEnIk5N/</span><br><span class="line">JJfimlBk+rNgbcz0fpT6IDdS6PEoGwk=</span><br><span class="line">=fj1X</span><br><span class="line">-----END PGP PUBLIC KEY BLOCK-----</span><br></pre></td></tr></table></figure>
+<p>Let us register the public key.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; gpg --with-fingerprint perforce.pubkey</span><br><span class="line">gpg: directory &#x27;/root/.gnupg&#x27; created</span><br><span class="line">gpg: keybox &#x27;/root/.gnupg/pubring.kbx&#x27; created</span><br><span class="line">gpg: WARNING: no command supplied.  Trying to guess what you mean ...</span><br><span class="line">pub   rsa4096 2013-08-16 [SC] [expires: 2023-08-14]</span><br><span class="line">uid           Perforce Software (Package Signing) &lt;support+packaging@perforce.com&gt;</span><br></pre></td></tr></table></figure>
+<p>Add the Perforce packaging key to your APT keyring.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; wget -qO - https://package.perforce.com/perforce.pubkey | sudo apt-key add -</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p>Execute the command for adding Perforce to your APT configuration.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt; sudo add-apt-repository &#x27;deb http://package.perforce.com/apt/ubuntu focal release&#x27;</span><br><span class="line">Hit:1 https://repos.insights.digitalocean.com/apt/do-agent main InRelease</span><br><span class="line">Hit:2 https://repos-droplet.digitalocean.com/apt/droplet-agent main InRelease</span><br><span class="line">Get:3 http://mirrors.digitalocean.com/ubuntu focal InRelease [265 kB]</span><br><span class="line">Hit:4 http://mirrors.digitalocean.com/ubuntu focal-updates InRelease</span><br><span class="line">Hit:5 http://mirrors.digitalocean.com/ubuntu focal-backports InRelease</span><br><span class="line">Get:6 http://package.perforce.com/apt/ubuntu focal InRelease [3650 B]</span><br><span class="line">Hit:7 http://security.ubuntu.com/ubuntu focal-security InRelease</span><br><span class="line">Get:8 http://package.perforce.com/apt/ubuntu focal/release amd64 Packages [8168 B]</span><br><span class="line">Fetched 277 kB in 1s (298 kB/s)</span><br><span class="line">Reading package lists... Done</span><br></pre></td></tr></table></figure>
+<p>Run update.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; apt-get update</span><br><span class="line">Hit:1 https://repos.insights.digitalocean.com/apt/do-agent main InRelease</span><br><span class="line">Get:2 http://mirrors.digitalocean.com/ubuntu focal InRelease [265 kB]</span><br><span class="line">Hit:3 https://repos-droplet.digitalocean.com/apt/droplet-agent main InRelease</span><br><span class="line">Hit:4 http://mirrors.digitalocean.com/ubuntu focal-updates InRelease</span><br><span class="line">Hit:5 http://mirrors.digitalocean.com/ubuntu focal-backports InRelease</span><br><span class="line">Hit:6 http://package.perforce.com/apt/ubuntu focal InRelease</span><br><span class="line">Hit:7 http://security.ubuntu.com/ubuntu focal-security InRelease</span><br><span class="line">Fetched 265 kB in 1s (321 kB/s)</span><br><span class="line">Reading package lists... Done</span><br></pre></td></tr></table></figure>
+<p>Install the package.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; sudo apt-get install helix-p4d</span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree</span><br><span class="line">Reading state information... Done</span><br><span class="line">...</span><br><span class="line">Started 0 services.</span><br><span class="line">No services configured.</span><br><span class="line">Processing triggers for man-db (2.9.1-1) ...</span><br><span class="line">Processing triggers for systemd (245.4-4ubuntu3.6) ...</span><br></pre></td></tr></table></figure>
+<p>Now you have one last step, launching the Perforce service ! Execute the batch file for it.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&gt; sudo /opt/perforce/sbin/configure-helix-p4d.sh</span><br><span class="line"></span><br><span class="line">Summary of arguments passed:</span><br><span class="line"></span><br><span class="line">Service-name        [(not specified)]</span><br><span class="line">P4PORT              [(not specified)]</span><br><span class="line">P4ROOT              [(not specified)]</span><br><span class="line">Super-user          [(not specified)]</span><br><span class="line">Super-user passwd   [(not specified)]</span><br><span class="line">Unicode mode        [(not specified)]</span><br><span class="line">Case-sensitive      [(not specified)]</span><br><span class="line"></span><br><span class="line">For a list of other options, type Ctrl-C to exit, and then run:</span><br><span class="line">$ sudo /opt/perforce/sbin/configure-helix-p4d.sh --help</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">You have entered interactive configuration for p4d. This script</span><br><span class="line">will ask a series of questions, and use your answers to configure p4d</span><br><span class="line">for first time use. Options passed in from the command line or</span><br><span class="line">automatically discovered in the environment are presented as defaults.</span><br><span class="line">You may press enter to accept them, or enter an alternative.</span><br><span class="line"></span><br><span class="line">Please provide the following details about your desired Perforce environment:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Perforce Service name [master]:</span><br></pre></td></tr></table></figure>
+<p>You will be asked to enter some configurations such as name of service, directory, case sensitiviy, and so on. Setup them appropriately.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Perforce Service name [master]: Test</span><br><span class="line">Service Test not found. Creating...</span><br><span class="line">Perforce Server root (P4ROOT) [/opt/perforce/servers/Test]:</span><br></pre></td></tr></table></figure>
+<p>You should select the proper directory. It would be better to select the attached volume if the size of your project would be more than 25GB.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Perforce Service name [master]: Test</span><br><span class="line">Service Test not found. Creating...</span><br><span class="line">Perforce Server root (P4ROOT) [/opt/perforce/servers/Test]:</span><br><span class="line">Create directory? (y/n) [y]: y</span><br><span class="line">Perforce Server unicode-mode (y/n) [n]: y</span><br><span class="line">Perforce Server case-sensitive (y/n) [y]:</span><br><span class="line">Perforce Server address (P4PORT) [ssl:1666]:</span><br><span class="line">Perforce super-user login [super]:</span><br><span class="line">Perforce super-user password:</span><br><span class="line">Re-enter password.</span><br><span class="line">Perforce super-user password:</span><br><span class="line"></span><br><span class="line">Configuring p4d service &#x27;Test&#x27; with the information you specified...</span><br><span class="line"></span><br><span class="line">Perforce db files in &#x27;/opt/perforce/servers/Test/root&#x27; will be created if missing...</span><br><span class="line">...</span><br><span class="line">::</span><br><span class="line">::  - For help with creating Perforce Helix user accounts, populating</span><br><span class="line">::    the depot with files, and making other customizations for your</span><br><span class="line">::    site, see the Helix Versioning Engine Administrator Guide:</span><br><span class="line">::</span><br><span class="line">::    https://www.perforce.com/perforce/doc.current/manuals/p4sag/index.html</span><br><span class="line">::</span><br><span class="line">::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</span><br></pre></td></tr></table></figure>
+<p>Now you can access the Perforce service via P4V at a client. Before that, take care of typemap. The typemap is an abbreviation of <code>Type Mapping</code>. You can define how Perforce handles certain type of files by it. If your project uses UnrealEngine, for the types related to UnrealEngine, Epic Games recommends to setup like below:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">TypeMap:</span><br><span class="line">                binary+w //depot/....exe</span><br><span class="line">                binary+w //depot/....dll</span><br><span class="line">                binary+w //depot/....lib</span><br><span class="line">                binary+w //depot/....app</span><br><span class="line">                binary+w //depot/....dylib</span><br><span class="line">                binary+w //depot/....stub</span><br><span class="line">                binary+w //depot/....ipa</span><br><span class="line">                binary //depot/....bmp</span><br><span class="line">                text //depot/....ini</span><br><span class="line">                text //depot/....config</span><br><span class="line">                text //depot/....cpp</span><br><span class="line">                text //depot/....h</span><br><span class="line">                text //depot/....c</span><br><span class="line">                text //depot/....cs</span><br><span class="line">                text //depot/....m</span><br><span class="line">                text //depot/....mm</span><br><span class="line">                text //depot/....py</span><br><span class="line">                binary+l //depot/....uasset</span><br><span class="line">                binary+l //depot/....umap</span><br><span class="line">                binary+l //depot/....upk</span><br><span class="line">                binary+l //depot/....udk</span><br><span class="line">                binary+l //depot/....ubulk</span><br></pre></td></tr></table></figure>
+<p>You can edit the typemap of instance by executing command <code>p4 typemap</code>. The command would open typemap file with vi editor.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/05.png" class="">
+<p>Add the Epic Games’s mappings to your mapping file*. Now all preparation of server side completed.<br>※ FYI, the <code>//</code> string does not mean “It is a kind of comment.” in P4 typemap system. You should copy the all of text.</p>
+<h1 id="Install-amp-Setup-P4V"><a href="#Install-amp-Setup-P4V" class="headerlink" title="Install &amp; Setup P4V"></a><em>Install &amp; Setup P4V</em></h1><p>Download the P4V installer at <a target="_blank" rel="noopener" href="https://www.perforce.com/downloads/helix-visual-client-p4v">https://www.perforce.com/downloads/helix-visual-client-p4v</a> and install with default options. When the installation compeleted, execute the P4V. You will see the display.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/06.png" class="">
+<p>Enter <code>ssl:X.X.X.X:1666</code> at the section <code>Server</code>. The <code>X.X.X.X</code> must be replaced with the IP address of instance. Enter <code>super</code> at the section <code>User</code>. The user <code>super</code> is an administrator account we have set. Now click the button <code>OK</code>. Check <code>Trust this fingerprint</code> and click the button <code>Connect</code> if you encounter the dialog like below:</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/07.png" class="">
+<p>Enter the password you set while launching the Perforce service at instance.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/08.png" class="">
+<p>You can see the display when successfully entered.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/09.png" class="">
+<p>The admin tool can be accessed at <code>Tools/Administration</code>.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/10.png" class="">
+<p>In the tool, you can add or delete user directly.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/11.png" class="">
+<p>Let us prepare some Depot and Stream. Click the <code>Depots</code>. Right-click any depot and select <code>New Depot...</code>.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/12.png" class="">
+<p>Type the name of new Depot.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/13.png" class="">
+<p>Select <code>stream</code> at the section <code>Deopt type</code> and click <code>OK</code>.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/14.png" class="">
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/15.png" class="">
+<p>Close the admin tool and return to the P4V*. Now you can find the new Depot at Depot view.<br>※ Actually, the admin tool was the program P4Admin, which is different with P4V. Just, Perforce supports to launch the P4Admin from P4V.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/16.png" class="">
+<p>Restart the P4V for applying changes from P4Admin. After restart, find the <code>File/New/Stream...</code> and click it.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/17.png" class="">
+<p>Let us make a Stream, name of <code>mainline</code>. The Stream will be placed in the new Deopt. Click the button <code>OK</code>.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/18.png" class="">
+<p>Click <code>New Workspace...</code> at workspace view.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/19.png" class="">
+<p>Name the new workspace and click the button <code>Browse</code> in line of <code>Stream</code>. You can find the Stream <code>mainline</code> at the dialog. Select it.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/20.png" class="">
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/21.png" class="">
+<p>Finally, we have prepared a workspace in totally empty new Perforce service ! But, you should config <code>p4ignore</code> before getting into the work. Open any terminal and execute the command below:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; p4 set P4IGNORE=.p4ignore</span><br></pre></td></tr></table></figure>
+<p>This command will let your Perforce refer the file whose name is <code>.p4ignore</code>. It is kind of configuration lets you can use Perforce like git, which provides <code>.gitignore</code>. To apply this changes, restart P4V. And, create <code>.p4ignore</code> at your workspace directory. Let us test whether <code>.p4ignore</code> works well. Fill the contents of <code>.p4ignore</code> like below:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*.sln</span><br></pre></td></tr></table></figure>
+<p>Select <code>Mark for Add...</code> for <code>.p4ignore</code> and submit it.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/22.png" class="">
+<p>Next, create a empty file whose name is <code>Test.sln</code>. Try to add this !</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/23.png" class="">
+<p>You try to check out the file, but the dialog would be popped-up. Great, your p4ignore works well.</p>
+<img src="/2021/09/10/perforce-server-setup-with-digital-ocean/24.png" class="">
+<p>If your project uses UnrealEngine, you should search for good one. I recommend you to use <a target="_blank" rel="noopener" href="https://github.com/mattmarcin/ue4-perforce/blob/master/.p4ignore">the p4ignore mentioned at references</a>. Okay, then…all of preparation done. You are good to go :) !</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/" data-id="clw50m6p10015akqm0w48161z" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/11/my-home-network-setup-experience-2021/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          My Home Network Setup Experience (2021)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/08/06/how-unreal-macro-generated/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">How Unreal Macro Generated</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/" rel="tag">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoogleAnalytics/" rel="tag">GoogleAnalytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Home/" rel="tag">Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iptime/" rel="tag">Iptime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lecture/" rel="tag">Lecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSVC/" rel="tag">MSVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Migration/" rel="tag">Migration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network/" rel="tag">Network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retargeting/" rel="tag">Retargeting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextWrap/" rel="tag">TextWrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/About/" style="font-size: 10px;">About</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/Blueprint/" style="font-size: 13.33px;">Blueprint</a> <a href="/tags/CPP/" style="font-size: 13.33px;">CPP</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GoogleAnalytics/" style="font-size: 10px;">GoogleAnalytics</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Home/" style="font-size: 10px;">Home</a> <a href="/tags/Iptime/" style="font-size: 10px;">Iptime</a> <a href="/tags/Lecture/" style="font-size: 10px;">Lecture</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MSVC/" style="font-size: 10px;">MSVC</a> <a href="/tags/Migration/" style="font-size: 10px;">Migration</a> <a href="/tags/Natvis/" style="font-size: 10px;">Natvis</a> <a href="/tags/Network/" style="font-size: 10px;">Network</a> <a href="/tags/Perforce/" style="font-size: 13.33px;">Perforce</a> <a href="/tags/Retargeting/" style="font-size: 10px;">Retargeting</a> <a href="/tags/Retrospection/" style="font-size: 16.67px;">Retrospection</a> <a href="/tags/RichTextBlock/" style="font-size: 10px;">RichTextBlock</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/TextBlock/" style="font-size: 13.33px;">TextBlock</a> <a href="/tags/TextWrap/" style="font-size: 10px;">TextWrap</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/UnrealEngine/" style="font-size: 20px;">UnrealEngine</a> <a href="/tags/WSL/" style="font-size: 13.33px;">WSL</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/04/migration-from-perforce-into-git-in-windows/">Migration from Perforce into Git in Windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/04/10/conversion-from-universal-analytics-into-google-analytics-4/">Conversion from UA into GA4</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/12/promotion-for-online-lecture-of-unrealengine-01/">The promotion for online lecture of UnrealEngine</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/04/retargeting-animations-in-unreal-engine-5/">Retargeting animations in UnrealEngine 5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/">How the RichTextBlock works in UnrealEngine (part.1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 MinCheon Bae<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/2020/02/03/home-page/index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'let-us-go-abroad';
+  
+  var disqus_url = 'https://baemincheon.github.io/2021/09/10/perforce-server-setup-with-digital-ocean/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

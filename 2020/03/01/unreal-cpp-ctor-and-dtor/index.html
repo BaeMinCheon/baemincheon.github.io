@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2P265ZP7M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R2P265ZP7M');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>CPP ctor and dtor in UnrealEngine | LET US GO ABROAD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="this post covers what do cpp ctor and dtor do in unreal engine what is the CDO in unreal engine what are the ctor and dtor of UCLASS difference between cpp ctor&#x2F;dtor and UCLASS ctor&#x2F;dtor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CPP ctor and dtor in UnrealEngine">
+<meta property="og:url" content="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/index.html">
+<meta property="og:site_name" content="LET US GO ABROAD">
+<meta property="og:description" content="this post covers what do cpp ctor and dtor do in unreal engine what is the CDO in unreal engine what are the ctor and dtor of UCLASS difference between cpp ctor&#x2F;dtor and UCLASS ctor&#x2F;dtor">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/01.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/02.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/03.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/04.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/05.jpg">
+<meta property="og:image" content="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/06.jpg">
+<meta property="article:published_time" content="2020-03-01T12:15:46.000Z">
+<meta property="article:modified_time" content="2020-03-01T12:15:46.000Z">
+<meta property="article:author" content="MinCheon Bae">
+<meta property="article:tag" content="UnrealEngine">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/01.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="LET US GO ABROAD" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LET US GO ABROAD</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/2020/02/03/home-page/index.html">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://baemincheon.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-unreal-cpp-ctor-and-dtor" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/01/unreal-cpp-ctor-and-dtor/" class="article-date">
+  <time datetime="2020-03-01T12:15:46.000Z" itemprop="datePublished">2020-03-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CPP ctor and dtor in UnrealEngine
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>this post covers<ul>
+<li>what do cpp ctor and dtor do in unreal engine</li>
+<li>what is the <code>CDO</code> in unreal engine</li>
+<li>what are the ctor and dtor of <code>UCLASS</code></li>
+<li>difference between cpp ctor&#x2F;dtor and <code>UCLASS</code> ctor&#x2F;dtor</li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Unreal Engine (4.24)</li>
+<li>Visual Studio 2017</li>
+<li>Windows 10</li>
+</ul>
+</li>
+<li>reference<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Objects/index.html">https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Objects/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Classes/index.html">https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Classes/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.unrealengine.com/en-US/blog/unreal-property-system-reflection">https://www.unrealengine.com/en-US/blog/unreal-property-system-reflection</a></li>
+</ol>
+</li>
+</ul>
+<hr>
+<h1 id="overview"><a href="#overview" class="headerlink" title="overview"></a><em>overview</em></h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UCLASS</span>(config=Game)</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AProjectSandboxCharacter</span> : <span class="keyword">public</span> ACharacter</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">AProjectSandboxCharacter</span>();</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">AProjectSandboxCharacter</span>();</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</br>
+
+<img src="/2020/03/01/unreal-cpp-ctor-and-dtor/01.jpg" class="">
+
+<p>somebody may have the experience your breakpoint stops in cpp constructor even the object is not placed in the world. you might say,<br><code>&quot;Why this happens ? I do not get it why the constructor is called even while opening editor !&quot;</code></p>
+<img src="/2020/03/01/unreal-cpp-ctor-and-dtor/02.jpg" class="">
+
+<p>vice versa, destructor is called when editor is closed. in your intuition, the cpp constructor or destructor seems to be called when the actor is created or deleted. but it does not as you saw. then, let us find what do cpp ctor and dtor do in unreal engine. we would get a clue to truth through it.</p>
+<hr>
+<h1 id="class-default-object"><a href="#class-default-object" class="headerlink" title="class default object"></a><em>class default object</em></h1><p>unreal engine provides their own macro system, which has several features below:</p>
+<ul>
+<li>garbage collection</li>
+<li>reference update</li>
+<li>reflection</li>
+<li>serialization</li>
+<li>etc.</li>
+</ul>
+<p>to support these features, unreal engine constructed massive macro magics and hacks. so, cpp in unreal engine acts unlike cpp as we know. this ctor&#x2F;dtor issue is one of them(different behaviors). from <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Classes/index.html">reference #2</a>, we can find the reference of <code>Class Default Object, CDO</code>.</p>
+<img src="/2020/03/01/unreal-cpp-ctor-and-dtor/03.jpg" class="">
+
+<p>cpp constructor makes the <code>Class Default Object</code> and it is copied whenever you create instance of the <code>UObject</code>. what <code>UObject</code> means in this post, is the object created by <code>NewObject</code> API. from <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Objects/index.html">reference #1</a>, we can find the reference of <code>NewObject</code> API.</p>
+<img src="/2020/03/01/unreal-cpp-ctor-and-dtor/04.jpg" class="">
+
+<p>in summary…</p>
+<ul>
+<li>if your class(or somewhat) should be utilized with APIs of unreal engine, this must inherit <code>UObject</code> and follow some conventions</li>
+<li>if you do that, your class gonna have <code>CDO</code>, which is used for cloning object instance</li>
+<li>in this condition, cpp ctor&#x2F;dtor only works for <code>CDO</code></li>
+</ul>
+<p>※ for more information of <code>CDO</code>, visit <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Objects/index.html">reference #1</a> and <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/Programming/UnrealArchitecture/Reference/Classes/index.html">reference #2</a><br>※ for more information of <code>Unreal Reflection</code>, visit <a target="_blank" rel="noopener" href="https://www.unrealengine.com/en-US/blog/unreal-property-system-reflection">reference #3</a></p>
+<hr>
+<h1 id="real-ctor-x2F-dtor-for-unreal"><a href="#real-ctor-x2F-dtor-for-unreal" class="headerlink" title="real ctor&#x2F;dtor for unreal"></a><em>real ctor&#x2F;dtor for unreal</em></h1><p>that is why we could see that the breakpoint stops at cpp ctor&#x2F;dtor before unreal editor opens. <code>CDO</code> is needed to display the asset editor of the class. try some tests for yourself.</p>
+<img src="/2020/03/01/unreal-cpp-ctor-and-dtor/05.jpg" class="">
+</br>
+<img src="/2020/03/01/unreal-cpp-ctor-and-dtor/06.jpg" class="">
+
+<p>the pictures above says, changes in cpp ctor will be shown in asset editor (if the asset inherits the class). not only the simple <code>float</code> variables, but it affects the various component or material things.</p>
+<p>so, let us suppose real ctor&#x2F;dtor for unreal should do its work when the instance of class is created in “game”, such as spawning bullets when player shoots the gun. there are several APIs for this purpose, but every child of <code>UObject</code> does not have common API.</p>
+<p>here is a table for major classes. almost of gameplay framework classes inherit them.</p>
+<table>
+<thead>
+<tr>
+<th>child</th>
+<th>function</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>UUserWidget</code></td>
+<td><code>UUserWidget::NativeConstruct</code></td>
+</tr>
+<tr>
+<td><code>AActor</code></td>
+<td><code>AActor::OnConstruction</code></td>
+</tr>
+<tr>
+<td><code>UActorComponent</code></td>
+<td><code>UActorComponent::InitializeComponent</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="summary"><a href="#summary" class="headerlink" title="summary"></a><em>summary</em></h1><ul>
+<li>due to supporting several features, cpp in unreal engine acts unlike cpp as we know.</li>
+<li>cpp ctor&#x2F;dtor is for <code>CDO</code>, not for the cloned instances in “game”. there are seperate APIs for them.<ul>
+<li>and it differs upon a class. there is no common unreal ctor&#x2F;dtor.</li>
+</ul>
+</li>
+<li>if you plan to make custom class inherits <code>UObject</code>, you should consider how to make unreal ctor&#x2F;dtor for it.<ul>
+<li>or just let the class inherits a class already implemented unreal ctor&#x2F;dtor, such as <code>UUserWidget</code></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/" data-id="clw50m6ox000hakqme4jz71pv" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/03/14/unreal-unique-pointer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          UnrealEngine unique pointer
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/09/unreal-widget-coordinate-system/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Calculating widget coordinate in UnrealEngine</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/" rel="tag">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoogleAnalytics/" rel="tag">GoogleAnalytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Home/" rel="tag">Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iptime/" rel="tag">Iptime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lecture/" rel="tag">Lecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSVC/" rel="tag">MSVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Migration/" rel="tag">Migration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network/" rel="tag">Network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retargeting/" rel="tag">Retargeting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextWrap/" rel="tag">TextWrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/About/" style="font-size: 10px;">About</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/Blueprint/" style="font-size: 13.33px;">Blueprint</a> <a href="/tags/CPP/" style="font-size: 13.33px;">CPP</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GoogleAnalytics/" style="font-size: 10px;">GoogleAnalytics</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Home/" style="font-size: 10px;">Home</a> <a href="/tags/Iptime/" style="font-size: 10px;">Iptime</a> <a href="/tags/Lecture/" style="font-size: 10px;">Lecture</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MSVC/" style="font-size: 10px;">MSVC</a> <a href="/tags/Migration/" style="font-size: 10px;">Migration</a> <a href="/tags/Natvis/" style="font-size: 10px;">Natvis</a> <a href="/tags/Network/" style="font-size: 10px;">Network</a> <a href="/tags/Perforce/" style="font-size: 13.33px;">Perforce</a> <a href="/tags/Retargeting/" style="font-size: 10px;">Retargeting</a> <a href="/tags/Retrospection/" style="font-size: 16.67px;">Retrospection</a> <a href="/tags/RichTextBlock/" style="font-size: 10px;">RichTextBlock</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/TextBlock/" style="font-size: 13.33px;">TextBlock</a> <a href="/tags/TextWrap/" style="font-size: 10px;">TextWrap</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/UnrealEngine/" style="font-size: 20px;">UnrealEngine</a> <a href="/tags/WSL/" style="font-size: 13.33px;">WSL</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/04/migration-from-perforce-into-git-in-windows/">Migration from Perforce into Git in Windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/04/10/conversion-from-universal-analytics-into-google-analytics-4/">Conversion from UA into GA4</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/12/promotion-for-online-lecture-of-unrealengine-01/">The promotion for online lecture of UnrealEngine</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/04/retargeting-animations-in-unreal-engine-5/">Retargeting animations in UnrealEngine 5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/">How the RichTextBlock works in UnrealEngine (part.1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 MinCheon Bae<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/2020/02/03/home-page/index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'let-us-go-abroad';
+  
+  var disqus_url = 'https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

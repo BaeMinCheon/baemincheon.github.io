@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2P265ZP7M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R2P265ZP7M');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Differences between Build.cs and Target.cs in UnrealEngine | LET US GO ABROAD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="this post covers what does Build.cs do what does Target.cs do differences between Build.cs and Target.cs   environment Unreal Engine 4 ver. 4.25 Visual Studio 2019 ver. 16.9.1   reference https:&#x2F;&#x2F;doc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Differences between Build.cs and Target.cs in UnrealEngine">
+<meta property="og:url" content="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/index.html">
+<meta property="og:site_name" content="LET US GO ABROAD">
+<meta property="og:description" content="this post covers what does Build.cs do what does Target.cs do differences between Build.cs and Target.cs   environment Unreal Engine 4 ver. 4.25 Visual Studio 2019 ver. 16.9.1   reference https:&#x2F;&#x2F;doc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/07.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/08.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/04.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/05.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/09.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/10.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/02.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/01.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/11.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/12.png">
+<meta property="og:image" content="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/13.png">
+<meta property="article:published_time" content="2021-04-07T13:52:46.000Z">
+<meta property="article:modified_time" content="2021-04-07T13:52:46.000Z">
+<meta property="article:author" content="MinCheon Bae">
+<meta property="article:tag" content="UnrealEngine">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/07.png">
+  
+    <link rel="alternate" href="/atom.xml" title="LET US GO ABROAD" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LET US GO ABROAD</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/2020/02/03/home-page/index.html">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://baemincheon.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-difference-between-build-cs-and-target-cs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/07/difference-between-build-cs-and-target-cs/" class="article-date">
+  <time datetime="2021-04-07T13:52:46.000Z" itemprop="datePublished">2021-04-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Differences between Build.cs and Target.cs in UnrealEngine
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>this post covers<ul>
+<li>what does <code>Build.cs</code> do</li>
+<li>what does <code>Target.cs</code> do</li>
+<li>differences between <code>Build.cs</code> and <code>Target.cs</code></li>
+</ul>
+</li>
+<li>environment<ul>
+<li>Unreal Engine 4 <code>ver. 4.25</code></li>
+<li>Visual Studio 2019 <code>ver. 16.9.1</code></li>
+</ul>
+</li>
+<li>reference<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/ProductionPipelines/BuildTools/UnrealBuildTool/ModuleFiles/index.html">https://docs.unrealengine.com/en-US/ProductionPipelines/BuildTools/UnrealBuildTool/ModuleFiles/index.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/ProductionPipelines/BuildTools/UnrealBuildTool/TargetFiles/index.html">https://docs.unrealengine.com/en-US/ProductionPipelines/BuildTools/UnrealBuildTool/TargetFiles/index.html</a></li>
+</ol>
+</li>
+</ul>
+<h3 id="UnrealBuildTool-ModuleRules"><a href="#UnrealBuildTool-ModuleRules" class="headerlink" title="UnrealBuildTool.ModuleRules"></a><em><code>UnrealBuildTool.ModuleRules</code></em></h3><p>UnrealEngine provides its own module system, which is absolutely different with <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/language/modules">CPP 20 Module</a>. The class <code>UnrealBuildTool.ModuleRules</code> is for the module system and it is written by <code>[ModuleName].Build.cs</code>. You can decide what to include for creating output files (&#x3D; DLL). For example, <code>ShaderCompileWorker</code> project has the module rules below:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/Programs/ShaderCompileWorker/ShaderCompileWorker.Build.cs</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ShaderCompileWorker</span> : <span class="title">ModuleRules</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ShaderCompileWorker</span>(<span class="params">ReadOnlyTargetRules Target</span>) : <span class="title">base</span>(<span class="params">Target</span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		PrivateDependencyModuleNames.AddRange(</span><br><span class="line">			<span class="keyword">new</span> <span class="built_in">string</span>[] &#123;</span><br><span class="line">				<span class="string">&quot;Core&quot;</span>,</span><br><span class="line">				<span class="string">&quot;Projects&quot;</span>,</span><br><span class="line">				<span class="string">&quot;RenderCore&quot;</span>,</span><br><span class="line">				<span class="string">&quot;SandboxFile&quot;</span>,</span><br><span class="line">				<span class="string">&quot;TargetPlatform&quot;</span>,</span><br><span class="line">				<span class="string">&quot;ApplicationCore&quot;</span>,</span><br><span class="line">				<span class="string">&quot;TraceLog&quot;</span>,</span><br><span class="line">				<span class="string">&quot;ShaderCompilerCommon&quot;</span></span><br><span class="line">			&#125;);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (Target.Platform == UnrealTargetPlatform.Linux)</span><br><span class="line">		&#123;</span><br><span class="line">			PrivateDependencyModuleNames.AddRange(</span><br><span class="line">			<span class="keyword">new</span> <span class="built_in">string</span>[] &#123;</span><br><span class="line">				<span class="string">&quot;NetworkFile&quot;</span>,</span><br><span class="line">				<span class="string">&quot;PakFile&quot;</span>,</span><br><span class="line">				<span class="string">&quot;StreamingFile&quot;</span>,</span><br><span class="line">				&#125;);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		PrivateIncludePathModuleNames.AddRange(</span><br><span class="line">			<span class="keyword">new</span> <span class="built_in">string</span>[] &#123;</span><br><span class="line">				<span class="string">&quot;Launch&quot;</span>,</span><br><span class="line">				<span class="string">&quot;TargetPlatform&quot;</span>,</span><br><span class="line">			&#125;);</span><br><span class="line"></span><br><span class="line">		PrivateIncludePaths.Add(<span class="string">&quot;Runtime/Launch/Private&quot;</span>);      <span class="comment">// For LaunchEngineLoop.cpp include</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">// Include D3D compiler binaries</span></span><br><span class="line">		<span class="built_in">string</span> EngineDir = Path.GetFullPath(Target.RelativeEnginePath);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (Target.Platform == UnrealTargetPlatform.Win32)</span><br><span class="line">		&#123;</span><br><span class="line">			RuntimeDependencies.Add(EngineDir + <span class="string">&quot;Binaries/ThirdParty/Windows/DirectX/x86/d3dcompiler_47.dll&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (Target.Platform == UnrealTargetPlatform.Win64)</span><br><span class="line">		&#123;</span><br><span class="line">			RuntimeDependencies.Add(EngineDir + <span class="string">&quot;Binaries/ThirdParty/Windows/DirectX/x64/d3dcompiler_47.dll&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/04/07/difference-between-build-cs-and-target-cs/07.png" class="">
+</br>
+<img src="/2021/04/07/difference-between-build-cs-and-target-cs/08.png" class="">
+
+<p>There are several libraries such as <code>Core</code>, <code>Projects</code>, <code>RenderCore</code> and so on. We can also find them in <code>Binaries</code> folder like below:<br>(FYI, the <code>ShaderCompileWorker.exe</code> is created with <code>ShaderCompileWorker.Target.cs</code> not the <code>ShaderCompileWorker.Build.cs</code>.)</p>
+<img src="/2021/04/07/difference-between-build-cs-and-target-cs/04.png" class="">
+
+<p>In other words, output files are created with the name containing its module when you add corresponding libraries to module rules (ex: <code>[TargetName]-[ModuleName]-[ConfigurationName].dll</code>). Additionally, UnrealEngine re-uses them as possible. Suppose your project need some libraries already included on engine side. In this situation, UnrealEngine does not create output files for the duplicated libraries included in your project. Instead of that, UnrealEngine leaves some meta file describes what the project included.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Copyright Epic Games, Inc. All Rights Reserved.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnrealBuildTool;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ThirdPerson_4_25</span> : <span class="title">ModuleRules</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ThirdPerson_4_25</span>(<span class="params">ReadOnlyTargetRules Target</span>) : <span class="title">base</span>(<span class="params">Target</span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;</span><br><span class="line"></span><br><span class="line">		PublicDependencyModuleNames.AddRange(<span class="keyword">new</span> <span class="built_in">string</span>[] &#123; <span class="string">&quot;Core&quot;</span>, <span class="string">&quot;CoreUObject&quot;</span>, <span class="string">&quot;Engine&quot;</span>, <span class="string">&quot;InputCore&quot;</span>, <span class="string">&quot;HeadMountedDisplay&quot;</span> &#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/04/07/difference-between-build-cs-and-target-cs/05.png" class="">
+
+<p>This is a generated module rules based on third person template. This module rules contains <code>CoreUObject</code> library but we cannot find it in <code>Binaries</code> folder. Let us see the <code>ThirdPerson_4_25Editor.target</code> file.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/Project/Binaries/Win64/ThirdPerson_4_25Editor.target</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">&quot;BuildProducts&quot;: [</span><br><span class="line">	...</span><br><span class="line">	&#123;</span><br><span class="line">		&quot;Path&quot;: &quot;$(EngineDir)/Binaries/Win64/UE4Editor-CoreUObject.dll&quot;,</span><br><span class="line">		&quot;Type&quot;: &quot;DynamicLibrary&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		&quot;Path&quot;: &quot;$(EngineDir)/Binaries/Win64/UE4Editor-CoreUObject.pdb&quot;,</span><br><span class="line">		&quot;Type&quot;: &quot;SymbolFile&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/Programs/UnrealBuildTool/System/TargetReceipt.cs</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="comment">/// &lt;summary&gt;</span></span><br><span class="line"><span class="comment">/// Write the receipt to disk.</span></span><br><span class="line"><span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line"><span class="comment">/// &lt;param name=&quot;Location&quot;&gt;Output filename&lt;/param&gt;</span></span><br><span class="line"><span class="comment">/// &lt;param name=&quot;EngineDir&quot;&gt;Engine directory for expanded paths&lt;/param&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="type">void</span> <span class="title">Write</span><span class="params">(FileReference Location, DirectoryReference EngineDir)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	...</span><br><span class="line">	Writer.<span class="built_in">WriteArrayStart</span>(<span class="string">&quot;BuildProducts&quot;</span>);</span><br><span class="line">	foreach (BuildProduct BuildProduct in BuildProducts)</span><br><span class="line">	&#123;</span><br><span class="line">		Writer.<span class="built_in">WriteObjectStart</span>();</span><br><span class="line">		Writer.<span class="built_in">WriteValue</span>(<span class="string">&quot;Path&quot;</span>, <span class="built_in">InsertPathVariables</span>(BuildProduct.Path, EngineDir, ProjectDir));</span><br><span class="line">		Writer.<span class="built_in">WriteValue</span>(<span class="string">&quot;Type&quot;</span>, BuildProduct.Type.<span class="built_in">ToString</span>());</span><br><span class="line">		Writer.<span class="built_in">WriteObjectEnd</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	Writer.<span class="built_in">WriteArrayEnd</span>();</span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
+
+<p>For more details about the module system, visit <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/ProductionPipelines/BuildTools/UnrealBuildTool/ModuleFiles/index.html">reference #1</a>.</p>
+<h3 id="UnrealBuildTool-TargetRules"><a href="#UnrealBuildTool-TargetRules" class="headerlink" title="UnrealBuildTool.TargetRules"></a><em><code>UnrealBuildTool.TargetRules</code></em></h3><p>UnrealEngine provides its own target system, which makes you can create an executable. There are various target configurations such as <code>Editor</code>, <code>Client</code> and <code>Server</code>. The class <code>UnrealBuildTool.TargetRules</code> is for the target system and it is written by <code>[TargetName].Target.cs</code>. You can decide which modules to include for a certain target. For example, <code>UE4</code> project has the target rules for editor below:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Copyright Epic Games, Inc. All Rights Reserved.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnrealBuildTool;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UE4EditorTarget</span> : <span class="title">TargetRules</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">UE4EditorTarget</span>(<span class="params"> TargetInfo Target </span>) : <span class="title">base</span>(<span class="params">Target</span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		Type = TargetType.Editor;</span><br><span class="line">		BuildEnvironment = TargetBuildEnvironment.Shared;</span><br><span class="line">		bBuildAllModules = <span class="literal">true</span>;</span><br><span class="line">		ExtraModuleNames.Add(<span class="string">&quot;UE4Game&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</br>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExtraModuleNames.Add(<span class="string">&quot;UE4Game&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>The target rules specifies <code>UE4Game</code> module included, which is located in <code>Engine/Source/Runtime/UE4Game</code>. So, output files for editor are consist of modules in <code>UE4Game</code>.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Copyright Epic Games, Inc. All Rights Reserved.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnrealBuildTool;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UE4Game</span> : <span class="title">ModuleRules</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">UE4Game</span>(<span class="params">ReadOnlyTargetRules Target</span>) : <span class="title">base</span>(<span class="params">Target</span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		PrivateDependencyModuleNames.Add(<span class="string">&quot;Core&quot;</span>);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (Target.Platform == UnrealTargetPlatform.IOS || Target.Platform == UnrealTargetPlatform.TVOS)</span><br><span class="line">		&#123;</span><br><span class="line">			PrivateDependencyModuleNames.AddRange(<span class="keyword">new</span> <span class="built_in">string</span>[] &#123; <span class="string">&quot;Core&quot;</span>, <span class="string">&quot;CoreUObject&quot;</span>, <span class="string">&quot;Engine&quot;</span> &#125;);</span><br><span class="line">			<span class="keyword">if</span> (Target.Platform == UnrealTargetPlatform.IOS)</span><br><span class="line">			&#123;</span><br><span class="line">				DynamicallyLoadedModuleNames.Add(<span class="string">&quot;IOSAdvertising&quot;</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (Target.Platform == UnrealTargetPlatform.Android)</span><br><span class="line">		&#123;</span><br><span class="line">			PrivateDependencyModuleNames.AddRange(<span class="keyword">new</span> <span class="built_in">string</span>[] &#123; <span class="string">&quot;Core&quot;</span>, <span class="string">&quot;CoreUObject&quot;</span>, <span class="string">&quot;Engine&quot;</span> &#125;);</span><br><span class="line">			DynamicallyLoadedModuleNames.Add(<span class="string">&quot;AndroidAdvertising&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</br>
+
+<img src="/2021/04/07/difference-between-build-cs-and-target-cs/09.png" class="">
+
+<p>Yes, they are. :)</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Type = TargetType.Editor;</span><br></pre></td></tr></table></figure>
+
+<p><code>UnrealBuildTool.TargetRules</code> has a field <code>Type</code>.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/Programs/UnrealBuildTool/Configuration/TargetRules.cs</span><br><span class="line"></span><br><span class="line">...csharp</span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> TargetRules is a data structure that contains the rules for defining a target (application/executable)</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">TargetRules</span></span><br><span class="line">&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> The type of target.</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">global</span>::UnrealBuildTool.TargetType Type = <span class="keyword">global</span>::UnrealBuildTool.TargetType.Game;</span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
+
+<p>The field is used for branching target-specific features such as build configuration. For example, UnrealEngine manages target configurations as <code>enum</code>.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/Programs/UnrealBuildTool/Configuration/UEBuildTarget.cs</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> The type of configuration a target can be built for</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="built_in">enum</span> UnrealTargetConfiguration</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> Unknown</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">	Unknown,</span><br><span class="line"></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> Debug configuration</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">	Debug,</span><br><span class="line"></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> DebugGame configuration; equivalent to development, but with optimization disabled for game modules</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">	DebugGame,</span><br><span class="line"></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> Development configuration</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">	Development,</span><br><span class="line"></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> Shipping configuration</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">	Shipping,</span><br><span class="line"></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> Test configuration</span></span><br><span class="line">	<span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">	Test,</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>Unlike others, the editor target support only 3 types of target configuration. <code>Debug</code>, <code>DebugGame</code> and <code>Development</code>.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/Programs/UnrealBuildTool/Configuration/TargetRules.cs</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Gets a list of configurations that this target supports</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>Array of configurations that the target supports<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">internal</span> UnrealTargetConfiguration[] <span class="title">GetSupportedConfigurations</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// Otherwise take the SupportedConfigurationsAttribute from the first type in the inheritance chain that supports it</span></span><br><span class="line">	<span class="keyword">for</span> (Type CurrentType = GetType(); CurrentType != <span class="literal">null</span>; CurrentType = CurrentType.BaseType)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">object</span>[] Attributes = CurrentType.GetCustomAttributes(<span class="keyword">typeof</span>(SupportedConfigurationsAttribute), <span class="literal">false</span>);</span><br><span class="line">		<span class="keyword">if</span> (Attributes.Length &gt; <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> Attributes.OfType&lt;SupportedConfigurationsAttribute&gt;().SelectMany(x =&gt; x.Configurations).Distinct().ToArray();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Otherwise, get the default for the target type</span></span><br><span class="line">	<span class="keyword">if</span> (Type == TargetType.Editor)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span>[] &#123; UnrealTargetConfiguration.Debug, UnrealTargetConfiguration.DebugGame, UnrealTargetConfiguration.Development &#125;;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> ((UnrealTargetConfiguration[])Enum.GetValues(<span class="keyword">typeof</span>(UnrealTargetConfiguration))).Where(x =&gt; x != UnrealTargetConfiguration.Unknown).ToArray();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+</br>
+
+<img src="/2021/04/07/difference-between-build-cs-and-target-cs/10.png" class="">
+
+<p>For more details, visit <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/en-US/ProductionPipelines/BuildTools/UnrealBuildTool/TargetFiles/index.html">reference #2</a>.</p>
+<h3 id="ModuleName-Build-cs"><a href="#ModuleName-Build-cs" class="headerlink" title="[ModuleName].Build.cs"></a><em><code>[ModuleName].Build.cs</code></em></h3><p>Each module has its own <code>Build.cs</code> file. For example, a <code>[ProjectName].Build.cs</code> will be generated when you create new project with cpp enabled. Because UnrealEngine makes a default module that has the same name with project. (Exactly, <code>Build.cs</code> and <code>Target.cs</code> files are copied from template in general cases.)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/Editor/GameProjectGeneration/Private/GameProjectUtils.<span class="function">cpp</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">GameProjectUtils::CreateProject</span><span class="params">(<span class="type">const</span> FProjectInformation&amp; InProjectInfo, FText&amp; OutFailReason, FText&amp; OutFailLog, TArray&lt;FString&gt;* OutCreatedFiles)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> ( !<span class="built_in">IsValidProjectFileForCreation</span>(InProjectInfo.ProjectFilename, OutFailReason) )</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function">FScopedSlowTask <span class="title">SlowTask</span><span class="params">(<span class="number">0</span>, LOCTEXT( <span class="string">&quot;CreatingProjectStatus&quot;</span>, <span class="string">&quot;Creating project...&quot;</span> ))</span></span>;</span><br><span class="line">	SlowTask.<span class="built_in">MakeDialog</span>();</span><br><span class="line"></span><br><span class="line">	TOptional&lt;FGuid&gt; ProjectID;</span><br><span class="line">	FString TemplateName;</span><br><span class="line">	<span class="keyword">if</span> ( InProjectInfo.TemplateFile.<span class="built_in">IsEmpty</span>() )</span><br><span class="line">	&#123;</span><br><span class="line">		ProjectID = <span class="built_in">GenerateProjectFromScratch</span>(InProjectInfo, OutFailReason, OutFailLog);</span><br><span class="line">		TemplateName = InProjectInfo.bShouldGenerateCode ? <span class="built_in">TEXT</span>(<span class="string">&quot;Basic Code&quot;</span>) : <span class="built_in">TEXT</span>(<span class="string">&quot;Blank&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		ProjectID = <span class="built_in">CreateProjectFromTemplate</span>(InProjectInfo, OutFailReason, OutFailLog, OutCreatedFiles);</span><br><span class="line">		TemplateName = FPaths::<span class="built_in">GetBaseFilename</span>(InProjectInfo.TemplateFile);</span><br><span class="line">	&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/Editor/GameProjectGeneration/Private/GameProjectUtils.<span class="function">cpp</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">TOptional&lt;FGuid&gt; <span class="title">GameProjectUtils::CreateProjectFromTemplate</span><span class="params">(<span class="type">const</span> FProjectInformation&amp; InProjectInfo, FText&amp; OutFailReason, FText&amp; OutFailLog, TArray&lt;FString&gt;* OutCreatedFiles)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Discover and copy all files in the src folder to the destination, excluding a few files and folders</span></span><br><span class="line">	TArray&lt;FString&gt; FilesToCopy;</span><br><span class="line">	TArray&lt;FString&gt; FilesThatNeedContentsReplaced;</span><br><span class="line">	TMap&lt;FString, FString&gt; ClassRenames;</span><br><span class="line">	IFileManager::<span class="built_in">Get</span>().<span class="built_in">FindFilesRecursive</span>(FilesToCopy, *SrcFolder, <span class="built_in">TEXT</span>(<span class="string">&quot;*&quot;</span>), <span class="comment">/*Files=*/</span><span class="literal">true</span>, <span class="comment">/*Directories=*/</span><span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Perform the copy</span></span><br><span class="line">	<span class="type">const</span> FString DestFilename = DestFolder / DestFileSubpathWithoutFilename + DestBaseFilename + <span class="built_in">TEXT</span>(<span class="string">&quot;.&quot;</span>) + FileExtension;</span><br><span class="line">	<span class="keyword">if</span> ( IFileManager::<span class="built_in">Get</span>().<span class="built_in">Copy</span>(*DestFilename, *SrcFilename) == COPY_OK )</span><br><span class="line">	&#123;</span><br><span class="line">		CreatedFiles.<span class="built_in">Add</span>(DestFilename);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> ( ReplacementsInFilesExtensions.<span class="built_in">Contains</span>(FileExtension) )</span><br><span class="line">		&#123;</span><br><span class="line">			FilesThatNeedContentsReplaced.<span class="built_in">Add</span>(DestFilename);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Allow project template to extract class renames from this file copy</span></span><br><span class="line">		<span class="keyword">if</span> (FPaths::<span class="built_in">GetBaseFilename</span>(SrcFilename) != FPaths::<span class="built_in">GetBaseFilename</span>(DestFilename)</span><br><span class="line">			&amp;&amp; TemplateDefs-&gt;<span class="built_in">IsClassRename</span>(DestFilename, SrcFilename, FileExtension))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// Looks like a UObject file!</span></span><br><span class="line">			ClassRenames.<span class="built_in">Add</span>(FPaths::<span class="built_in">GetBaseFilename</span>(SrcFilename), FPaths::<span class="built_in">GetBaseFilename</span>(DestFilename));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
+
+<br/>
+<img src="/2021/04/07/difference-between-build-cs-and-target-cs/02.png" class="">
+<br/>
+<img src="/2021/04/07/difference-between-build-cs-and-target-cs/01.png" class="">
+
+<p><em>WHEN YOU CREATE A PROJECT ITS NAME OF <code>ThridPerson_4_25</code> FROM THIRD PERSON TEMPLATE</em></p>
+<p>Saying that again, <code>[ModuleName].Build.cs</code> defines the dependencies for building its module. So, every module must have its own <code>[ModuleName].Build.cs</code> file and every module has its own <code>[ModuleName].Build.cs</code> will generate a DLL when you build the project.</p>
+<p>Module generation can be done by manipulating some CSharp scripts (<code>Build.cs</code> and <code>Target.cs</code> files). You can find how at <a target="_blank" rel="noopener" href="https://www.ue4community.wiki/creating-cpp-module-oshdsg2t">https://www.ue4community.wiki/creating-cpp-module-oshdsg2t</a>.</p>
+<h3 id="TargetName-Target-cs"><a href="#TargetName-Target-cs" class="headerlink" title="[TargetName].Target.cs"></a><em><code>[TargetName].Target.cs</code></em></h3><p>While every module must have a <code>Build.cs</code> file, but every module do not have to have a <code>Target.cs</code> file. Some modules have only <code>Build.cs</code> file. It means the modules should be used for library not a standalone. The <code>AIModule</code> is a good example. The module has only <code>Build.cs</code> as it is written for providing a support to make AI.</p>
+<img src="/2021/04/07/difference-between-build-cs-and-target-cs/11.png" class="">
+</br>
+<img src="/2021/04/07/difference-between-build-cs-and-target-cs/12.png" class="">
+</br>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/Editor/UnrealEd/UnrealEd.Build.cs</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">PublicIncludePathModuleNames.AddRange(</span><br><span class="line">	<span class="keyword">new</span> <span class="built_in">string</span>[] &#123;</span><br><span class="line">		<span class="string">&quot;AssetRegistry&quot;</span>,</span><br><span class="line">		<span class="string">&quot;AssetTagsEditor&quot;</span>,</span><br><span class="line">		<span class="string">&quot;CollectionManager&quot;</span>,</span><br><span class="line">		<span class="string">&quot;BlueprintGraph&quot;</span>,</span><br><span class="line">		<span class="string">&quot;AddContentDialog&quot;</span>,</span><br><span class="line">		<span class="string">&quot;MeshUtilities&quot;</span>,</span><br><span class="line">		<span class="string">&quot;AssetTools&quot;</span>,</span><br><span class="line">		<span class="string">&quot;KismetCompiler&quot;</span>,</span><br><span class="line">		<span class="string">&quot;NavigationSystem&quot;</span>,</span><br><span class="line">		<span class="string">&quot;GameplayTasks&quot;</span>,</span><br><span class="line">		<span class="string">&quot;AIModule&quot;</span>,</span><br><span class="line">		<span class="string">&quot;Engine&quot;</span>,</span><br><span class="line">		<span class="string">&quot;SourceControl&quot;</span>,</span><br><span class="line">	&#125;</span><br><span class="line">);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/Runtime/Engine/Engine.Build.cs</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="keyword">if</span> (Target.bBuildEditor == <span class="literal">true</span>)</span><br><span class="line">&#123;</span><br><span class="line">	PublicDependencyModuleNames.AddRange(</span><br><span class="line">		<span class="keyword">new</span> <span class="built_in">string</span>[] &#123;</span><br><span class="line">			<span class="string">&quot;UnrealEd&quot;</span>,</span><br><span class="line">			<span class="string">&quot;Kismet&quot;</span></span><br><span class="line">		&#125;</span><br><span class="line">	);	<span class="comment">// @todo api: Only public because of WITH_EDITOR and UNREALED_API</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/Developer/TargetPlatform/TargetPlatform.Build.cs</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">PrivateIncludePathModuleNames.Add(<span class="string">&quot;Engine&quot;</span>);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/Runtime/Core/Core.Build.cs</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">PrivateIncludePathModuleNames.AddRange(</span><br><span class="line">	<span class="keyword">new</span> <span class="built_in">string</span>[] &#123;</span><br><span class="line">		<span class="string">&quot;TargetPlatform&quot;</span>,</span><br><span class="line">		<span class="string">&quot;DerivedDataCache&quot;</span>,</span><br><span class="line">		<span class="string">&quot;InputDevice&quot;</span>,</span><br><span class="line">		<span class="string">&quot;Analytics&quot;</span>,</span><br><span class="line">		<span class="string">&quot;RHI&quot;</span></span><br><span class="line">	&#125;</span><br><span class="line">);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/Runtime/UE4Game/UE4Game.Build.cs</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">PrivateDependencyModuleNames.Add(<span class="string">&quot;Core&quot;</span>);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/UE4Editor.Target.cs</span><br><span class="line"></span><br><span class="line"><span class="comment">// Copyright Epic Games, Inc. All Rights Reserved.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> UnrealBuildTool;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UE4EditorTarget</span> : <span class="title">TargetRules</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">UE4EditorTarget</span>(<span class="params"> TargetInfo Target </span>) : <span class="title">base</span>(<span class="params">Target</span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		Type = TargetType.Editor;</span><br><span class="line">		BuildEnvironment = TargetBuildEnvironment.Shared;</span><br><span class="line">		bBuildAllModules = <span class="literal">true</span>;</span><br><span class="line">		ExtraModuleNames.Add(<span class="string">&quot;UE4Game&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Sometimes, some modules should not be included on certain target configurations. For instance, only editor features should not be included in client or server target configuration. In the need, we can branch for ease like below:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Engine/Source/Developer/SlateReflector/SlateReflector.Build.cs</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="comment">// Editor builds include SessionServices to populate the remote target drop-down for remote widget snapshots</span></span><br><span class="line"><span class="keyword">if</span> (Target.Type == TargetType.Editor)</span><br><span class="line">&#123;</span><br><span class="line">	PublicDefinitions.Add(<span class="string">&quot;SLATE_REFLECTOR_HAS_SESSION_SERVICES=1&quot;</span>);</span><br><span class="line"></span><br><span class="line">	PrivateDependencyModuleNames.AddRange(</span><br><span class="line">		<span class="keyword">new</span> <span class="built_in">string</span>[] &#123;</span><br><span class="line">			<span class="string">&quot;PropertyEditor&quot;</span>,</span><br><span class="line">		&#125;</span><br><span class="line">	);</span><br><span class="line"></span><br><span class="line">	PrivateIncludePathModuleNames.AddRange(</span><br><span class="line">		<span class="keyword">new</span> <span class="built_in">string</span>[] &#123;</span><br><span class="line">			<span class="string">&quot;SessionServices&quot;</span>,</span><br><span class="line">		&#125;</span><br><span class="line">	);</span><br><span class="line"></span><br><span class="line">	DynamicallyLoadedModuleNames.AddRange(</span><br><span class="line">		<span class="keyword">new</span> <span class="built_in">string</span>[] &#123;</span><br><span class="line">			<span class="string">&quot;SessionServices&quot;</span>,</span><br><span class="line">		&#125;</span><br><span class="line">	);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">	PublicDefinitions.Add(<span class="string">&quot;SLATE_REFLECTOR_HAS_SESSION_SERVICES=0&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>We can use <code>Widget Relfector</code> only at editor target configuration. As we see, non-editor target will not contain the reflector feature. One more step, we can force to block generating projects by throwing an exception like this.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/Engine/Source/Editor/UnrealEd/UnrealEd.Build.cs</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UnrealEd</span> : <span class="title">ModuleRules</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">UnrealEd</span>(<span class="params">ReadOnlyTargetRules Target</span>) : <span class="title">base</span>(<span class="params">Target</span>)</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(Target.Type != TargetType.Editor)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> BuildException(<span class="string">&quot;Unable to instantiate UnrealEd module for non-editor targets.&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="Wrap-Up"><a href="#Wrap-Up" class="headerlink" title="Wrap-Up"></a><em>Wrap-Up</em></h3><p><code>Build.cs</code> and <code>Target.cs</code> are different with each other on why they are used.</p>
+<ul>
+<li><code>Build.cs</code><ul>
+<li>defines how the module should be created.</li>
+<li>type of module output file is usually <code>.dll</code>.</li>
+<li>every module must have its own <code>[ModuleName].Build.cs</code>.</li>
+<li>there can be duplicated output files if the module is included in multiple <code>Target.cs</code> files or if build configurations are different on each other.<ul>
+<li>ex: <code>Target1-ModuleA.dll</code>, <code>Target2-ModuleA.dll</code>, <code>Target2-ModuleA-Win64-Debug.dll</code> and etc.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>Target.cs</code><ul>
+<li>defines how the executable should be created.</li>
+<li>type of target output file is usually <code>.exe</code>.</li>
+<li>user can write <code>[TargetName].Target.cs</code> and modules can be included selectively.</li>
+<li>there can be duplicated output files if build configurations are different on each other.<ul>
+<li>ex: <code>UE4Editor.exe</code>, <code>UE4Editor-Win64-Debug.exe</code> and etc.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Logically, a target is above one than a module.</p>
+<img src="/2021/04/07/difference-between-build-cs-and-target-cs/13.png" class="">
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/" data-id="clw50m6p0000yakqm65vhahu8" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/05/16/cpp-std-vector-growth/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Growth of std::vector
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/03/01/unreal-engine-natvis/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Natvis in UnrealEngine</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/" rel="tag">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoogleAnalytics/" rel="tag">GoogleAnalytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Home/" rel="tag">Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iptime/" rel="tag">Iptime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lecture/" rel="tag">Lecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSVC/" rel="tag">MSVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Migration/" rel="tag">Migration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network/" rel="tag">Network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retargeting/" rel="tag">Retargeting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextWrap/" rel="tag">TextWrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/About/" style="font-size: 10px;">About</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/Blueprint/" style="font-size: 13.33px;">Blueprint</a> <a href="/tags/CPP/" style="font-size: 13.33px;">CPP</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GoogleAnalytics/" style="font-size: 10px;">GoogleAnalytics</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Home/" style="font-size: 10px;">Home</a> <a href="/tags/Iptime/" style="font-size: 10px;">Iptime</a> <a href="/tags/Lecture/" style="font-size: 10px;">Lecture</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MSVC/" style="font-size: 10px;">MSVC</a> <a href="/tags/Migration/" style="font-size: 10px;">Migration</a> <a href="/tags/Natvis/" style="font-size: 10px;">Natvis</a> <a href="/tags/Network/" style="font-size: 10px;">Network</a> <a href="/tags/Perforce/" style="font-size: 13.33px;">Perforce</a> <a href="/tags/Retargeting/" style="font-size: 10px;">Retargeting</a> <a href="/tags/Retrospection/" style="font-size: 16.67px;">Retrospection</a> <a href="/tags/RichTextBlock/" style="font-size: 10px;">RichTextBlock</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/TextBlock/" style="font-size: 13.33px;">TextBlock</a> <a href="/tags/TextWrap/" style="font-size: 10px;">TextWrap</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/UnrealEngine/" style="font-size: 20px;">UnrealEngine</a> <a href="/tags/WSL/" style="font-size: 13.33px;">WSL</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/04/migration-from-perforce-into-git-in-windows/">Migration from Perforce into Git in Windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/04/10/conversion-from-universal-analytics-into-google-analytics-4/">Conversion from UA into GA4</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/12/promotion-for-online-lecture-of-unrealengine-01/">The promotion for online lecture of UnrealEngine</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/04/retargeting-animations-in-unreal-engine-5/">Retargeting animations in UnrealEngine 5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/">How the RichTextBlock works in UnrealEngine (part.1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 MinCheon Bae<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/2020/02/03/home-page/index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'let-us-go-abroad';
+  
+  var disqus_url = 'https://baemincheon.github.io/2021/04/07/difference-between-build-cs-and-target-cs/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

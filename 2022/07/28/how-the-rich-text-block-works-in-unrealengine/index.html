@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2P265ZP7M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R2P265ZP7M');
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>How the RichTextBlock works in UnrealEngine (part.1) | LET US GO ABROAD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Environment     UnrealEngine branch: 5.0   Visual Studio 2022 version: 17.2.6   Windows 11 Pro build: 22000.795   OverviewWe have learned about the TextBlock in UnrealEngine at the previous post. A">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How the RichTextBlock works in UnrealEngine (part.1)">
+<meta property="og:url" content="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/index.html">
+<meta property="og:site_name" content="LET US GO ABROAD">
+<meta property="og:description" content="Environment     UnrealEngine branch: 5.0   Visual Studio 2022 version: 17.2.6   Windows 11 Pro build: 22000.795   OverviewWe have learned about the TextBlock in UnrealEngine at the previous post. A">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/01.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/02.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/03.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/04.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/05.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/06.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/07.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/08.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/11.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/10.png">
+<meta property="og:image" content="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/09.png">
+<meta property="article:published_time" content="2022-07-28T11:59:20.000Z">
+<meta property="article:modified_time" content="2022-07-28T11:59:20.000Z">
+<meta property="article:author" content="MinCheon Bae">
+<meta property="article:tag" content="UnrealEngine">
+<meta property="article:tag" content="TextBlock">
+<meta property="article:tag" content="RichTextBlock">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="LET US GO ABROAD" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LET US GO ABROAD</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/2020/02/03/home-page/index.html">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://baemincheon.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-how-the-rich-text-block-works-in-unrealengine" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/" class="article-date">
+  <time datetime="2022-07-28T11:59:20.000Z" itemprop="datePublished">2022-07-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      How the RichTextBlock works in UnrealEngine (part.1)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <table>
+<thead>
+<tr>
+<th>Environment</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UnrealEngine</td>
+<td><code>branch: 5.0</code></td>
+</tr>
+<tr>
+<td>Visual Studio 2022</td>
+<td><code>version: 17.2.6</code></td>
+</tr>
+<tr>
+<td>Windows 11 Pro</td>
+<td><code>build: 22000.795</code></td>
+</tr>
+</tbody></table>
+<h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a><em><code>Overview</code></em></h1><p>We have learned about the <code>TextBlock</code> in UnrealEngine at <a href="https://baemincheon.github.io/2022/03/22/how-the-text-wrap-works-in-unrealengine/">the previous post</a>. As we saw, the <code>TextBlock</code> provides the function to split a long text into multiple lines. But, it was only for the text, combinations of character.</p>
+<p>Sometimes, we want to put something that is not a character in the middle of text. For example, you may want to put an image for key icon into the text that describes character’s skill. Maybe, you want to highlight a part of the text by coloring it. Furthermore, you could want to put a “widget” in the middle of text. The widget would interact with the player’s action so that they can have better experience of the user interface.</p>
+<img src="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/01.png" class="">
+<blockquote>
+<p>An option description in PUBG Xbox.</p>
+</blockquote>
+<p>UnrealEngine has a solution for that, <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/4.27/en-US/InteractiveExperiences/UMG/UserGuide/UMGRichTextBlock/">the RichTextBlock widget</a>. You can put an image or anything else in the middle of text. Plus, it also supports auto-wrapping just like at the <code>TextBlock</code>. Now you know why its name is the “Rich”TextBlock. Then, let us check out how the <code>RichTextBlock</code> widget is implemented and how it works.</p>
+<h1 id="An-example"><a href="#An-example" class="headerlink" title="An example"></a><em><code>An example</code></em></h1><p>Already there is a tutorial in <a target="_blank" rel="noopener" href="https://docs.unrealengine.com/4.27/en-US/InteractiveExperiences/UMG/UserGuide/UMGRichTextBlock/">the document</a>, but I will show you an another example including how to make your custom <code>RichTextBlock</code> decorator. Suppose you want to display the text like the screenshot below.</p>
+<img src="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/02.png" class="">
+
+<p>The size of <code>SizeBox</code> is (512, 512). The text used in <code>RichTextBlock</code> is here:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Test &lt;Emphasis&gt; Test &lt;/&gt; &lt;somewidget id=&quot;Ferris_02&quot;/&gt; Test &lt;somewidget id=&quot;Ferris_01&quot;/&gt; Test aaa aaa aaa aaa aaa aaa aaa aaa &lt;img id=&quot;Ferris_01&quot;/&gt; aaa &lt;somewidget id=&quot;Ferris_02&quot;/&gt; aaa</span><br></pre></td></tr></table></figure>
+
+<p>As we can see, the images are put in the middle of text. The <code>RichTextBlock</code> parses the input text and decorates the text with your configurations. Without some configurations, the tags such as <code>&lt;Emphasis&gt;</code> and <code>&lt;somewidget&gt;</code> would be displayed as a plain text. Yes, you should do some configurations for using the <code>RichTextBlock</code>.</p>
+<img src="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/03.png" class="">
+
+<p>I have already set some properties, <code>TextStyleSet</code> and <code>DecoratorClasses</code>.</p>
+<h1 id="RichTextStyle"><a href="#RichTextStyle" class="headerlink" title="RichTextStyle"></a><em><code>RichTextStyle</code></em></h1><p>The <code>TextStyleSet</code> is used for decorating a text just like a markup. You can specify a font, size, color, and so on with it. I made two data rows in the data table, and that is why some of text was displayed with green color. Check the screenshot below.</p>
+<img src="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/04.png" class="">
+<br/>
+<img src="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/05.png" class="">
+
+<p>The <code>RichTextBlock</code> decorates rest of text if you make a <code>Default</code> row. That is why the text not embraced with tags was displayed with white color.</p>
+<img src="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/06.png" class="">
+
+<p>Without the <code>TextStyleSet</code>, the <code>RichTextBlock</code> cannot display the text properly. You can make a data table containing <code>RichTextStyleRow</code> with the instructions.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. Right click on contents browser.</span><br><span class="line">2. find the item `Data Table` at the category `Miscellaneous`, and click it.</span><br><span class="line">3. The dialog `Pick Row Structure` pops up.</span><br><span class="line">4. Click the drop down, and select `RichTextStyleRow`.</span><br></pre></td></tr></table></figure>
+
+<p>Now, you can manipulate the data table. But, you should be careful that the name of data row is the same with the name of tag in the <code>RichTextBlock</code>.</p>
+<h1 id="RichImage"><a href="#RichImage" class="headerlink" title="RichImage"></a><em><code>RichImage</code></em></h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Simple struct for rich text styles */</span></span><br><span class="line"><span class="built_in">USTRUCT</span>(Blueprintable, BlueprintType)</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">UMG_API</span> FRichImageRow : <span class="keyword">public</span> FTableRowBase</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">GENERATED_USTRUCT_BODY</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">	<span class="built_in">UPROPERTY</span>(EditAnywhere, Category = Appearance)</span><br><span class="line">	FSlateBrush Brush;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Allows you to setup an image decorator that can be configured</span></span><br><span class="line"><span class="comment"> * to map certain keys to certain images.  We recommend you subclass this</span></span><br><span class="line"><span class="comment"> * as a blueprint to configure the instance.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Understands the format &lt;img id=&quot;NameOfBrushInTable&quot;&gt;&lt;/&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">UCLASS</span>(Abstract, Blueprintable)</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">UMG_API</span> URichTextBlockImageDecorator : <span class="keyword">public</span> URichTextBlockDecorator</span><br></pre></td></tr></table></figure>
+
+<p>UnrealEngine provides a decorator class, <code>URichTextBlockImageDecorator</code>. It helps you add an image widget in the middle of text.</p>
+<img src="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/07.png" class="">
+
+<p>Without it, the <code>RichTextBlock</code> cannot create an image from the tag <code>img</code>. You can make a data table containing <code>RichImageRow</code> with the instructions.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. Right click on contents browser.</span><br><span class="line">2. find the item `Data Table` at the category `Miscellaneous`, and click it.</span><br><span class="line">3. The dialog `Pick Row Structure` pops up.</span><br><span class="line">4. Click the drop down, and select `RichImageRow`.</span><br></pre></td></tr></table></figure>
+
+<p>Now, you can manipulate the data table. Also, you should be careful that the name of data row is the same with the name of tag in the <code>RichTextBlock</code> as I mentioned at the <code>RichTextStyle</code>. So, remember it because this mechanism will work on other cases (Decorators using their own data table) too.</p>
+<img src="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/08.png" class="">
+
+<p>However, you need one step more to apply the data table.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Engine/Source/Runtime/UMG/Public/Components/RichTextBlock.h</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**  */</span></span><br><span class="line"><span class="built_in">UPROPERTY</span>(EditAnywhere, Category=Appearance, meta=(RequiredAssetDataTags = <span class="string">&quot;RowStructure=RichTextStyleRow&quot;</span>))</span><br><span class="line">TObjectPtr&lt;<span class="keyword">class</span> <span class="title class_">UDataTable</span>&gt; TextStyleSet;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**  */</span></span><br><span class="line"><span class="built_in">UPROPERTY</span>(EditAnywhere, Category=Appearance)</span><br><span class="line">TArray&lt;TSubclassOf&lt;URichTextBlockDecorator&gt;&gt; DecoratorClasses;</span><br></pre></td></tr></table></figure>
+
+<p>The <code>TextStyleSet</code> needs only a data table, but the <code>DecoratorClasses</code> takes a class inherits <code>URichTextBlockDecorator</code>. That is why <code>URichTextBlockImageDecorator</code> inherits that.</p>
+<img src="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/11.png" class="">
+<br/>
+<img src="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/10.png" class="">
+<br/>
+<img src="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/09.png" class="">
+
+<p>So, you should create a blueprint class inherits <code>URichTextBlockImageDecorator</code> because the class <code>URichTextBlockImageDecorator</code> has the UCLASS keyword <code>Abstract</code>. And, assign it into the <code>DecoratorClasses</code> at the <code>RichTextBlock</code> widget. The blueprint class should reference the data table for images.</p>
+<h1 id="Custom-decorator"><a href="#Custom-decorator" class="headerlink" title="Custom decorator"></a><em><code>Custom decorator</code></em></h1><p>I have written a custom decorator for this example, the <code>URichTextBlockSomeWidgetDecorator</code>. As you can see in the example, it displays a combination of image and text. First of all, the code for this class is here.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://gist.github.com/BaeMinCheon/109b251f1c88ae3f7e73dd711d0cc153">RichTextBlockSomeWidgetDecorator.h</a></li>
+<li><a target="_blank" rel="noopener" href="https://gist.github.com/BaeMinCheon/6521a88bce86bd4cd60b7b383cf45637">RichTextBlockSomeWidgetDecorator.cpp</a></li>
+</ul>
+<p>And the followings are the major changes.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestRichTextBlock</span> : ModuleRules</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">TestRichTextBlock</span><span class="params">(ReadOnlyTargetRules Target)</span> : base(Target)</span></span><br><span class="line"><span class="function">	&#123;</span></span><br><span class="line">		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;</span><br><span class="line"></span><br><span class="line">		PublicDependencyModuleNames.<span class="built_in">AddRange</span>(<span class="keyword">new</span> string[] &#123; <span class="string">&quot;Core&quot;</span>, <span class="string">&quot;CoreUObject&quot;</span>, <span class="string">&quot;Engine&quot;</span>, <span class="string">&quot;InputCore&quot;</span>, <span class="string">&quot;HeadMountedDisplay&quot;</span>, <span class="string">&quot;UMG&quot;</span>, <span class="string">&quot;Slate&quot;</span>, <span class="string">&quot;SlateCore&quot;</span> &#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>You must add the modules at your <code>Build.cs</code>: <code>UMG</code>, <code>Slate</code>, and <code>SlateCore</code>.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">FRichInlineSomeWidget::Supports</span><span class="params">(<span class="type">const</span> FTextRunParseResults&amp; RunParseResult, <span class="type">const</span> FString&amp; Text)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">bool</span> Result = <span class="literal">false</span>;</span><br><span class="line">	<span class="type">const</span> <span class="type">bool</span> IsContainId = RunParseResult.MetaData.<span class="built_in">Contains</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;id&quot;</span>));</span><br><span class="line">	<span class="type">const</span> <span class="type">bool</span> IsNameSomeWidget = RunParseResult.Name == <span class="built_in">TEXT</span>(<span class="string">&quot;somewidget&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span> (IsContainId &amp;&amp; IsNameSomeWidget)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="type">const</span> FTextRange&amp; IdRange = RunParseResult.MetaData[<span class="built_in">TEXT</span>(<span class="string">&quot;id&quot;</span>)];</span><br><span class="line">		<span class="type">const</span> FString TagId = Text.<span class="built_in">Mid</span>(IdRange.BeginIndex, IdRange.EndIndex - IdRange.BeginIndex);</span><br><span class="line">		<span class="type">const</span> <span class="type">bool</span> bWarnIfMissing = <span class="literal">false</span>;</span><br><span class="line">		Result = Decorator-&gt;<span class="built_in">FindSomeWidgetRow</span>(*TagId, bWarnIfMissing) != <span class="literal">nullptr</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> Result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>I have changed the tag that my decorator supports. <code>img -&gt; somewidget</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">SRichInlineSomeWidget::Construct</span><span class="params">(<span class="type">const</span> FArguments&amp; InArgs, <span class="type">const</span> FRichSomeWidgetRow* Row, <span class="type">const</span> FTextBlockStyle&amp; TextStyle, TOptional&lt;int32&gt; Width, TOptional&lt;int32&gt; Height, EStretch::Type Stretch)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">const</span> FSlateBrush* InBrush = &amp;(Row-&gt;Brush);</span><br><span class="line">	<span class="built_in">check</span>(InBrush)</span><br><span class="line">	<span class="type">const</span> FText InText = Row-&gt;Text;</span><br><span class="line">	<span class="type">const</span> TSharedRef&lt;FSlateFontMeasure&gt; FontMeasure = FSlateApplication::<span class="built_in">Get</span>().<span class="built_in">GetRenderer</span>()-&gt;<span class="built_in">GetFontMeasureService</span>();</span><br><span class="line">	<span class="type">const</span> <span class="type">float</span> MaxHeight = FontMeasure-&gt;<span class="built_in">GetMaxCharacterHeight</span>(TextStyle.Font, <span class="number">1.0f</span>);</span><br><span class="line">	<span class="type">float</span> IconHeight = FMath::<span class="built_in">Max</span>(MaxHeight, InBrush-&gt;ImageSize.Y);</span><br><span class="line">	<span class="keyword">if</span> (Height.<span class="built_in">IsSet</span>())</span><br><span class="line">	&#123;</span><br><span class="line">		IconHeight = Height.<span class="built_in">GetValue</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">float</span> IconWidth = IconHeight;</span><br><span class="line">	<span class="keyword">if</span> (Width.<span class="built_in">IsSet</span>())</span><br><span class="line">	&#123;</span><br><span class="line">		IconWidth = Width.<span class="built_in">GetValue</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	ChildSlot</span><br><span class="line">	[</span><br><span class="line">		<span class="built_in">SNew</span>(SBox)</span><br><span class="line">		[</span><br><span class="line">			<span class="built_in">SNew</span>(SHorizontalBox)</span><br><span class="line"></span><br><span class="line">			+SHorizontalBox::<span class="built_in">Slot</span>()</span><br><span class="line">			.<span class="built_in">AutoWidth</span>()</span><br><span class="line">			.<span class="built_in">VAlign</span>(VAlign_Center)</span><br><span class="line">			[</span><br><span class="line">				<span class="built_in">SNew</span>(SImage)</span><br><span class="line">				.<span class="built_in">Image</span>(InBrush)</span><br><span class="line">			]</span><br><span class="line"></span><br><span class="line">			+SHorizontalBox::<span class="built_in">Slot</span>()</span><br><span class="line">			.<span class="built_in">AutoWidth</span>()</span><br><span class="line">			.<span class="built_in">VAlign</span>(VAlign_Center)</span><br><span class="line">			[</span><br><span class="line">				<span class="built_in">SNew</span>(STextBlock)</span><br><span class="line">				.<span class="built_in">Text</span>(InText)</span><br><span class="line">			]</span><br><span class="line">		]</span><br><span class="line">	];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Used the max value for <code>IconHeight</code> because I wanted to display the image properly. Plus, the decorator has a <code>TextBlock</code> for descripting an image. In the example, a text <code>Ferris_01</code> or <code>Ferris_02</code> is located on the right of Ferris’ image.</p>
+<p>So, you can create a custom decorator like this. Rest works are just similar with <code>RichImage</code>, creating some blueprint classes (decorator and data table) and assigning each other. Let your decorator have awesome functions :)</p>
+<h1 id="Preview-of-Part-2"><a href="#Preview-of-Part-2" class="headerlink" title="Preview of Part #2"></a><em><code>Preview of Part #2</code></em></h1><p>At this part, we have seen how to use the <code>RichTextBlock</code> and how to make a custom decorator.</p>
+<ul>
+<li>Only for a text, you should create a data table and assign it.</li>
+<li>For other content, you should create a custom decorator and assign it. But, UnrealEngine has already made a default decorator for an image, <code>URichTextBlockImageDecorator</code>.</li>
+<li>When creating a custom decorator, you should know them below:<ul>
+<li>Specify an unique tag name. There should be no confliction.</li>
+<li>Design a widget layout with Slate. You can reference many examples from engine codes, just find all references of <code>ChildSlot</code>.</li>
+<li>Create a SWidget version of your widget if you want to put your widget into the custom decorator. As you can see, the <code>SNew</code> accepts only the class inherits <code>SWidget</code>. In most of cases, it is okay to inherit the class <code>SLeafWidget</code>.</li>
+</ul>
+</li>
+</ul>
+<p>At next part, we would find out how does the <code>RichTextBlock</code> wrap its contents. It will be interesting because the <code>RichTextBlock</code> can have an image as a content.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/" data-id="clw50m6p2001dakqmeehgaxyu" class="article-share-link">Share</a>
+      
+        <a href="https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/10/04/retargeting-animations-in-unreal-engine-5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Retargeting animations in UnrealEngine 5
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/03/22/how-the-text-wrap-works-in-unrealengine/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">How the text wrap works in UnrealEngine</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/About/" rel="tag">About</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Blueprint/" rel="tag">Blueprint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPP/" rel="tag">CPP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/" rel="tag">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCC/" rel="tag">GCC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GoogleAnalytics/" rel="tag">GoogleAnalytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Home/" rel="tag">Home</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Iptime/" rel="tag">Iptime</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lecture/" rel="tag">Lecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MSVC/" rel="tag">MSVC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Migration/" rel="tag">Migration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Natvis/" rel="tag">Natvis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Network/" rel="tag">Network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Perforce/" rel="tag">Perforce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retargeting/" rel="tag">Retargeting</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrospection/" rel="tag">Retrospection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RichTextBlock/" rel="tag">RichTextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/STL/" rel="tag">STL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextBlock/" rel="tag">TextBlock</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TextWrap/" rel="tag">TextWrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UnrealEngine/" rel="tag">UnrealEngine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WSL/" rel="tag">WSL</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/About/" style="font-size: 10px;">About</a> <a href="/tags/Animation/" style="font-size: 10px;">Animation</a> <a href="/tags/Blueprint/" style="font-size: 13.33px;">Blueprint</a> <a href="/tags/CPP/" style="font-size: 13.33px;">CPP</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/GCC/" style="font-size: 10px;">GCC</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/GoogleAnalytics/" style="font-size: 10px;">GoogleAnalytics</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Home/" style="font-size: 10px;">Home</a> <a href="/tags/Iptime/" style="font-size: 10px;">Iptime</a> <a href="/tags/Lecture/" style="font-size: 10px;">Lecture</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MSVC/" style="font-size: 10px;">MSVC</a> <a href="/tags/Migration/" style="font-size: 10px;">Migration</a> <a href="/tags/Natvis/" style="font-size: 10px;">Natvis</a> <a href="/tags/Network/" style="font-size: 10px;">Network</a> <a href="/tags/Perforce/" style="font-size: 13.33px;">Perforce</a> <a href="/tags/Retargeting/" style="font-size: 10px;">Retargeting</a> <a href="/tags/Retrospection/" style="font-size: 16.67px;">Retrospection</a> <a href="/tags/RichTextBlock/" style="font-size: 10px;">RichTextBlock</a> <a href="/tags/STL/" style="font-size: 10px;">STL</a> <a href="/tags/TextBlock/" style="font-size: 13.33px;">TextBlock</a> <a href="/tags/TextWrap/" style="font-size: 10px;">TextWrap</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/UnrealEngine/" style="font-size: 20px;">UnrealEngine</a> <a href="/tags/WSL/" style="font-size: 13.33px;">WSL</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/04/migration-from-perforce-into-git-in-windows/">Migration from Perforce into Git in Windows</a>
+          </li>
+        
+          <li>
+            <a href="/2023/04/10/conversion-from-universal-analytics-into-google-analytics-4/">Conversion from UA into GA4</a>
+          </li>
+        
+          <li>
+            <a href="/2022/12/12/promotion-for-online-lecture-of-unrealengine-01/">The promotion for online lecture of UnrealEngine</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/04/retargeting-animations-in-unreal-engine-5/">Retargeting animations in UnrealEngine 5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/28/how-the-rich-text-block-works-in-unrealengine/">How the RichTextBlock works in UnrealEngine (part.1)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 MinCheon Bae<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/2020/02/03/home-page/index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'let-us-go-abroad';
+  
+  var disqus_url = 'https://baemincheon.github.io/2022/07/28/how-the-rich-text-block-works-in-unrealengine/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
