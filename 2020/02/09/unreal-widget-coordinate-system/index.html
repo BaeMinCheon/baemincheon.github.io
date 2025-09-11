@@ -295,86 +295,95 @@
 
 <p>※ transform property can be divided into <em>local</em> and <em>absolute</em> due to <code>DPI Scale</code><br>※ in this example(and also default value), we got <code>DPI Scale = 2/3</code> which means that every property gets multiplied with 0.666666…</p>
 <ul>
-<li><p><code>Window Space</code></p>
+<li><code>Window Space</code><ul>
+<li>widget<ul>
+<li>size</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/02/09/unreal-widget-coordinate-system/13.jpg" class="">
+<pre><code>        - local = `Widget-&gt;GetCachedGeometry()-&gt;GetLocalSize()`
+</code></pre>
+<img src="/2020/02/09/unreal-widget-coordinate-system/14.jpg" class="">
+<pre><code>        - absolute = `Widget-&gt;GetCachedGeometry()-&gt;GetAbsoluteSize()`
+            *(60, 30) * 0.666666... ≒ (39.99996..., 19.99998...)*
+    - position
+</code></pre>
+<img src="/2020/02/09/unreal-widget-coordinate-system/15.jpg" class="">
+<pre><code>        - local = `Widget-&gt;GetCachedGeometry()-&gt;LocalToViewport()-&gt;ViewportPosition`
+</code></pre>
+<img src="/2020/02/09/unreal-widget-coordinate-system/16.jpg" class="">
+<pre><code>        - absolute = `Widget-&gt;GetCachedGeometry()-&gt;LocalToViewport()-&gt;PixelPosition`
+            *(100, 50) * 0.666666... ≒ (66.66666..., 33.33333...)*
+</code></pre>
+<ul>
+<li>verification (with Adobe Photoshop)<img src="/2020/02/09/unreal-widget-coordinate-system/20.jpg" class="">
 <ul>
 <li>widget<ul>
-<li>size<img src="/2020/02/09/unreal-widget-coordinate-system/13.jpg" class="">
-<ul>
-<li>local &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;GetLocalSize()</code><img src="/2020/02/09/unreal-widget-coordinate-system/14.jpg" class=""></li>
-<li>absolute &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;GetAbsoluteSize()</code><br>  <em>(60, 30) * 0.666666… ≒ (39.99996…, 19.99998…)</em></li>
-</ul>
-</li>
-<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/15.jpg" class="">
-<ul>
-<li>local &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;LocalToViewport()-&gt;ViewportPosition</code><img src="/2020/02/09/unreal-widget-coordinate-system/16.jpg" class=""></li>
-<li>absolute &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;LocalToViewport()-&gt;PixelPosition</code><br>  <em>(100, 50) * 0.666666… ≒ (66.66666…, 33.33333…)</em></li>
+<li>size</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-</li>
-<li><p>verification (with Adobe Photoshop)</p>
-<img src="/2020/02/09/unreal-widget-coordinate-system/20.jpg" class="">
-<ul>
-<li>widget<ul>
-<li>size<img src="/2020/02/09/unreal-widget-coordinate-system/17.jpg" class="">
+<img src="/2020/02/09/unreal-widget-coordinate-system/17.jpg" class="">
 </br>
-<img src="/2020/02/09/unreal-widget-coordinate-system/18.jpg" class=""></li>
-<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/19.jpg" class=""></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><code>Monitor Space</code></p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/18.jpg" class="">
+        - position
+<img src="/2020/02/09/unreal-widget-coordinate-system/19.jpg" class="">
+
 <ul>
+<li><code>Monitor Space</code><ul>
 <li>window<ul>
 <li>size<ul>
-<li>local<img src="/2020/02/09/unreal-widget-coordinate-system/22.jpg" class="">
-  approximately 1920x1080</li>
-<li>absolute<img src="/2020/02/09/unreal-widget-coordinate-system/23.jpg" class="">
-  <em>(1920, 1080) * 0.666666… &#x3D; (1280, 720)</em></li>
+<li>local</li>
 </ul>
 </li>
-<li>position<ul>
-<li>local<img src="/2020/02/09/unreal-widget-coordinate-system/25.jpg" class="">
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/02/09/unreal-widget-coordinate-system/22.jpg" class="">
+<pre><code>        approximately 1920x1080
+        - absolute
+</code></pre>
+<img src="/2020/02/09/unreal-widget-coordinate-system/23.jpg" class="">
+<pre><code>            *(1920, 1080) * 0.666666... = (1280, 720)*
+    - position
+        - local
+</code></pre>
+<img src="/2020/02/09/unreal-widget-coordinate-system/25.jpg" class="">
 </br>
 <img src="/2020/02/09/unreal-widget-coordinate-system/26.jpg" class="">
-  cannot calculate. also not meaningful, unless the `DPI Scale` is the same with system's one</li>
-<li>absolute<img src="/2020/02/09/unreal-widget-coordinate-system/24.jpg" class=""></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>widget<ul>
-<li>size<br>  the same with before</li>
-<li>position<ul>
-<li>local<br>  cannot calculate. also not meaningful, unless the <code>DPI Scale</code> is the same with system’s one</li>
-<li>absolute<img src="/2020/02/09/unreal-widget-coordinate-system/21.jpg" class=""></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>verification (with Adobe Photoshop)</p>
+            cannot calculate. also not meaningful, unless the `DPI Scale` is the same with system's one
+            - absolute
+<img src="/2020/02/09/unreal-widget-coordinate-system/24.jpg" class="">
+    - widget
+        - size
+        the same with before
+        - position
+            - local
+            cannot calculate. also not meaningful, unless the `DPI Scale` is the same with system's one
+            - absolute
+<img src="/2020/02/09/unreal-widget-coordinate-system/21.jpg" class="">
+- verification (with Adobe Photoshop)
 <img src="/2020/02/09/unreal-widget-coordinate-system/27.jpg" class="">
-<ul>
-<li>window<ul>
-<li>size<img src="/2020/02/09/unreal-widget-coordinate-system/28.jpg" class="">
+    - window
+        - size
+<img src="/2020/02/09/unreal-widget-coordinate-system/28.jpg" class="">
 </br>
-<img src="/2020/02/09/unreal-widget-coordinate-system/29.jpg" class=""></li>
-<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/30.jpg" class=""></li>
-</ul>
-</li>
-<li>widget<ul>
-<li>size<br>  the same with before</li>
-<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/31.jpg" class=""></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+<img src="/2020/02/09/unreal-widget-coordinate-system/29.jpg" class="">
+        - position
+<img src="/2020/02/09/unreal-widget-coordinate-system/30.jpg" class="">
+    - widget
+        - size
+        the same with before
+        - position
+<img src="/2020/02/09/unreal-widget-coordinate-system/31.jpg" class="">
+
 <p><code>Window Space</code> summary</p>
 <table>
 <thead>
@@ -454,13 +463,17 @@
 <ul>
 <li>size<br>  the same with before</li>
 <li>position<ul>
-<li>absolute position in <code>Window Space</code><img src="/2020/02/09/unreal-widget-coordinate-system/37.jpg" class=""></li>
-<li>absolute position in <code>Monitor Space</code><img src="/2020/02/09/unreal-widget-coordinate-system/38.jpg" class=""></li>
+<li>absolute position in <code>Window Space</code></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
+<img src="/2020/02/09/unreal-widget-coordinate-system/37.jpg" class="">
+<pre><code>    - absolute position in `Monitor Space`
+</code></pre>
+<img src="/2020/02/09/unreal-widget-coordinate-system/38.jpg" class="">
+
 <p>wrap-up !</p>
 <ul>
 <li>getting local or absolute position is usually possible regardless of layout of widget such as widget hierarchy</li>
@@ -471,7 +484,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/" data-id="cmfco57b4000r74qm5gk3dhuo" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/" data-id="cmfflh8bb002y2sqmgl9veffy" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/#disqus_thread" class="article-comment-link">Comments</a>
       

@@ -222,7 +222,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/" data-id="cmfco57b5000w74qm1wvw8wwn" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/" data-id="cmfflh8bb002u2sqm17qx7ir2" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2020/03/14/unreal-unique-pointer/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -356,7 +356,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/" data-id="cmfco57b2000i74qm39zu2snn" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/" data-id="cmfflh8b500162sqmanih30pv" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2020/03/01/unreal-cpp-ctor-and-dtor/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -543,86 +543,95 @@
 
 <p>※ transform property can be divided into <em>local</em> and <em>absolute</em> due to <code>DPI Scale</code><br>※ in this example(and also default value), we got <code>DPI Scale = 2/3</code> which means that every property gets multiplied with 0.666666…</p>
 <ul>
-<li><p><code>Window Space</code></p>
+<li><code>Window Space</code><ul>
+<li>widget<ul>
+<li>size</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/02/09/unreal-widget-coordinate-system/13.jpg" class="">
+<pre><code>        - local = `Widget-&gt;GetCachedGeometry()-&gt;GetLocalSize()`
+</code></pre>
+<img src="/2020/02/09/unreal-widget-coordinate-system/14.jpg" class="">
+<pre><code>        - absolute = `Widget-&gt;GetCachedGeometry()-&gt;GetAbsoluteSize()`
+            *(60, 30) * 0.666666... ≒ (39.99996..., 19.99998...)*
+    - position
+</code></pre>
+<img src="/2020/02/09/unreal-widget-coordinate-system/15.jpg" class="">
+<pre><code>        - local = `Widget-&gt;GetCachedGeometry()-&gt;LocalToViewport()-&gt;ViewportPosition`
+</code></pre>
+<img src="/2020/02/09/unreal-widget-coordinate-system/16.jpg" class="">
+<pre><code>        - absolute = `Widget-&gt;GetCachedGeometry()-&gt;LocalToViewport()-&gt;PixelPosition`
+            *(100, 50) * 0.666666... ≒ (66.66666..., 33.33333...)*
+</code></pre>
+<ul>
+<li>verification (with Adobe Photoshop)<img src="/2020/02/09/unreal-widget-coordinate-system/20.jpg" class="">
 <ul>
 <li>widget<ul>
-<li>size<img src="/2020/02/09/unreal-widget-coordinate-system/13.jpg" class="">
-<ul>
-<li>local &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;GetLocalSize()</code><img src="/2020/02/09/unreal-widget-coordinate-system/14.jpg" class=""></li>
-<li>absolute &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;GetAbsoluteSize()</code><br>  <em>(60, 30) * 0.666666… ≒ (39.99996…, 19.99998…)</em></li>
-</ul>
-</li>
-<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/15.jpg" class="">
-<ul>
-<li>local &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;LocalToViewport()-&gt;ViewportPosition</code><img src="/2020/02/09/unreal-widget-coordinate-system/16.jpg" class=""></li>
-<li>absolute &#x3D; <code>Widget-&gt;GetCachedGeometry()-&gt;LocalToViewport()-&gt;PixelPosition</code><br>  <em>(100, 50) * 0.666666… ≒ (66.66666…, 33.33333…)</em></li>
+<li>size</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-</li>
-<li><p>verification (with Adobe Photoshop)</p>
-<img src="/2020/02/09/unreal-widget-coordinate-system/20.jpg" class="">
-<ul>
-<li>widget<ul>
-<li>size<img src="/2020/02/09/unreal-widget-coordinate-system/17.jpg" class="">
+<img src="/2020/02/09/unreal-widget-coordinate-system/17.jpg" class="">
 </br>
-<img src="/2020/02/09/unreal-widget-coordinate-system/18.jpg" class=""></li>
-<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/19.jpg" class=""></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><code>Monitor Space</code></p>
+<img src="/2020/02/09/unreal-widget-coordinate-system/18.jpg" class="">
+        - position
+<img src="/2020/02/09/unreal-widget-coordinate-system/19.jpg" class="">
+
 <ul>
+<li><code>Monitor Space</code><ul>
 <li>window<ul>
 <li>size<ul>
-<li>local<img src="/2020/02/09/unreal-widget-coordinate-system/22.jpg" class="">
-  approximately 1920x1080</li>
-<li>absolute<img src="/2020/02/09/unreal-widget-coordinate-system/23.jpg" class="">
-  <em>(1920, 1080) * 0.666666… &#x3D; (1280, 720)</em></li>
+<li>local</li>
 </ul>
 </li>
-<li>position<ul>
-<li>local<img src="/2020/02/09/unreal-widget-coordinate-system/25.jpg" class="">
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2020/02/09/unreal-widget-coordinate-system/22.jpg" class="">
+<pre><code>        approximately 1920x1080
+        - absolute
+</code></pre>
+<img src="/2020/02/09/unreal-widget-coordinate-system/23.jpg" class="">
+<pre><code>            *(1920, 1080) * 0.666666... = (1280, 720)*
+    - position
+        - local
+</code></pre>
+<img src="/2020/02/09/unreal-widget-coordinate-system/25.jpg" class="">
 </br>
 <img src="/2020/02/09/unreal-widget-coordinate-system/26.jpg" class="">
-  cannot calculate. also not meaningful, unless the `DPI Scale` is the same with system's one</li>
-<li>absolute<img src="/2020/02/09/unreal-widget-coordinate-system/24.jpg" class=""></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>widget<ul>
-<li>size<br>  the same with before</li>
-<li>position<ul>
-<li>local<br>  cannot calculate. also not meaningful, unless the <code>DPI Scale</code> is the same with system’s one</li>
-<li>absolute<img src="/2020/02/09/unreal-widget-coordinate-system/21.jpg" class=""></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>verification (with Adobe Photoshop)</p>
+            cannot calculate. also not meaningful, unless the `DPI Scale` is the same with system's one
+            - absolute
+<img src="/2020/02/09/unreal-widget-coordinate-system/24.jpg" class="">
+    - widget
+        - size
+        the same with before
+        - position
+            - local
+            cannot calculate. also not meaningful, unless the `DPI Scale` is the same with system's one
+            - absolute
+<img src="/2020/02/09/unreal-widget-coordinate-system/21.jpg" class="">
+- verification (with Adobe Photoshop)
 <img src="/2020/02/09/unreal-widget-coordinate-system/27.jpg" class="">
-<ul>
-<li>window<ul>
-<li>size<img src="/2020/02/09/unreal-widget-coordinate-system/28.jpg" class="">
+    - window
+        - size
+<img src="/2020/02/09/unreal-widget-coordinate-system/28.jpg" class="">
 </br>
-<img src="/2020/02/09/unreal-widget-coordinate-system/29.jpg" class=""></li>
-<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/30.jpg" class=""></li>
-</ul>
-</li>
-<li>widget<ul>
-<li>size<br>  the same with before</li>
-<li>position<img src="/2020/02/09/unreal-widget-coordinate-system/31.jpg" class=""></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+<img src="/2020/02/09/unreal-widget-coordinate-system/29.jpg" class="">
+        - position
+<img src="/2020/02/09/unreal-widget-coordinate-system/30.jpg" class="">
+    - widget
+        - size
+        the same with before
+        - position
+<img src="/2020/02/09/unreal-widget-coordinate-system/31.jpg" class="">
+
 <p><code>Window Space</code> summary</p>
 <table>
 <thead>
@@ -702,13 +711,17 @@
 <ul>
 <li>size<br>  the same with before</li>
 <li>position<ul>
-<li>absolute position in <code>Window Space</code><img src="/2020/02/09/unreal-widget-coordinate-system/37.jpg" class=""></li>
-<li>absolute position in <code>Monitor Space</code><img src="/2020/02/09/unreal-widget-coordinate-system/38.jpg" class=""></li>
+<li>absolute position in <code>Window Space</code></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
+<img src="/2020/02/09/unreal-widget-coordinate-system/37.jpg" class="">
+<pre><code>    - absolute position in `Monitor Space`
+</code></pre>
+<img src="/2020/02/09/unreal-widget-coordinate-system/38.jpg" class="">
+
 <p>wrap-up !</p>
 <ul>
 <li>getting local or absolute position is usually possible regardless of layout of widget such as widget hierarchy</li>
@@ -719,7 +732,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/" data-id="cmfco57b4000r74qm5gk3dhuo" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/" data-id="cmfflh8bb002y2sqmgl9veffy" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2020/02/09/unreal-widget-coordinate-system/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -800,7 +813,7 @@
 </tr>
 <tr>
 <td>Email</td>
-<td><a href="mailto:&#x62;&#x61;&#101;&#109;&#105;&#110;&#99;&#x68;&#101;&#111;&#x6e;&#64;&#x67;&#x6d;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;">&#x62;&#x61;&#101;&#109;&#105;&#110;&#99;&#x68;&#101;&#111;&#x6e;&#64;&#x67;&#x6d;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;</a></td>
+<td><a href="mailto:&#x62;&#97;&#x65;&#x6d;&#x69;&#x6e;&#x63;&#104;&#x65;&#x6f;&#x6e;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#109;">&#x62;&#97;&#x65;&#x6d;&#x69;&#x6e;&#x63;&#104;&#x65;&#x6f;&#x6e;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#109;</a></td>
 </tr>
 <tr>
 <td>Twitter</td>
@@ -811,7 +824,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2020/02/03/home-page/" data-id="cmfco57b1000e74qmgchkd3rg" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2020/02/03/home-page/" data-id="cmfflh8b4000z2sqmbxtifqyq" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2020/02/03/home-page/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -1102,7 +1115,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2020/01/28/unreal-blueprint-practical-use/" data-id="cmfco57b1000d74qm9k3r8aqa" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2020/01/28/unreal-blueprint-practical-use/" data-id="cmfflh8b6001b2sqmb3vjew04" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2020/01/28/unreal-blueprint-practical-use/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -1299,7 +1312,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2020/01/17/unreal-fname-anatomy/" data-id="cmfco57b2000g74qma3vq5a8g" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2020/01/17/unreal-fname-anatomy/" data-id="cmfflh8b6001e2sqmbwvy9i05" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2020/01/17/unreal-fname-anatomy/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -1435,7 +1448,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2019/12/24/retrospection-2019/" data-id="cmfco57ay000374qmeaiyb9uf" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2019/12/24/retrospection-2019/" data-id="cmfflh8az00082sqmf7f4hsiw" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2019/12/24/retrospection-2019/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -1562,7 +1575,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2019/08/19/shared-folder-in-wsl/" data-id="cmfco57ay000474qm9111c1r9" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2019/08/19/shared-folder-in-wsl/" data-id="cmfflh8ax00042sqm7t494wxl" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2019/08/19/shared-folder-in-wsl/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -1735,7 +1748,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2019/08/19/unreal-linux-server-build/" data-id="cmfco57b0000874qm0zanadp1" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2019/08/19/unreal-linux-server-build/" data-id="cmfflh8ax00052sqmdmcy2dyw" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2019/08/19/unreal-linux-server-build/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -2045,7 +2058,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/" data-id="cmfco57au000074qme0ak38t7" class="article-share-link">Share</a>
+      <a data-url="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/" data-id="cmfflh8av00012sqm4x3odjxc" class="article-share-link">Share</a>
       
         <a href="https://baemincheon.github.io/2019/08/16/differences-of-unreal-build-targets/#disqus_thread" class="article-comment-link">Comments</a>
       
